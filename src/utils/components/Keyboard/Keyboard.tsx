@@ -5,7 +5,7 @@ import { useMouseDown } from "../../hooks/useMouseDown";
 import { getOctaves } from "../../helpers";
 import { Octave } from "./Octave";
 import { DEFAULT_OSCILLATOR } from "~/utils/constants";
-import { Select } from "../Select/select";
+import { Select } from "../Select/Select";
 import { Sticky } from "../Sticky";
 
 export default function Keyboard() {
