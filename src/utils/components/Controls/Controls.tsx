@@ -19,7 +19,7 @@ export const Controls = ({
   } = useControls(set);
 
   return (
-    <div className="flex w-full items-center justify-center gap-8 bg-white bg-opacity-80 p-4 shadow shadow-white/80">
+    <div className="inline-flex w-fit items-center gap-8 overflow-scroll bg-white bg-opacity-80 p-4 shadow shadow-white/80">
       <Select
         name={"Oscillator"}
         defaultValue={defaultValues?.oscillator}

@@ -33,6 +33,10 @@ export const Octave = ({
             onMouseOver={() => isMouseDown && start(key)}
             onMouseOut={() => stop(key)}
             onMouseUp={() => stop(key)}
+            onTouchStart={(e) => start(key)}
+            onTouchMove={(e) => console.log("onTouchMove")}
+            onTouchEnd={(e) => stop(key)}
+            onTouchCancel={(e) => console.log("onTouchCancel")}
           />
         ))}
       </div>

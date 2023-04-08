@@ -5,6 +5,7 @@
   color: #000;
   padding-top: 2em;
   user-select: none;
+  touch-action: none;
 }
 
 .set {
@@ -12,19 +13,19 @@
   border-radius: 5px;
   box-shadow: 0 0 50px rgba(0, 0, 0, 0.5) inset,
     0 1px rgba(212, 152, 125, 0.2) inset, 0 5px 15px rgba(0, 0, 0, 0.5);
+  width: 400px;
 }
 
 .key {
   margin: 0;
   padding: 0;
-  list-style: none;
   position: relative;
   float: left;
 }
 
 .set .white {
+  width: 14.28%;
   height: 16em;
-  width: 4em;
   z-index: 1;
   border-left: 1px solid #bbb;
   border-bottom: 1px solid #bbb;
@@ -44,8 +45,8 @@
 
 .black {
   height: 8em;
-  width: 2em;
-  margin: 0 0 0 -1em;
+  width: 7.14%;
+  margin: 0 0 0 -3.57%;
   z-index: 2;
   border: 1px solid #000;
   border-radius: 0 0 3px 3px;
@@ -65,7 +66,7 @@
 .G,
 .D,
 .B {
-  margin: 0 0 0 -1em;
+  margin: 0 0 0 -3.57%;
 }
 
 .set .key:first-child {
