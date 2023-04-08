@@ -2,6 +2,9 @@ import {
   A4,
   A4_INDEX,
   DEFAULT_OCTAVE,
+  MAX_FREQUENCY,
+  MAX_OCTAVE,
+  MIN_FREQUENCY,
   NOTES,
   OCTAVE_LENGTH,
   TRIADS,
@@ -9,15 +12,15 @@ import {
 import {
   BaseNote,
   Note,
-  isBaseNote,
-  isBaseNoteOctave,
+  isBaseNoteOctave as isNote,
   NoteData,
   TriadInput,
   TriadWithTypeInput,
+  GetKeysInput,
 } from "./types";
 
 const isInFrequencyRange = (input: number) => {
-  if (input < 27.5 || input > 14080) {
+  if (input < MIN_FREQUENCY || input > MAX_FREQUENCY) {
     return false;
   }
   return true;
@@ -76,32 +79,29 @@ export const sumHarmonic = (note1: number, note2: number) => {
   return sum;
 };
 
-const getBaseNote = (note: BaseNote | Note) => {
-  const baseNote = isBaseNoteOctave(note) ? note.slice(0, -1) : note;
-  if (!isBaseNote(baseNote)) {
-    throw new Error(`Invalid base note, input: ${note}`);
-  }
-  return baseNote;
+const sliceNote = (note: Note) => {
+  const baseNote = note.slice(0, -1) as BaseNote;
+  const octave = parseInt(note.slice(-1));
+  return { baseNote, octave };
 };
+
+export const getBaseNote = (note: Note | BaseNote): BaseNote => {
+  return isNote(note) ? sliceNote(note).baseNote : note;
+};
+
 const getOctave = (note: BaseNote | Note) => {
-  if (isBaseNoteOctave(note)) {
-    return parseInt(note.slice(-1));
+  if (isNote(note)) {
+    return sliceNote(note).octave;
   }
   return DEFAULT_OCTAVE;
 };
 
-const makeNoteData = (
-  note: BaseNote | Note,
-  octave?: number,
-  cents?: number
-) => {
-  const baseNote = getBaseNote(note);
-  return {
-    name: baseNote,
+const makeNoteData = (note: BaseNote | Note, octave?: number, cents?: number) =>
+  ({
+    name: getBaseNote(note),
     octave: octave || getOctave(note),
     cents: cents || 0,
-  } satisfies NoteData;
-};
+  } satisfies NoteData);
 
 export const noteToFrequency = (note: NoteData | BaseNote | Note) => {
   const noteData = typeof note === "string" ? makeNoteData(note) : note;
@@ -167,4 +167,30 @@ export const isMajorTriad = (props: TriadInput) => {
 export const isTriad = (props: TriadWithTypeInput) => {
   const foundTriads = findTriads(props);
   return Boolean(foundTriads);
+};
+
+export const getOctavesOfKeys = () => {
+  return [...Array(MAX_OCTAVE).keys()].map((octave) =>
+    NOTES.map((note) => `${note}${octave}` satisfies Note)
+  );
+};
+
+export const getKeys = ({ start, end }: GetKeysInput): Note[] => {
+  const notes: Note[] = [];
+  const currentNoteIndex = noteToIndex(start) % OCTAVE_LENGTH;
+  const currentOctave = getOctave(start);
+  const interval = noteToIndex(end) - noteToIndex(start);
+
+  for (let i = 0; i <= interval; i++) {
+    const noteIndex = (currentNoteIndex + i) % OCTAVE_LENGTH;
+    const note = indexToNote(
+      noteIndex +
+        (currentOctave + Math.floor((currentNoteIndex + i) / OCTAVE_LENGTH)) *
+          OCTAVE_LENGTH
+    );
+    if (note) {
+      notes.push(`${note.name}${note.octave}` satisfies Note);
+    }
+  }
+  return notes;
 };

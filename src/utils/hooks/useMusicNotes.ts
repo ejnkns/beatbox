@@ -11,6 +11,7 @@ import { getNoteFrequenciesInitialState, reducer } from "./MusicNotesReducer";
 
 type UseKeyboardProps = SetOptions & {
   initialFrequencyStates?: FrequencyState[];
+  audioContext?: AudioContext;
 };
 
 export const useMusicNotes = ({
@@ -19,6 +20,7 @@ export const useMusicNotes = ({
   gain: defaultMaxGain = MAX_GAIN,
   smoothInInterval: initialSmoothInInterval = SMOOTH_IN_INTERVAL,
   smoothOutInterval: initialSmoothOutInterval = SMOOTH_OUT_INTERVAL,
+  audioContext,
 }: UseKeyboardProps = {}) => {
   const [smoothInInterval, setSmoothInInterval] = useState(
     initialSmoothInInterval
@@ -43,12 +45,12 @@ export const useMusicNotes = ({
   const gainNodesRef = useRef<GainNode[]>([]);
 
   useEffect(() => {
-    const AudioContext =
+    const DefinedAudioContext =
       window.AudioContext ||
       ("webkitAudioContext" in window && window.webkitAudioContext);
 
     // Create an AudioContext and connect an oscillator and gain node to it
-    const ctx = new AudioContext();
+    const ctx = audioContext || new DefinedAudioContext();
     const oscNodes = frequenciesState.map(() => ctx.createOscillator());
     const gainNodes = frequenciesState.map(() => ctx.createGain());
 
@@ -146,6 +148,7 @@ export const useMusicNotes = ({
       oscillatorNodesRef.current.forEach(
         (oscNode) => (oscNode.type = oscillator)
       );
+      setOscillator(oscillator);
     }
 
     if (gain) {

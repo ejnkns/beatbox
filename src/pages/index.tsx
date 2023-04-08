@@ -1,6 +1,6 @@
 import { type NextPage } from "next";
 import Head from "next/head";
-import { Keyboard } from "~/utils/components/Keyboard/Keyboard";
+import { KeyboardManager } from "~/utils/components/Keyboard/KeyboardManager";
 
 const Home: NextPage = () => {
   return (
@@ -11,7 +11,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex min-h-screen flex-col items-center justify-center">
-        <Keyboard />
+        <KeyboardManager />
       </main>
     </>
   );

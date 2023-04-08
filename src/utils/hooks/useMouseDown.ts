@@ -4,11 +4,13 @@ export const useMouseDown = <T extends HTMLElement>() => {
   const ref = useRef<T>(null);
   const [isMouseDown, setIsMouseDown] = useState(false);
 
-  const handleMouseDown = () => {
+  const handleMouseDown = (e: MouseEvent | TouchEvent) => {
+    e.preventDefault();
     setIsMouseDown(true);
   };
 
-  const handleMouseUp = () => {
+  const handleMouseUp = (e: MouseEvent | TouchEvent) => {
+    e.preventDefault();
     setIsMouseDown(false);
   };
 

@@ -50,6 +50,11 @@ export const isBaseNoteOctave = (input: unknown): input is Note =>
   NOTES.includes(input.slice(0, -1) as BaseNote) &&
   !isNaN(parseInt(input.slice(-1)));
 
+export const isNote = (input: unknown): input is Note =>
+  typeof input === "string" &&
+  NOTES.includes(input.slice(0, -1) as BaseNote) &&
+  !isNaN(parseInt(input.slice(-1)));
+
 export type FrequencyState = {
   oscillator: Oscillator;
   gain: number;
@@ -63,4 +68,9 @@ export type SetOptions = {
   gain?: number;
   smoothInInterval?: number;
   smoothOutInterval?: number;
+};
+
+export type GetKeysInput = {
+  start: Note;
+  end: Note;
 };

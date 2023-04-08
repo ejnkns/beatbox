@@ -1,5 +1,7 @@
 import { Oscillator } from "./types";
 
+export const MIN_FREQUENCY = 16.35;
+export const MAX_FREQUENCY = 14080;
 export const A4 = 440.0;
 export const A4_INDEX = 57; // A4 is the 57th note in an array of notes from C0 to A9
 export const NOTES = [
@@ -16,6 +18,7 @@ export const NOTES = [
   "A#",
   "B",
 ] as const;
+export const WHITE_NOTES = ["C", "D", "E", "F", "G", "A", "B"] as const;
 export const OCTAVE_LENGTH = NOTES.length; // or more accurately, the number of notes in an octave
 export const DEFAULT_OCTAVE = 4;
 export const MAX_OCTAVE = 10;

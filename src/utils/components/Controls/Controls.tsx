@@ -2,7 +2,7 @@ import { UseMusicNotes } from "~/utils/hooks/useMusicNotes";
 import { OSCILLATORS, SetOptions } from "~/utils/types";
 import { Range } from "./Range";
 import { Select } from "./Select";
-import { useControls } from "./useControls";
+import { getHandlers } from "./useControls";
 
 export const Controls = ({
   set,
@@ -16,7 +16,7 @@ export const Controls = ({
     handleSetOscillator,
     handleSetSmoothInInterval,
     handleSetSmoothOutInterval,
-  } = useControls(set);
+  } = getHandlers(set);
 
   return (
     <div className="inline-flex w-fit items-center gap-8 overflow-scroll bg-white bg-opacity-80 p-4 shadow shadow-white/80">

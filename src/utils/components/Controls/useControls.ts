@@ -1,7 +1,7 @@
 import { UseMusicNotes } from "~/utils/hooks/useMusicNotes";
 import { isOscillatorType } from "~/utils/types";
 
-export const useControls = (set: UseMusicNotes["set"]) => {
+export const getHandlers = (set: UseMusicNotes["set"]) => {
   const handleSetOscillator = (e: React.ChangeEvent<HTMLSelectElement>) => {
     if ("value" in e.target && isOscillatorType(e.target.value)) {
       set({ oscillator: e.target.value });
