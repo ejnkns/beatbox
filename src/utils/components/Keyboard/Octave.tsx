@@ -15,8 +15,8 @@ export const Octave = ({
   isMouseDown: boolean;
 }) => {
   return (
-    <div className={styles.text} key={`octave-${i}}`}>
-      <span>{`octave ${i}`}</span>
+    <div key={`octave-${i}}`}>
+      <span className={styles.text}>{`octave ${i}`}</span>
       <div className={styles.set}>
         {octave.map((key) => (
           <div

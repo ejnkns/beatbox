@@ -57,3 +57,10 @@ export type FrequencyState = {
   playing: boolean;
   touched: boolean;
 };
+
+export type SetOptions = {
+  oscillator?: Oscillator;
+  gain?: number;
+  smoothInInterval?: number;
+  smoothOutInterval?: number;
+};

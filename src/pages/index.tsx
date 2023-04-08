@@ -1,6 +1,6 @@
 import { type NextPage } from "next";
 import Head from "next/head";
-import Keyboard from "~/utils/components/Keyboard/Keyboard";
+import { Keyboard } from "~/utils/components/Keyboard/Keyboard";
 
 const Home: NextPage = () => {
   return (

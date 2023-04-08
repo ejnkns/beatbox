@@ -1,38 +1,40 @@
-import { useEffect, useReducer, useRef } from "react";
+import { useEffect, useReducer, useRef, useState } from "react";
 import {
   DEFAULT_OSCILLATOR,
   MAX_GAIN,
   SMOOTH_IN_INTERVAL,
   SMOOTH_OUT_INTERVAL,
 } from "../constants";
-import { reducer, getNoteFrequenciesInitialState } from "../helpers";
 import { noteToIndex } from "../pitches";
-import { FrequencyState, Note, Oscillator } from "../types";
+import { FrequencyState, Note, SetOptions } from "../types";
+import { getNoteFrequenciesInitialState, reducer } from "./MusicNotesReducer";
 
-type UseKeyboardProps = {
+type UseKeyboardProps = SetOptions & {
   initialFrequencyStates?: FrequencyState[];
-  oscillator?: Oscillator;
-  maxGain?: number;
-  smoothInInterval?: number;
-  smoothOutInterval?: number;
 };
 
-export const useMusicNotes = (
-  {
-    initialFrequencyStates,
-    oscillator: defaultOscillator = DEFAULT_OSCILLATOR,
-    maxGain: defaultMaxGain = MAX_GAIN,
-    smoothInInterval = SMOOTH_IN_INTERVAL,
-    smoothOutInterval = SMOOTH_OUT_INTERVAL,
-  }: UseKeyboardProps,
-  depsArray: Array<unknown>
-) => {
+export const useMusicNotes = ({
+  initialFrequencyStates,
+  oscillator: defaultOscillator = DEFAULT_OSCILLATOR,
+  gain: defaultMaxGain = MAX_GAIN,
+  smoothInInterval: initialSmoothInInterval = SMOOTH_IN_INTERVAL,
+  smoothOutInterval: initialSmoothOutInterval = SMOOTH_OUT_INTERVAL,
+}: UseKeyboardProps = {}) => {
+  const [smoothInInterval, setSmoothInInterval] = useState(
+    initialSmoothInInterval
+  );
+  const [smoothOutInterval, setSmoothOutInterval] = useState(
+    initialSmoothOutInterval
+  );
+  const [gain, setGain] = useState(defaultMaxGain);
+  const [oscillator, setOscillator] = useState(defaultOscillator);
+
   const [frequenciesState, setFrequenciesState] = useReducer(
     reducer,
     initialFrequencyStates ||
       getNoteFrequenciesInitialState({
-        oscillator: defaultOscillator,
-        gain: defaultMaxGain,
+        oscillator,
+        gain,
       })
   );
 
@@ -55,7 +57,7 @@ export const useMusicNotes = (
       if (frequencyState) {
         oscNode.frequency.value = frequencyState.hz;
         // set the osc type
-        oscNode.type = frequencyState.oscillator || defaultOscillator;
+        oscNode.type = frequencyState.oscillator || oscillator;
       }
 
       const currentGainNode = gainNodes[i];
@@ -109,7 +111,7 @@ export const useMusicNotes = (
         oscillatorNodesRef.current[noteIndex]?.start();
 
       gainNodesRef.current[noteIndex]?.gain.setTargetAtTime(
-        defaultMaxGain,
+        gain,
         0,
         smoothInInterval
       );
@@ -134,24 +136,43 @@ export const useMusicNotes = (
     }
   };
 
-  const set = (note: Note, oscillator: Oscillator) => {
-    const noteIndex = noteToIndex(note);
-    const oscNode = oscillatorNodesRef.current[noteIndex];
-
-    if (oscNode) {
-      oscNode.type = oscillator;
-      setFrequenciesState({ type: "set", key: note, value: oscillator });
+  const set = ({
+    oscillator,
+    gain,
+    smoothInInterval,
+    smoothOutInterval,
+  }: SetOptions) => {
+    if (oscillator) {
+      oscillatorNodesRef.current.forEach(
+        (oscNode) => (oscNode.type = oscillator)
+      );
     }
-  };
 
-  const setAll = (oscillator: Oscillator) => {
-    oscillatorNodesRef.current.forEach((oscNode) => {
-      if (oscNode) {
-        oscNode.type = oscillator;
-        setFrequenciesState({ type: "set", value: oscillator });
-      }
+    if (gain) {
+      setGain(gain);
+    }
+
+    if (smoothInInterval) {
+      setSmoothInInterval(smoothInInterval);
+    }
+
+    if (smoothOutInterval) {
+      setSmoothOutInterval(smoothOutInterval);
+    }
+
+    setFrequenciesState({
+      type: "set",
+      values: { oscillator, gain, smoothInInterval, smoothOutInterval },
     });
   };
 
-  return { start, stop, stopAll, set, setAll, state: frequenciesState };
+  return {
+    start,
+    stop,
+    stopAll,
+    set,
+    state: frequenciesState,
+  };
 };
+
+export type UseMusicNotes = ReturnType<typeof useMusicNotes>;
