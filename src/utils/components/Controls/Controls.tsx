@@ -2,7 +2,7 @@ import { UseMusicNotes } from "~/utils/hooks/useMusicNotes";
 import { OSCILLATORS, SetOptions } from "~/utils/types";
 import { Range } from "./Range";
 import { Select } from "./Select";
-import { getHandlers } from "./useControls";
+import { getHandlers } from "./getHandlers";
 
 export const Controls = ({
   set,
