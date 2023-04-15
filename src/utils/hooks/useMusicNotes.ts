@@ -18,16 +18,13 @@ export const useMusicNotes = ({
   initialFrequencyStates,
   oscillator: defaultOscillator = DEFAULT_OSCILLATOR,
   gain: defaultMaxGain = MAX_GAIN,
-  smoothInInterval: initialSmoothInInterval = SMOOTH_IN_INTERVAL,
-  smoothOutInterval: initialSmoothOutInterval = SMOOTH_OUT_INTERVAL,
+  attack: initialAttack = SMOOTH_IN_INTERVAL,
+  decay: initialDecay = SMOOTH_OUT_INTERVAL,
   audioContext,
 }: UseKeyboardProps = {}) => {
-  const [smoothInInterval, setSmoothInInterval] = useState(
-    initialSmoothInInterval
-  );
-  const [smoothOutInterval, setSmoothOutInterval] = useState(
-    initialSmoothOutInterval
-  );
+  const audioContextSupplied = !!audioContext;
+  const [attack, setAttack] = useState(initialAttack);
+  const [decay, setDecay] = useState(initialDecay);
   const [gain, setGain] = useState(defaultMaxGain);
   const [oscillator, setOscillator] = useState(defaultOscillator);
 
@@ -73,10 +70,12 @@ export const useMusicNotes = ({
     oscillatorNodesRef.current = oscNodes;
     gainNodesRef.current = gainNodes;
     audioContextRef.current = ctx;
-    ctx.suspend();
+    if (audioContext?.state === "running") {
+      audioContext.suspend();
+    }
 
     return () => {
-      ctx.close();
+      if (!audioContextSupplied) ctx.close();
     };
   }, []);
 
@@ -112,11 +111,7 @@ export const useMusicNotes = ({
       if (frequencyState.touched === false)
         oscillatorNodesRef.current[noteIndex]?.start();
 
-      gainNodesRef.current[noteIndex]?.gain.setTargetAtTime(
-        gain,
-        0,
-        smoothInInterval
-      );
+      gainNodesRef.current[noteIndex]?.gain.setTargetAtTime(gain, 0, attack);
 
       setFrequenciesState({ key: note, type: "play" });
     }
@@ -128,22 +123,13 @@ export const useMusicNotes = ({
     const frequencyState = frequenciesState[noteIndex];
 
     if (frequencyState?.playing === true) {
-      gainNodesRef.current[noteIndex]?.gain.setTargetAtTime(
-        0,
-        0,
-        smoothOutInterval
-      );
+      gainNodesRef.current[noteIndex]?.gain.setTargetAtTime(0, 0, decay);
 
       setFrequenciesState({ key: note, type: "stop" });
     }
   };
 
-  const set = ({
-    oscillator,
-    gain,
-    smoothInInterval,
-    smoothOutInterval,
-  }: SetOptions) => {
+  const set = ({ oscillator, gain, attack, decay }: SetOptions) => {
     if (oscillator) {
       oscillatorNodesRef.current.forEach(
         (oscNode) => (oscNode.type = oscillator)
@@ -155,18 +141,30 @@ export const useMusicNotes = ({
       setGain(gain);
     }
 
-    if (smoothInInterval) {
-      setSmoothInInterval(smoothInInterval);
+    if (attack) {
+      setAttack(attack);
     }
 
-    if (smoothOutInterval) {
-      setSmoothOutInterval(smoothOutInterval);
+    if (decay) {
+      setDecay(decay);
     }
 
     setFrequenciesState({
       type: "set",
-      values: { oscillator, gain, smoothInInterval, smoothOutInterval },
+      values: {
+        oscillator,
+        gain,
+        attack,
+        decay,
+      },
     });
+  };
+
+  const controlValues = {
+    gain,
+    oscillator,
+    attack,
+    decay,
   };
 
   return {
@@ -175,6 +173,7 @@ export const useMusicNotes = ({
     stopAll,
     set,
     state: frequenciesState,
+    controlValues,
   };
 };
 

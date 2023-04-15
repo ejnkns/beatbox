@@ -6,8 +6,8 @@ import {
   sumHarmonic,
 } from "./pitches";
 import { expect, test } from "vitest";
-import { MAX_OCTAVE, NOTES, TRIADS } from "./constants";
-import { Note, NoteData } from "./types";
+import { NOTES, TRIADS } from "./constants";
+import { NoteData } from "./types";
 import { objectKeys } from "./helpers";
 
 test("frequencyToNote", () => {

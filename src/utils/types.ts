@@ -66,8 +66,8 @@ export type FrequencyState = {
 export type SetOptions = {
   oscillator?: Oscillator;
   gain?: number;
-  smoothInInterval?: number;
-  smoothOutInterval?: number;
+  attack?: number;
+  decay?: number;
 };
 
 export type GetKeysInput = {

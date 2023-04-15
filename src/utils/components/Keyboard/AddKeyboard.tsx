@@ -1,13 +1,13 @@
 import { KeyboardType } from "./types";
 import { getKeys, noteToIndex } from "~/utils/pitches";
-import { GetKeysInput, isNote, Note } from "~/utils/types";
+import { GetKeysInput, isNote } from "~/utils/types";
 import { Select } from "../Controls/Select";
-import { MAX_OCTAVE, NOTES, OCTAVE_LENGTH } from "~/utils/constants";
+import { MAX_OCTAVE, NOTES } from "~/utils/constants";
+import { useState } from "react";
 
-const validate = (input: {
-  start: string;
-  end: string;
-}): input is GetKeysInput => {
+type AddKeyboardInput = Record<keyof GetKeysInput, string>;
+
+const validate = (input: AddKeyboardInput): input is GetKeysInput => {
   const { start, end } = input;
   if (!isNote(start) || !isNote(end)) {
     return false;
@@ -24,44 +24,65 @@ export const AddKeyboard = ({
   addKeyboard: (keyboard: KeyboardType) => void;
 }) => {
   const octaves = [...Array(MAX_OCTAVE).keys()].map(String);
-  const notes = [...NOTES];
+  const octaveOptions = octaves.map((octave, i) => ({
+    id: i,
+    name: octave,
+  }));
+  const noteOptions = NOTES.map((note, i) => ({
+    id: i,
+    name: note,
+  }));
+
+  const [input, setInput] = useState<AddKeyboardInput>({
+    start: "C0",
+    end: "C0",
+  });
+
   return (
-    <div className="">
-      <h1>Add Keys</h1>
-      <div>
-        <label
-          className="block text-sm font-medium text-gray-700"
-          htmlFor="low"
-        >
-          Low
-        </label>
-        <Select id="low" options={notes} />
-        <Select id="lowOctave" options={octaves} />
-      </div>
-      <div>
-        <label
-          className="block text-sm font-medium text-gray-700"
-          htmlFor="high"
-        >
-          High
-        </label>
-        <Select id="high" options={notes} />
-        <Select id="highOctave" options={octaves} />
+    <div className="ml-4 flex flex-col items-center justify-center gap-4 bg-white p-1">
+      <div className="grid grid-cols-3 items-center gap-4">
+        <Select
+          label="Low note"
+          options={noteOptions}
+          onChange={(value) =>
+            setInput((prevInput) => ({
+              start: `${value}${prevInput.start.charAt(1)}`,
+              end: prevInput.end,
+            }))
+          }
+        />
+        <Select
+          options={octaveOptions}
+          onChange={(value) =>
+            setInput((prevInput) => ({
+              start: `${prevInput.start.charAt(0)}${value}`,
+              end: prevInput.end,
+            }))
+          }
+        />
+        <Select
+          label="High note"
+          options={noteOptions}
+          onChange={(value) =>
+            setInput((prevInput) => ({
+              start: prevInput.start,
+              end: `${value}${prevInput.end.charAt(1)}`,
+            }))
+          }
+        />
+        <Select
+          options={octaveOptions}
+          onChange={(value) =>
+            setInput((prevInput) => ({
+              start: prevInput.start,
+              end: `${prevInput.end.charAt(0)}${value}`,
+            }))
+          }
+        />
       </div>
       <button
+        className="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
         onClick={() => {
-          const low = document.getElementById("low") as HTMLInputElement;
-          const high = document.getElementById("high") as HTMLInputElement;
-          const lowOctave = document.getElementById(
-            "lowOctave"
-          ) as HTMLInputElement;
-          const highOctave = document.getElementById(
-            "highOctave"
-          ) as HTMLInputElement;
-          const input = {
-            start: `${low.value}${lowOctave.value}`,
-            end: `${high.value}${highOctave.value}`,
-          };
           if (validate(input)) addKeyboard(getKeys(input));
         }}
       >

@@ -1,55 +1,37 @@
-import { useMusicNotes } from "../../hooks/useMusicNotes";
-import { Keyboard } from "./Keyboard";
-import { Sticky } from "../Sticky";
-import { Controls } from "../Controls/Controls";
 import { getKeys } from "~/utils/pitches";
-import { useMouseDown } from "~/utils/hooks/useMouseDown";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { AddKeyboard } from "./AddKeyboard";
 import { KeyboardType } from "./types";
+import { KeyboardWithControls } from "./KeyboardWithControls";
+import { useAudioContext } from "~/utils/hooks/useAudioContext";
+import { Sticky } from "../Sticky";
+import { ChildPopper } from "../ChildPopper";
 
 export const KeyboardManager = () => {
-  const { start, stop, set } = useMusicNotes();
-  const { isMouseDown, ref } = useMouseDown<HTMLDivElement>();
-
+  const audioContext = useAudioContext();
   const keyboard = getKeys({ start: "F3", end: "C5" });
   const [keyboards, setKeyboards] = useState<KeyboardType[]>([keyboard]);
 
+  const handleAddKeyboard = useCallback((keyboard: KeyboardType) => {
+    setKeyboards((currentKeyboards) => [keyboard, ...currentKeyboards]);
+  }, []);
+
+  if (!audioContext) return "Loading...";
   return (
     <>
-      <Sticky position="top">
-        <Controls set={set} />
-        <AddKeyboard
-          addKeyboard={(keyboard) => setKeyboards([...keyboards, keyboard])}
-        />
+      <Sticky>
+        <ChildPopper label="Add a keyboard">
+          <AddKeyboard addKeyboard={handleAddKeyboard} />
+        </ChildPopper>
       </Sticky>
-      <div
-        ref={ref}
-        className="m-4 flex w-full flex-wrap justify-center rounded-xl bg-white p-4"
-      >
-        {keyboards.map((keys, i) => (
-          <>
-            <button
-              onClick={() => {
-                setKeyboards((currentKeyboards) => {
-                  const newKeyboards = [...currentKeyboards];
-                  newKeyboards.splice(i, 1);
-                  return newKeyboards;
-                });
-              }}
-            >
-              Delete
-            </button>
-            <Keyboard
-              key={i}
-              isPressed={isMouseDown}
-              keys={keys}
-              start={start}
-              stop={stop}
-            />
-          </>
-        ))}
-      </div>
+      {keyboards.map((keyboard, index) => (
+        <div key={index} className="flex w-full flex-col">
+          <KeyboardWithControls
+            keyboard={keyboard}
+            audioContext={audioContext}
+          />
+        </div>
+      ))}
     </>
   );
 };

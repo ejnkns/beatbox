@@ -6,7 +6,7 @@ import styles from "./Keyboard.module.css";
 const NO_MARGIN_NOTES = ["C", "F"];
 
 export const Keyboard = ({
-  keys: octave,
+  keys,
   index,
   start,
   stop,
@@ -19,7 +19,7 @@ export const Keyboard = ({
   isPressed?: boolean;
 }) => {
   const whiteNoteLengthPercent =
-    100 / octave.filter((key) => !key.includes("#")).length;
+    100 / keys.filter((key) => !key.includes("#")).length;
 
   const whiteStyle = {
     width: `${whiteNoteLengthPercent - 0.001}%`,
@@ -35,10 +35,10 @@ export const Keyboard = ({
   };
 
   return (
-    <div className="w-[2560px] max-w-full">
+    <div className="w-[960px] max-w-full">
       {index && <span className={styles.text}>{`octave ${index}`}</span>}
       <div className={styles.set}>
-        {octave.map((note) => {
+        {keys.map((note) => {
           const isWhite = !note.includes("#");
           const baseNote = getBaseNote(note);
           return (

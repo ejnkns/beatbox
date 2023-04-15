@@ -11,10 +11,6 @@ export const useAudioContext = () => {
       setAudioContext(new DefinedAudioContext());
     }
 
-    if (audioContext?.state === "running") {
-      audioContext.suspend();
-    }
-
     return () => {
       audioContext?.close();
     };

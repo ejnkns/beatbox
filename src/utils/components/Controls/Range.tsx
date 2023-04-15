@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 export const Range = (props: React.InputHTMLAttributes<HTMLInputElement>) => {
-  const [value, setValue] = useState(props.value);
+  const [value, setValue] = useState(props.defaultValue);
 
   return (
     <div className="flex flex-col">
