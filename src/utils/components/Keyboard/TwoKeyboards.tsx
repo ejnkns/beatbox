@@ -2,9 +2,9 @@ import { useAudioContext } from "~/utils/hooks/useAudioContext";
 import { useMouseDown } from "~/utils/hooks/useMouseDown";
 import { useMusicNotes } from "~/utils/hooks/useMusicNotes";
 import { getKeys } from "~/utils/pitches";
-import { Controls } from "../Controls/Controls";
 import { Sticky } from "../Sticky";
 import { Keyboard } from "./Keyboard";
+import { Controls } from "../Controls/Controls";
 
 export const TwoKeyboards = () => {
   const audioContext = useAudioContext();

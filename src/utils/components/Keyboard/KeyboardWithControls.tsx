@@ -2,7 +2,7 @@ import { useMouseDown } from "~/utils/hooks/useMouseDown";
 import { useMusicNotes } from "~/utils/hooks/useMusicNotes";
 import { Keyboard } from "./Keyboard";
 import { KeyboardType } from "./types";
-import { Popper } from "../Controls/Controls";
+import { Controls } from "../Controls/Controls";
 
 export const KeyboardWithControls = ({
   keyboard,
@@ -17,7 +17,7 @@ export const KeyboardWithControls = ({
 
   return (
     <>
-      <Popper set={set} defaultValues={controlValues} />
+      <Controls set={set} defaultValues={controlValues} />
       <div ref={ref} className="m-4 w-fit rounded-xl bg-white p-4">
         <div className="flex justify-between">
           <span>{keyboard[0]}</span>

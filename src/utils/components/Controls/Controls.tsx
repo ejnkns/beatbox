@@ -8,7 +8,7 @@ import { UseMusicNotes } from "../../hooks/useMusicNotes";
 import { SetOptions } from "../../types";
 import { getControls } from "./getControls";
 
-export const Popper = ({
+export const Controls = ({
   set,
   defaultValues,
 }: {
