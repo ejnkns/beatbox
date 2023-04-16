@@ -1,16 +1,14 @@
 import { Fragment, useState } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
+import { classNames, dynamicClass } from "~/utils/helpers";
+import Image from "next/image";
 
 export type SelectOptions<T extends string> = {
   id: number;
   name: T;
   icon?: string;
 };
-
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(" ");
-}
 
 export const Select = <T extends string>({
   options,
@@ -43,15 +41,17 @@ export const Select = <T extends string>({
             </Listbox.Label>
           )}
           <div className="relative mt-2">
-            <Listbox.Button className="relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:leading-6">
+            <Listbox.Button className="relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 sm:text-sm sm:leading-6">
               <span className="flex items-center">
-                {/* {selected?.icon && (
-                  <img
+                {selected?.icon && (
+                  <Image
                     src={selected.icon}
                     alt=""
-                    className="h-5 w-5 flex-shrink-0 rounded-full"
+                    className="h-5 w-5 flex-shrink-0"
+                    width={5}
+                    height={5}
                   />
-                )} */}
+                )}
                 {selected?.name && (
                   <span className="ml-3 block truncate">{selected.name}</span>
                 )}
@@ -77,7 +77,7 @@ export const Select = <T extends string>({
                     key={option.id}
                     className={({ active }) =>
                       classNames(
-                        active ? "bg-indigo-600 text-white" : "text-gray-900",
+                        active ? "bg-blue-600 text-white" : "text-gray-900",
                         "relative cursor-default select-none py-2 pl-3 pr-9"
                       )
                     }
@@ -86,15 +86,19 @@ export const Select = <T extends string>({
                     {({ selected, active }) => (
                       <>
                         <div className="flex w-fit items-center">
-                          {/* <img
-                            src={option.icon}
-                            alt=""
-                            className="h-5 w-5 flex-shrink-0 rounded-full"
-                          /> */}
+                          {option.icon && (
+                            <Image
+                              src={option.icon}
+                              alt=""
+                              className="h-5 w-5 flex-shrink-0"
+                              width={5}
+                              height={5}
+                            />
+                          )}
                           <span
                             className={classNames(
                               selected ? "font-semibold" : "font-normal",
-                              "ml-3 block w-32 truncate"
+                              "ml-3 block truncate"
                             )}
                           >
                             {option.name}
@@ -102,14 +106,14 @@ export const Select = <T extends string>({
                         </div>
 
                         {selected ? (
-                          <span
+                          <div
                             className={classNames(
-                              active ? "text-white" : "text-indigo-600",
-                              "absolute inset-y-0 right-0 flex items-center pr-4"
+                              active ? "text-white" : "text-blue-600",
+                              "absolute inset-y-0 right-0 mr-2 flex items-center"
                             )}
                           >
                             <CheckIcon className="h-5 w-5" aria-hidden="true" />
-                          </span>
+                          </div>
                         ) : null}
                       </>
                     )}

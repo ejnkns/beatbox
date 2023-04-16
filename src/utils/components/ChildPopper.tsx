@@ -7,7 +7,7 @@ export const ChildPopper = ({
   children,
 }: React.PropsWithChildren<{ label: string }>) => {
   return (
-    <Popover className="relative flex ">
+    <Popover className="relative flex p-4 ">
       <Popover.Button className="inline-flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900">
         <span>{label}</span>
         <ChevronRightIcon className="h-5 w-5" aria-hidden="true" />

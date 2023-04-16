@@ -10,7 +10,7 @@ const Home: NextPage = () => {
         <meta name="description" content="Simple keyboard app" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="flex min-h-screen flex-col items-center justify-center">
+      <main className="flex min-h-screen flex-col">
         <KeyboardManager />
       </main>
     </>

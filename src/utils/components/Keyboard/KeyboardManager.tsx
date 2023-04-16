@@ -25,7 +25,10 @@ export const KeyboardManager = () => {
         </ChildPopper>
       </Sticky>
       {keyboards.map((keyboard, index) => (
-        <div key={index} className="flex w-full flex-col">
+        <div
+          key={index}
+          className="flex w-full flex-col items-center justify-center p-4"
+        >
           <KeyboardWithControls
             keyboard={keyboard}
             audioContext={audioContext}

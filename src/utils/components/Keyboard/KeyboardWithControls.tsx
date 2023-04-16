@@ -16,20 +16,19 @@ export const KeyboardWithControls = ({
   console.log({ controlValues });
 
   return (
-    <>
-      <Controls set={set} defaultValues={controlValues} />
-      <div ref={ref} className="m-4 w-fit rounded-xl bg-white p-4">
-        <div className="flex justify-between">
-          <span>{keyboard[0]}</span>
-          <span>{keyboard[keyboard.length - 1]}</span>
-        </div>
+    <div className="w-full min-w-[320px] max-w-[1080px]">
+      <div className="flex items-end justify-between">
+        <Controls set={set} defaultValues={controlValues} />
+      </div>
+      <div className="w-full min-w-[320px] max-w-[1080px]">
         <Keyboard
+          ref={ref}
           isPressed={isMouseDown}
           keys={keyboard}
           start={start}
           stop={stop}
         />
       </div>
-    </>
+    </div>
   );
 };

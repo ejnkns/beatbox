@@ -14,7 +14,7 @@ export const Range = (props: React.InputHTMLAttributes<HTMLInputElement>) => {
       <input
         {...props}
         type="range"
-        className="rounded-md border border-solid border-black p-0 text-black"
+        className="w-full min-w-[2rem] rounded-md border border-solid border-black p-0 text-black"
         onInput={(e) => {
           setValue(e.currentTarget.value);
         }}
