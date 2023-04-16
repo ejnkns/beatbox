@@ -16,7 +16,7 @@ export const KeyboardManager = () => {
     setKeyboards((currentKeyboards) => [keyboard, ...currentKeyboards]);
   }, []);
 
-  if (!audioContext) return "Loading...";
+  if (!audioContext) return <>Loading...</>;
   return (
     <>
       <Sticky>
