@@ -108,11 +108,11 @@ export const useMusicNotes = ({
     const frequencyState = frequenciesState[noteIndex];
 
     if (frequencyState?.playing === false) {
-      if (frequencyState.touched === false)
+      if (frequencyState.touched === false) {
         oscillatorNodesRef.current[noteIndex]?.start();
+      }
 
       gainNodesRef.current[noteIndex]?.gain.setTargetAtTime(gain, 0, attack);
-
       setFrequenciesState({ key: note, type: "play" });
     }
   };

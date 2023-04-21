@@ -1,22 +1,33 @@
 import { getBaseNote } from "~/utils/pitches";
-import { Note } from "~/utils/types";
+import { BaseNote, Note, isNote } from "~/utils/types";
 import styles from "./Keyboard.module.css";
-import { forwardRef } from "react";
+import { useMouseAndTouchDown } from "~/utils/hooks/useMouseDown";
+import { useMultiKeyPress } from "~/utils/hooks/useKeypress";
+import { NO_MARGIN_NOTES } from "./keyboard.constants";
+import { useEffect } from "react";
 
-/* White notes with a white note on their left */
-const NO_MARGIN_NOTES = ["C", "F"];
+export const Keyboard = ({
+  keys: notes,
+  start,
+  stop,
+}: {
+  keys: Note[];
+  start: (note: Note) => void;
+  stop: (note: Note) => void;
+}) => {
+  const { isMouseDown, ref } = useMouseAndTouchDown<HTMLDivElement>();
+  const { downNotes } = useMultiKeyPress({ start, stop, notes });
 
-export const Keyboard = forwardRef<
-  HTMLDivElement,
-  {
-    keys: Note[];
-    start: (note: Note) => void;
-    stop: (note: Note) => void;
-    isPressed?: boolean;
-  }
->(({ keys, start, stop, isPressed }, ref) => {
+  useEffect(() => {
+    Object.keys(downNotes).forEach((note) => {
+      if (isNote(note))
+        if (downNotes[note]) start(note);
+        else stop(note);
+    });
+  });
+
   const whiteNoteLengthPercent =
-    100 / keys.filter((key) => !key.includes("#")).length;
+    100 / notes.filter((key) => !key.includes("#")).length;
 
   const whiteStyle = {
     width: `${whiteNoteLengthPercent - 0.001}%`,
@@ -31,26 +42,35 @@ export const Keyboard = forwardRef<
     ...marginStyle,
   };
 
+  const getClassNames = (note: Note) => {
+    const isWhite = !note.includes("#");
+    const playing = downNotes[note] ? "playing" : undefined;
+
+    return `${styles.key} ${styles[`${isMouseDown}`]} ${
+      playing && styles[playing]
+    } ${
+      isWhite ? `${styles.white} ${styles[getBaseNote(note)]}` : styles.black
+    }`;
+  };
+
   return (
     <div ref={ref} className={styles.set}>
-      {keys.map((note) => {
+      {notes.map((note) => {
         const isWhite = !note.includes("#");
         const baseNote = getBaseNote(note);
         return (
           <div
             id={note}
             key={note}
-            className={`${styles.key} ${styles[`${!!isPressed}`]} ${
-              isWhite ? `${styles.white} ${styles[baseNote]}` : styles.black
-            }`}
+            className={getClassNames(note)}
             style={{
               ...(isWhite && whiteStyle),
               ...(!isWhite && blackStyle),
               ...(!NO_MARGIN_NOTES.includes(baseNote) && marginStyle),
             }}
             onMouseDown={() => start(note)}
-            onMouseOver={() => !!isPressed && start(note)}
-            onFocus={() => !!isPressed && start(note)}
+            onMouseOver={() => !!isMouseDown && start(note)}
+            onFocus={() => !!isMouseDown && start(note)}
             onMouseOut={() => stop(note)}
             onBlur={() => stop(note)}
             onMouseUp={() => stop(note)}
@@ -63,4 +83,4 @@ export const Keyboard = forwardRef<
       })}
     </div>
   );
-});
+};

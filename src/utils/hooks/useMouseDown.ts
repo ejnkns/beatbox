@@ -1,6 +1,6 @@
-import { RefObject, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-export const useMouseDown = <T extends HTMLElement>() => {
+export const useMouseAndTouchDown = <T extends HTMLElement>() => {
   const ref = useRef<T>(null);
   const [isMouseDown, setIsMouseDown] = useState(false);
 
