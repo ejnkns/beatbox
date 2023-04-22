@@ -34,14 +34,15 @@ export const AddKeyboard = ({
   }));
 
   const [input, setInput] = useState<AddKeyboardInput>({
-    start: "C0",
-    end: "C0",
+    start: "C3",
+    end: "C5",
   });
 
   return (
     <div className="ml-4 flex flex-col items-center justify-center gap-4 bg-white p-1">
       <div className="grid grid-cols-3 items-center gap-4">
         <Select
+          defaultValue={input.start.charAt(0)}
           label="Low note"
           options={noteOptions}
           onChange={(value) =>
@@ -52,6 +53,7 @@ export const AddKeyboard = ({
           }
         />
         <Select
+          defaultValue={input.start.charAt(1)}
           options={octaveOptions}
           onChange={(value) =>
             setInput((prevInput) => ({
@@ -61,6 +63,7 @@ export const AddKeyboard = ({
           }
         />
         <Select
+          defaultValue={input.end.charAt(0)}
           label="High note"
           options={noteOptions}
           onChange={(value) =>
@@ -71,6 +74,7 @@ export const AddKeyboard = ({
           }
         />
         <Select
+          defaultValue={input.end.charAt(1)}
           options={octaveOptions}
           onChange={(value) =>
             setInput((prevInput) => ({

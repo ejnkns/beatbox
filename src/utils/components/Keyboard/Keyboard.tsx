@@ -1,36 +1,29 @@
 import { getBaseNote } from "~/utils/pitches";
-import { BaseNote, Note, isNote } from "~/utils/types";
+import { Note } from "~/utils/types";
 import styles from "./Keyboard.module.css";
 import { useMouseAndTouchDown } from "~/utils/hooks/useMouseDown";
-import { useMultiKeyPress } from "~/utils/hooks/useKeypress";
-import { NO_MARGIN_NOTES } from "./keyboard.constants";
-import { useEffect } from "react";
+import { NO_MARGIN_NOTES } from "./Keyboard.constants";
 
 export const Keyboard = ({
   keys: notes,
   start,
   stop,
+  id,
+  playingNotes,
 }: {
   keys: Note[];
   start: (note: Note) => void;
   stop: (note: Note) => void;
+  id: string;
+  playingNotes?: Note[];
 }) => {
   const { isMouseDown, ref } = useMouseAndTouchDown<HTMLDivElement>();
-  const { downNotes } = useMultiKeyPress({ start, stop, notes });
-
-  useEffect(() => {
-    Object.keys(downNotes).forEach((note) => {
-      if (isNote(note))
-        if (downNotes[note]) start(note);
-        else stop(note);
-    });
-  });
 
   const whiteNoteLengthPercent =
     100 / notes.filter((key) => !key.includes("#")).length;
 
   const whiteStyle = {
-    width: `${whiteNoteLengthPercent - 0.001}%`,
+    width: `${whiteNoteLengthPercent - 0.003}%`,
   };
 
   const marginStyle = {
@@ -44,41 +37,43 @@ export const Keyboard = ({
 
   const getClassNames = (note: Note) => {
     const isWhite = !note.includes("#");
-    const playing = downNotes[note] ? "playing" : undefined;
+    const playing = playingNotes?.includes(note) ? "playing" : undefined;
 
     return `${styles.key} ${styles[`${isMouseDown}`]} ${
-      playing && styles[playing]
-    } ${
-      isWhite ? `${styles.white} ${styles[getBaseNote(note)]}` : styles.black
+      styles[getBaseNote(note)]
+    } ${playing && styles[playing]} ${
+      isWhite ? `${styles.white} ` : styles.black
     }`;
   };
 
   return (
-    <div ref={ref} className={styles.set}>
+    <div ref={ref}>
       {notes.map((note) => {
         const isWhite = !note.includes("#");
         const baseNote = getBaseNote(note);
         return (
-          <div
-            id={note}
-            key={note}
-            className={getClassNames(note)}
-            style={{
-              ...(isWhite && whiteStyle),
-              ...(!isWhite && blackStyle),
-              ...(!NO_MARGIN_NOTES.includes(baseNote) && marginStyle),
-            }}
-            onMouseDown={() => start(note)}
-            onMouseOver={() => !!isMouseDown && start(note)}
-            onFocus={() => !!isMouseDown && start(note)}
-            onMouseOut={() => stop(note)}
-            onBlur={() => stop(note)}
-            onMouseUp={() => stop(note)}
-            onTouchStart={() => start(note)}
-            onTouchMove={() => console.log("onTouchMove")}
-            onTouchEnd={() => stop(note)}
-            onTouchCancel={() => console.log("onTouchCancel")}
-          />
+          <div key={`${note}-${id}`}>
+            <div
+              id={note}
+              className={getClassNames(note)}
+              style={{
+                ...(isWhite && whiteStyle),
+                ...(!isWhite && blackStyle),
+                ...(!NO_MARGIN_NOTES.includes(baseNote) && marginStyle),
+              }}
+              onMouseDown={() => start(note)}
+              onMouseOver={() => !!isMouseDown && start(note)}
+              // onFocus={() => !!isMouseDown && start(note)}
+              onMouseOut={() => !!isMouseDown && stop(note)}
+              onBlur={() => stop(note)}
+              onMouseUp={() => stop(note)}
+              onTouchStart={() => start(note)}
+              // onTouchMove={() => console.log("onTouchMove")}
+              onTouchEnd={() => stop(note)}
+              // onTouchCancel={() => console.log("onTouchCancel")}
+            />
+            <span />
+          </div>
         );
       })}
     </div>

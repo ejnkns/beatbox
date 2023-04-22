@@ -124,15 +124,23 @@ export const noteToIndex = (note: NoteData | Note) => {
   return normalNoteIndex;
 };
 
-const indexToNote = (index: number) => {
+export const indexToNoteData = (index: number) => {
   const octave = Math.floor(index / OCTAVE_LENGTH);
   const noteName = NOTES[index % OCTAVE_LENGTH];
   return noteName && octave !== undefined
     ? {
         name: noteName,
         octave,
+        cents: 0,
       }
     : undefined;
+};
+
+export const indexToNote = (index: number) => {
+  const octave = Math.floor(index / OCTAVE_LENGTH);
+  const noteName = NOTES[index % OCTAVE_LENGTH];
+  const note = `${noteName}${octave}`;
+  return isNote(note) ? note : undefined;
 };
 
 export const notesToIndex = (notes: NoteData[]) => {
@@ -183,7 +191,7 @@ export const getKeys = ({ start, end }: GetKeysInput): Note[] => {
 
   for (let i = 0; i <= interval; i++) {
     const noteIndex = (currentNoteIndex + i) % OCTAVE_LENGTH;
-    const note = indexToNote(
+    const note = indexToNoteData(
       noteIndex +
         (currentOctave + Math.floor((currentNoteIndex + i) / OCTAVE_LENGTH)) *
           OCTAVE_LENGTH

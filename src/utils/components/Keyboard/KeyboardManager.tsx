@@ -1,4 +1,3 @@
-import { getKeys } from "~/utils/pitches";
 import { useCallback, useState } from "react";
 import { AddKeyboard } from "./AddKeyboard";
 import { KeyboardType } from "./types";
@@ -7,17 +6,50 @@ import { useAudioContext } from "~/utils/hooks/useAudioContext";
 import { Sticky } from "../Sticky";
 import { ChildPopper } from "../ChildPopper";
 import { Modal } from "../Modal";
+import { v4 as uuid } from "uuid";
+import { useTimeoutFn } from "react-use";
+import { useKeyboardWindowSize } from "./Keyboard.utils";
+
+type KeyboardState = {
+  keyboard: KeyboardType;
+  hidden?: boolean;
+  id: string;
+};
 
 export const KeyboardManager = () => {
   const audioContext = useAudioContext();
-  const keyboard = getKeys({ start: "F3", end: "C5" });
-  const [keyboards, setKeyboards] = useState<
-    { keyboard: KeyboardType; hidden?: boolean }[]
-  >([{ keyboard }]);
+
+  const initialKeyboard = useKeyboardWindowSize();
+  const [keyboards, setKeyboards] = useState<KeyboardState[]>([
+    { keyboard: initialKeyboard, id: uuid() },
+  ]);
 
   const handleAddKeyboard = useCallback((keyboard: KeyboardType) => {
-    setKeyboards((currentKeyboards) => [{ keyboard }, ...currentKeyboards]);
+    setKeyboards((currentKeyboards) => [
+      { keyboard, id: uuid() },
+      ...currentKeyboards,
+    ]);
   }, []);
+
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+
+  useTimeoutFn(() => {
+    setKeyboards((currentKeyboards) =>
+      currentKeyboards.filter(({ id: currId }) => currId !== deletingId)
+    );
+  }, 500);
+
+  const handleClose = useCallback(
+    (id: string) => {
+      setKeyboards((currentKeyboards) =>
+        currentKeyboards.map((keyboard) =>
+          keyboard.id !== id ? keyboard : { ...keyboard, hidden: true }
+        )
+      );
+      setDeletingId(id);
+    },
+    [setKeyboards]
+  );
 
   if (!audioContext) return <>Loading...</>;
   return (
@@ -27,22 +59,20 @@ export const KeyboardManager = () => {
           <AddKeyboard addKeyboard={handleAddKeyboard} />
         </ChildPopper>
       </Sticky>
-      {keyboards.map(({ keyboard, hidden }, index) => (
+      {keyboards.map(({ keyboard, hidden, id }, index) => (
         <div
-          key={index}
-          className="flex w-full flex-col items-center justify-center p-4"
+          key={`${index}-${id}`}
+          className="flex w-full flex-col items-center justify-center"
         >
           <Modal isOpen={!hidden}>
             <KeyboardWithControls
+              divProps={{ tabIndex: index }}
+              id={id}
               keyboard={keyboard}
               audioContext={audioContext}
-              onClose={() =>
-                setKeyboards((currentKeyboards) =>
-                  currentKeyboards.map((keyboard, i) =>
-                    i === index ? { ...keyboard, hidden: true } : keyboard
-                  )
-                )
-              }
+              onClose={() => {
+                handleClose(id);
+              }}
             />
           </Modal>
         </div>

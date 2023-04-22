@@ -75,7 +75,7 @@ export const getControls = ({
           name={"Attack"}
           defaultValue={defaultValues?.attack}
           onChange={handlers.attack}
-          min={0}
+          min={0.01}
           max={2}
           step={0.01}
         />
@@ -89,7 +89,7 @@ export const getControls = ({
           name={"Decay"}
           defaultValue={defaultValues?.decay}
           onChange={handlers.decay}
-          min={0}
+          min={0.01}
           max={2}
           step={0.01}
         />

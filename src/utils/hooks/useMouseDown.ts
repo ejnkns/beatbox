@@ -1,7 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { RefObject, useEffect, useRef, useState } from "react";
 
-export const useMouseAndTouchDown = <T extends HTMLElement>() => {
-  const ref = useRef<T>(null);
+export const useMouseAndTouchDown = <T extends HTMLElement>(
+  ref: RefObject<T> = useRef<T>(null)
+) => {
   const [isMouseDown, setIsMouseDown] = useState(false);
 
   const handleMouseDown = (e: MouseEvent | TouchEvent) => {
@@ -21,6 +22,7 @@ export const useMouseAndTouchDown = <T extends HTMLElement>() => {
       ref.current.addEventListener("mouseup", handleMouseUp);
       ref.current.addEventListener("touchend", handleMouseUp);
       ref.current.addEventListener("touchcancel", handleMouseUp);
+      ref.current.addEventListener("mouseleave", handleMouseUp);
     }
 
     return () => {
@@ -30,6 +32,7 @@ export const useMouseAndTouchDown = <T extends HTMLElement>() => {
         ref.current.removeEventListener("mouseup", handleMouseUp);
         ref.current.removeEventListener("touchend", handleMouseUp);
         ref.current.removeEventListener("touchcancel", handleMouseUp);
+        ref.current.addEventListener("mouseleave", handleMouseUp);
       }
     };
   }, []);

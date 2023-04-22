@@ -1,9 +1,17 @@
 /* White notes with a white note on their left */
 export const NO_MARGIN_NOTES = ["C", "F"];
 
-export const WhiteKeys = ["a", "s", "d", "f", "g", "h", "j", "k", "l"] as const;
-
-export const PossibleBlackKeys = [
+export const FourRowsWhiteKeys = [
+  "z",
+  "x",
+  "c",
+  "v",
+  "b",
+  "n",
+  "m",
+  ",",
+  ".",
+  "/",
   "q",
   "w",
   "e",
@@ -14,4 +22,65 @@ export const PossibleBlackKeys = [
   "i",
   "o",
   "p",
+  "[",
+  "]",
+  "\\",
 ] as const;
+
+export const FourRowsPossibleBlackKeys = [
+  "a",
+  "s",
+  "d",
+  "f",
+  "g",
+  "h",
+  "j",
+  "k",
+  "l",
+  ";",
+  "'",
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7",
+  "8",
+  "9",
+  "0",
+  "-",
+  "=",
+] as const;
+
+export const TwoRowsWhiteKeys = [
+  "a",
+  "s",
+  "d",
+  "f",
+  "g",
+  "h",
+  "j",
+  "k",
+  "l",
+  ";",
+  "'",
+] as const;
+
+export const TwoRowsPossibleBlackKeys = [
+  "q",
+  "w",
+  "e",
+  "r",
+  "t",
+  "y",
+  "u",
+  "i",
+  "o",
+  "p",
+  "[",
+  "]",
+  "\\",
+] as const;
+
+export const FourRowsNotesLength = 17;

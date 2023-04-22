@@ -1,11 +1,11 @@
-import { useEffect, useReducer, useRef, useState } from "react";
+import { useEffect, useMemo, useReducer, useRef, useState } from "react";
 import {
   DEFAULT_OSCILLATOR,
   MAX_GAIN,
   SMOOTH_IN_INTERVAL,
   SMOOTH_OUT_INTERVAL,
 } from "../constants";
-import { noteToIndex } from "../pitches";
+import { indexToNote, noteToIndex } from "../pitches";
 import { FrequencyState, Note, SetOptions } from "../types";
 import { getNoteFrequenciesInitialState, reducer } from "./MusicNotesReducer";
 
@@ -160,12 +160,24 @@ export const useMusicNotes = ({
     });
   };
 
-  const controlValues = {
-    gain,
-    oscillator,
-    attack,
-    decay,
-  };
+  const controlValues = useMemo(
+    () => ({
+      gain,
+      oscillator,
+      attack,
+      decay,
+    }),
+    [gain, oscillator, attack, decay]
+  );
+
+  const playingNotes = useMemo(
+    () =>
+      frequenciesState.flatMap((frequencyState, i) => {
+        const note = indexToNote(i);
+        return frequencyState.playing && note ? [note] : [];
+      }),
+    [frequenciesState]
+  );
 
   return {
     start,
@@ -174,6 +186,7 @@ export const useMusicNotes = ({
     set,
     state: frequenciesState,
     controlValues,
+    playingNotes,
   };
 };
 
