@@ -1,7 +1,7 @@
 import { ComponentProps, Fragment, PropsWithChildren } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 
-export const Modal = ({
+export const Hideable = ({
   isOpen,
   onClose,
   children,

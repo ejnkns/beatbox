@@ -5,17 +5,19 @@ import { useMouseAndTouchDown } from "~/utils/hooks/useMouseDown";
 import { NO_MARGIN_NOTES } from "./Keyboard.constants";
 
 export const Keyboard = ({
-  keys: notes,
+  notes: notes,
   start,
   stop,
   id,
   playingNotes,
+  keyNoteMap,
 }: {
-  keys: Note[];
+  notes: Note[];
   start: (note: Note) => void;
   stop: (note: Note) => void;
   id: string;
   playingNotes?: Note[];
+  keyNoteMap: Record<string, Note>;
 }) => {
   const { isMouseDown, ref } = useMouseAndTouchDown<HTMLDivElement>();
 
@@ -51,28 +53,31 @@ export const Keyboard = ({
       {notes.map((note) => {
         const isWhite = !note.includes("#");
         const baseNote = getBaseNote(note);
+        const key = Object.keys(keyNoteMap).find(
+          (key) => keyNoteMap[key] === note
+        );
+
         return (
-          <div key={`${note}-${id}`}>
-            <div
-              id={note}
-              className={getClassNames(note)}
-              style={{
-                ...(isWhite && whiteStyle),
-                ...(!isWhite && blackStyle),
-                ...(!NO_MARGIN_NOTES.includes(baseNote) && marginStyle),
-              }}
-              onMouseDown={() => start(note)}
-              onMouseOver={() => !!isMouseDown && start(note)}
-              // onFocus={() => !!isMouseDown && start(note)}
-              onMouseOut={() => !!isMouseDown && stop(note)}
-              onBlur={() => stop(note)}
-              onMouseUp={() => stop(note)}
-              onTouchStart={() => start(note)}
-              // onTouchMove={() => console.log("onTouchMove")}
-              onTouchEnd={() => stop(note)}
-              // onTouchCancel={() => console.log("onTouchCancel")}
-            />
-            <span />
+          <div
+            id={note}
+            className={getClassNames(note)}
+            style={{
+              ...(isWhite && whiteStyle),
+              ...(!isWhite && blackStyle),
+              ...(!NO_MARGIN_NOTES.includes(baseNote) && marginStyle),
+            }}
+            onMouseDown={() => start(note)}
+            onMouseOver={() => !!isMouseDown && start(note)}
+            // onFocus={() => !!isMouseDown && start(note)}
+            onMouseOut={() => !!isMouseDown && stop(note)}
+            onBlur={() => stop(note)}
+            onMouseUp={() => stop(note)}
+            onTouchStart={() => start(note)}
+            // onTouchMove={() => console.log("onTouchMove")}
+            onTouchEnd={() => stop(note)}
+            // onTouchCancel={() => console.log("onTouchCancel")}
+          >
+            <span className="relative">{key}</span>
           </div>
         );
       })}

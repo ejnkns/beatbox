@@ -1,5 +1,5 @@
-import { UseMusicNotes } from "../../hooks/useMusicNotes";
-import { SetOptions } from "../../types";
+import { UseMusicNotes } from "../../utils/hooks/useMusicNotes";
+import { SetOptions } from "../../utils/types";
 import { getControls } from "./getControls";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 

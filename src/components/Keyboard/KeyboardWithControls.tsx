@@ -3,7 +3,7 @@ import { Keyboard } from "./Keyboard";
 import { KeyboardType } from "./types";
 import { Controls } from "../Controls/Controls";
 import { isNote } from "~/utils/types";
-import { useMemo, useRef } from "react";
+import { useCallback, useMemo, useRef, KeyboardEvent } from "react";
 import { getKeyToNoteMap } from "./Keyboard.utils";
 
 export const KeyboardWithControls = ({
@@ -25,24 +25,32 @@ export const KeyboardWithControls = ({
 
   const keyToNoteMap = useMemo(() => getKeyToNoteMap(keyboard), [keyboard]);
 
-  const ref = useRef<HTMLDivElement>(null);
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent<HTMLDivElement>) => {
+      if (e.repeat) return;
+      const note = keyToNoteMap[e.key];
+      if (isNote(note)) {
+        start(note);
+      }
+    },
+    [keyToNoteMap, start]
+  );
+
+  const handleKeyUp = useCallback(
+    (e: KeyboardEvent<HTMLDivElement>) => {
+      const note = keyToNoteMap[e.key];
+      if (isNote(note)) {
+        stop(note);
+      }
+    },
+    [keyToNoteMap, stop]
+  );
 
   return (
     <div
       {...divProps}
-      onKeyDown={(e) => {
-        if (e.repeat) return;
-        const note = keyToNoteMap[e.key];
-        if (isNote(note)) {
-          start(note);
-        }
-      }}
-      onKeyUp={(e) => {
-        const note = keyToNoteMap[e.key];
-        if (isNote(note)) {
-          stop(note);
-        }
-      }}
+      onKeyDown={handleKeyDown}
+      onKeyUp={handleKeyUp}
       className="w-full min-w-[320px]"
     >
       <div className="flex items-end justify-between">
@@ -50,10 +58,11 @@ export const KeyboardWithControls = ({
       </div>
       <Keyboard
         id={id}
-        keys={keyboard}
+        notes={keyboard}
         start={start}
         stop={stop}
         playingNotes={playingNotes}
+        keyNoteMap={keyToNoteMap}
       />
     </div>
   );

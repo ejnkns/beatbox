@@ -5,7 +5,7 @@ import { KeyboardWithControls } from "./KeyboardWithControls";
 import { useAudioContext } from "~/utils/hooks/useAudioContext";
 import { Sticky } from "../Sticky";
 import { ChildPopper } from "../ChildPopper";
-import { Modal } from "../Modal";
+import { Hideable } from "../Hideable";
 import { v4 as uuid } from "uuid";
 import { useTimeoutFn } from "react-use";
 import { useKeyboardWindowSize } from "./Keyboard.utils";
@@ -64,7 +64,7 @@ export const KeyboardManager = () => {
           key={`${index}-${id}`}
           className="flex w-full flex-col items-center justify-center"
         >
-          <Modal isOpen={!hidden}>
+          <Hideable isOpen={!hidden}>
             <KeyboardWithControls
               divProps={{ tabIndex: index }}
               id={id}
@@ -74,7 +74,7 @@ export const KeyboardManager = () => {
                 handleClose(id);
               }}
             />
-          </Modal>
+          </Hideable>
         </div>
       ))}
     </>

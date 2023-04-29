@@ -5,17 +5,19 @@ import { classNames, dynamicClass } from "~/utils/helpers";
 import Image from "next/image";
 
 export type SelectOptions<T extends string> = {
-  id: number;
+  id: number | string;
   name: T;
   icon?: string;
 };
 
 export const Select = <T extends string>({
+  id,
   options,
   defaultValue,
   onChange,
   label,
 }: {
+  id: string;
   options: SelectOptions<T>[];
   label?: string;
   defaultValue?: T;

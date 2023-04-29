@@ -1,6 +1,4 @@
-import { BeatboxSound } from "./beatboxData";
-
-export const SOUNDS: BeatboxSound[] = [
+export const SOUNDS = [
   {
     name: "OD Bass ( Dry kick roll )  ",
     category: "BASS",
@@ -791,7 +789,7 @@ export const SOUNDS: BeatboxSound[] = [
   },
   {
     name: "Egg Shaker +",
-    category: "HI HATS AND CYMBALS",
+    category: "HI_HATS_AND_CYMBALS",
     tutorials: [
       "https://www.youtube.com/watch?v=6BFT8Dgs8AY",
       "https://www.youtube.com/watch?v=B87rrh2Pvwk",
@@ -801,12 +799,12 @@ export const SOUNDS: BeatboxSound[] = [
   },
   {
     name: "Reverse Open Hı Hat",
-    category: "HI HATS AND CYMBALS",
+    category: "HI_HATS_AND_CYMBALS",
     tutorials: ["https://www.youtube.com/watch?v=cdML158jodg"],
   },
   {
     name: "Brushed Cymbal",
-    category: "HI HATS AND CYMBALS",
+    category: "HI_HATS_AND_CYMBALS",
     tutorials: [
       "https://www.youtube.com/watch?v=WqC9yvQrCms",
       "https://www.youtube.com/watch?v=1E68pWwnkFQ",
@@ -814,7 +812,7 @@ export const SOUNDS: BeatboxSound[] = [
   },
   {
     name: "Splash Cymbal +",
-    category: "HI HATS AND CYMBALS",
+    category: "HI_HATS_AND_CYMBALS",
     tutorials: [
       "https://www.youtube.com/watch?v=qVOgYavLMkk",
       "https://www.youtube.com/watch?v=9Ly3Hw0khYM",
@@ -822,7 +820,7 @@ export const SOUNDS: BeatboxSound[] = [
   },
   {
     name: "Crash Cymbal",
-    category: "HI HATS AND CYMBALS",
+    category: "HI_HATS_AND_CYMBALS",
     tutorials: [
       "https://www.youtube.com/watch?v=obpYbGmxj_Q",
       "https://www.youtube.com/watch?v=j9vgHYbzQK8",
@@ -830,7 +828,7 @@ export const SOUNDS: BeatboxSound[] = [
   },
   {
     name: "Inward Fast Hi Hats ( Inward Tk's )",
-    category: "HI HATS AND CYMBALS",
+    category: "HI_HATS_AND_CYMBALS",
     tutorials: [
       "https://www.youtube.com/watch?v=a8VfRE0NGk0",
       "https://www.youtube.com/watch?v=2xTtnIeFadI",
@@ -840,7 +838,7 @@ export const SOUNDS: BeatboxSound[] = [
   },
   {
     name: "Fast Hi Hats ( Tk's ) (Skiller Roll)",
-    category: "HI HATS AND CYMBALS",
+    category: "HI_HATS_AND_CYMBALS",
     tutorials: [
       "https://www.youtube.com/watch?v=9WkRatVf-ZM",
       "https://www.youtube.com/watch?v=Ymeo_KoO8Y4",
@@ -850,7 +848,7 @@ export const SOUNDS: BeatboxSound[] = [
   },
   {
     name: "Tkk Combo",
-    category: "HI HATS AND CYMBALS",
+    category: "HI_HATS_AND_CYMBALS",
     tutorials: [
       "https://www.youtube.com/watch?v=UWPj0Bq3Fco",
       "https://www.youtube.com/watch?v=RkqkbnmeR8o",
@@ -858,7 +856,7 @@ export const SOUNDS: BeatboxSound[] = [
   },
   {
     name: "Open Hı Hat",
-    category: "HI HATS AND CYMBALS",
+    category: "HI_HATS_AND_CYMBALS",
     tutorials: [
       "https://www.youtube.com/watch?v=2ip7QWFQFSw",
       "https://www.youtube.com/watch?v=WluR-7JHDv0",
@@ -867,7 +865,7 @@ export const SOUNDS: BeatboxSound[] = [
   },
   {
     name: "F Hi Hat +",
-    category: "HI HATS AND CYMBALS",
+    category: "HI_HATS_AND_CYMBALS",
     tutorials: [
       "https://www.youtube.com/watch?v=_K_k6aLv3Nc",
       "https://www.youtube.com/watch?v=2Q56dzcG8iU",
@@ -875,7 +873,7 @@ export const SOUNDS: BeatboxSound[] = [
   },
   {
     name: "Hi Hat (High Hat)",
-    category: "HI HATS AND CYMBALS",
+    category: "HI_HATS_AND_CYMBALS",
     tutorials: [
       "https://www.youtube.com/watch?v=hR-OwR2cFv8",
       "https://www.youtube.com/watch?v=kE86zLuqHEo",
@@ -884,7 +882,7 @@ export const SOUNDS: BeatboxSound[] = [
   },
   {
     name: "Trap High Hat (Rolling High Hat) +",
-    category: "HI HATS AND CYMBALS",
+    category: "HI_HATS_AND_CYMBALS",
     tutorials: [
       "https://www.youtube.com/watch?v=L5PnB5Ku6q4",
       "https://www.youtube.com/watch?v=8H7FwC52vhk",
@@ -894,7 +892,7 @@ export const SOUNDS: BeatboxSound[] = [
   },
   {
     name: "Duck Hi hat +",
-    category: "HI HATS AND CYMBALS",
+    category: "HI_HATS_AND_CYMBALS",
     tutorials: [
       "https://www.youtube.com/watch?v=4UkQQ8ASPPo",
       "https://www.youtube.com/watch?v=mP6S6chUq6c",
@@ -904,7 +902,7 @@ export const SOUNDS: BeatboxSound[] = [
   },
   {
     name: "Inward Voıcalized Hi Hat ( Slykku hı hat ) ( Trung Bao sound ) +",
-    category: "HI HATS AND CYMBALS",
+    category: "HI_HATS_AND_CYMBALS",
     tutorials: [
       "https://www.youtube.com/watch?v=zO9V9ET-2Dc",
       "https://www.youtube.com/watch?v=QWudkQ_0HWY",
@@ -913,22 +911,22 @@ export const SOUNDS: BeatboxSound[] = [
   },
   {
     name: "Siren Roll",
-    category: "OTHER SOUNDS",
+    category: "OTHER_SOUNDS",
     tutorials: ["https://www.youtube.com/watch?v=TWxrqfJN1_I"],
   },
   {
     name: "Two H Siren ( Throat Kick Siren )",
-    category: "OTHER SOUNDS",
+    category: "OTHER_SOUNDS",
     tutorials: ["https://www.youtube.com/watch?v=J6pA86MQnU4"],
   },
   {
     name: "Vocal Roll ( CTB sound )",
-    category: "OTHER SOUNDS",
+    category: "OTHER_SOUNDS",
     tutorials: ["https://www.youtube.com/watch?v=WBR7SDgDmGU"],
   },
   {
     name: "Lip Roll",
-    category: "OTHER SOUNDS",
+    category: "OTHER_SOUNDS",
     tutorials: [
       "https://www.youtube.com/watch?v=b2MJkTHgt1M",
       "https://www.youtube.com/watch?v=MPTkkpSObAo",
@@ -938,7 +936,7 @@ export const SOUNDS: BeatboxSound[] = [
   },
   {
     name: "Inward Lip Roll",
-    category: "OTHER SOUNDS",
+    category: "OTHER_SOUNDS",
     tutorials: [
       "https://www.youtube.com/watch?v=jTBKiJB2wUw",
       "https://www.youtube.com/watch?v=oxqk1gKpfEM",
@@ -946,12 +944,12 @@ export const SOUNDS: BeatboxSound[] = [
   },
   {
     name: "Reverse Lip Roll",
-    category: "OTHER SOUNDS",
+    category: "OTHER_SOUNDS",
     tutorials: ["Tutorial 1"],
   },
   {
     name: "Vocalized Lip Roll",
-    category: "OTHER SOUNDS",
+    category: "OTHER_SOUNDS",
     tutorials: [
       "https://www.youtube.com/watch?v=7S_KNFJYGYc",
       "https://www.youtube.com/watch?v=LPCOQWRVA3E",
@@ -960,7 +958,7 @@ export const SOUNDS: BeatboxSound[] = [
   },
   {
     name: "Hollow Lip Roll",
-    category: "OTHER SOUNDS",
+    category: "OTHER_SOUNDS",
     tutorials: [
       "https://www.youtube.com/watch?v=o1qklHBMibU",
       "https://www.youtube.com/watch?v=dAF23ZPFNQo",
@@ -970,27 +968,27 @@ export const SOUNDS: BeatboxSound[] = [
   },
   {
     name: "Hollow Lip Roll Combos",
-    category: "OTHER SOUNDS",
+    category: "OTHER_SOUNDS",
     tutorials: ["https://www.youtube.com/watch?v=mPxxljMZJbc"],
   },
   {
     name: "Laser Lip Roll",
-    category: "OTHER SOUNDS",
+    category: "OTHER_SOUNDS",
     tutorials: ["https://www.youtube.com/watch?v=xtdt6NVd4f0"],
   },
   {
     name: "Teeth Lip Roll",
-    category: "OTHER SOUNDS",
+    category: "OTHER_SOUNDS",
     tutorials: ["https://www.youtube.com/watch?v=u0Nj893MCKs"],
   },
   {
     name: "Lip Roll Drags",
-    category: "OTHER SOUNDS",
+    category: "OTHER_SOUNDS",
     tutorials: ["https://www.youtube.com/watch?v=wuURWo77EzA"],
   },
   {
     name: "Tongue Lip Roll (Codfish Lip Roll)",
-    category: "OTHER SOUNDS",
+    category: "OTHER_SOUNDS",
     tutorials: [
       "https://www.youtube.com/watch?v=SAlXV8e0_Fk",
       "https://www.youtube.com/watch?v=SHCdF-v_8aQ",
@@ -999,12 +997,12 @@ export const SOUNDS: BeatboxSound[] = [
   },
   {
     name: "Inward Tongue Roll",
-    category: "OTHER SOUNDS",
+    category: "OTHER_SOUNDS",
     tutorials: ["https://www.youtube.com/watch?v=HF3zS17ulOU"],
   },
   {
     name: "Slizzer Roll",
-    category: "OTHER SOUNDS",
+    category: "OTHER_SOUNDS",
     tutorials: [
       "https://www.youtube.com/watch?v=ya-XjT4ttQ4",
       "https://www.youtube.com/watch?v=WS9ygMs1aro",
@@ -1012,7 +1010,7 @@ export const SOUNDS: BeatboxSound[] = [
   },
   {
     name: "Skiller Roll (Fast Hi Hats) ( Tk's )",
-    category: "OTHER SOUNDS",
+    category: "OTHER_SOUNDS",
     tutorials: [
       "https://www.youtube.com/watch?v=dbH1UPbOEuU",
       "https://www.youtube.com/watch?v=4_ZJJ3nLDnk",
@@ -1020,17 +1018,17 @@ export const SOUNDS: BeatboxSound[] = [
   },
   {
     name: "Backspin Roll",
-    category: "OTHER SOUNDS",
+    category: "OTHER_SOUNDS",
     tutorials: ["https://www.youtube.com/watch?v=3QBQ7w5awgg"],
   },
   {
     name: "Dubstep Roll",
-    category: "OTHER SOUNDS",
+    category: "OTHER_SOUNDS",
     tutorials: ["https://www.youtube.com/watch?v=EMPn1l-DxV8"],
   },
   {
     name: "Bubble Roll ( D-Low )",
-    category: "OTHER SOUNDS",
+    category: "OTHER_SOUNDS",
     tutorials: [
       "https://www.youtube.com/watch?v=H7Np-m4j2tw",
       "https://www.youtube.com/watch?v=Ea4VKQER9oo",
@@ -1038,12 +1036,12 @@ export const SOUNDS: BeatboxSound[] = [
   },
   {
     name: "Mad  Wobble Roll",
-    category: "OTHER SOUNDS",
+    category: "OTHER_SOUNDS",
     tutorials: ["https://www.youtube.com/watch?v=yeXYsZYpTJc"],
   },
   {
     name: "Inward Drag",
-    category: "OTHER SOUNDS",
+    category: "OTHER_SOUNDS",
     tutorials: [
       "https://www.youtube.com/watch?v=PSebvGPm6Ko",
       "https://www.youtube.com/watch?v=wRnuJg7f_hA",
@@ -1052,12 +1050,12 @@ export const SOUNDS: BeatboxSound[] = [
   },
   {
     name: "Water Drop",
-    category: "OTHER SOUNDS",
+    category: "OTHER_SOUNDS",
     tutorials: ["https://www.youtube.com/watch?v=Fg_N9iKBfAs"],
   },
   {
     name: "Dharni Water Drop",
-    category: "OTHER SOUNDS",
+    category: "OTHER_SOUNDS",
     tutorials: [
       "https://www.youtube.com/watch?v=aRpS9LJUFVg",
       "https://www.youtube.com/watch?v=RfGZnmKu9DQ",
@@ -1065,27 +1063,27 @@ export const SOUNDS: BeatboxSound[] = [
   },
   {
     name: "Pancar Motoru Sound",
-    category: "OTHER SOUNDS",
+    category: "OTHER_SOUNDS",
     tutorials: ["https://www.youtube.com/watch?v=dHIqaRuS1rs"],
   },
   {
     name: "Dımbıllan Sound ( Dımbıllan Reis Special Sound )",
-    category: "OTHER SOUNDS",
+    category: "OTHER_SOUNDS",
     tutorials: ["https://www.youtube.com/watch?v=TxgWF92EuJo"],
   },
   {
     name: "Dıdıdış Sound ( Dıdıdış Uncle Special Sound )",
-    category: "OTHER SOUNDS",
+    category: "OTHER_SOUNDS",
     tutorials: ["https://www.youtube.com/watch?v=YuRtMuxSOO0"],
   },
   {
     name: "Reverse Sound",
-    category: "OTHER SOUNDS",
+    category: "OTHER_SOUNDS",
     tutorials: ["https://www.youtube.com/watch?v=fw-tWYz0G8w"],
   },
   {
     name: "Sega Sound",
-    category: "OTHER SOUNDS",
+    category: "OTHER_SOUNDS",
     tutorials: [
       "https://www.youtube.com/watch?v=veCGruDPZdU",
       "https://www.youtube.com/watch?v=gGR3hf6Dzag",
@@ -1095,17 +1093,17 @@ export const SOUNDS: BeatboxSound[] = [
   },
   {
     name: "Throat Tapping Sound",
-    category: "OTHER SOUNDS",
+    category: "OTHER_SOUNDS",
     tutorials: ["https://www.youtube.com/watch?v=ytsyEx-uRBg"],
   },
   {
     name: "Synth Fx",
-    category: "OTHER SOUNDS",
+    category: "OTHER_SOUNDS",
     tutorials: ["https://www.youtube.com/watch?v=9W_xAMFWrOk"],
   },
   {
     name: "Clown Horn",
-    category: "OTHER SOUNDS",
+    category: "OTHER_SOUNDS",
     tutorials: [
       "https://www.youtube.com/watch?v=NtoZBWr7pjA",
       "https://www.youtube.com/watch?v=vXFKjf6B_24",
@@ -1114,12 +1112,12 @@ export const SOUNDS: BeatboxSound[] = [
   },
   {
     name: "Baby Voice",
-    category: "OTHER SOUNDS",
+    category: "OTHER_SOUNDS",
     tutorials: ["https://www.youtube.com/watch?v=3ULw7khwIcw"],
   },
   {
     name: "Donald Duck Sound",
-    category: "OTHER SOUNDS",
+    category: "OTHER_SOUNDS",
     tutorials: [
       "https://www.youtube.com/watch?v=K_KJmfhNax4",
       "https://www.youtube.com/watch?v=DQ6pvEbO8sI",
@@ -1127,7 +1125,7 @@ export const SOUNDS: BeatboxSound[] = [
   },
   {
     name: "Machine Gun Sound",
-    category: "OTHER SOUNDS",
+    category: "OTHER_SOUNDS",
     tutorials: [
       "https://www.youtube.com/watch?v=bGIqwMLnp84",
       "https://www.youtube.com/watch?v=oJB6pyqYd1I",
@@ -1136,7 +1134,7 @@ export const SOUNDS: BeatboxSound[] = [
   },
   {
     name: "Cricket Sound",
-    category: "OTHER SOUNDS",
+    category: "OTHER_SOUNDS",
     tutorials: [
       "https://www.youtube.com/watch?v=KHnD0cRjB7w",
       "https://www.youtube.com/watch?v=-Q7pI21MKJY",
@@ -1146,27 +1144,27 @@ export const SOUNDS: BeatboxSound[] = [
   },
   {
     name: "Shimmer",
-    category: "OTHER SOUNDS",
+    category: "OTHER_SOUNDS",
     tutorials: ["https://www.youtube.com/watch?v=QeZMxw5YwhQ"],
   },
   {
     name: "Pash Laser Sound",
-    category: "OTHER SOUNDS",
+    category: "OTHER_SOUNDS",
     tutorials: ["https://www.youtube.com/watch?v=00Q3Ctwn15Q"],
   },
   {
     name: "Inward Chant",
-    category: "OTHER SOUNDS",
+    category: "OTHER_SOUNDS",
     tutorials: ["https://www.youtube.com/watch?v=hB5KSgB-5t4"],
   },
   {
     name: "626 Effect (Stitch Special Sound)",
-    category: "OTHER SOUNDS",
+    category: "OTHER_SOUNDS",
     tutorials: ["https://www.youtube.com/watch?v=KUs7KoUfZUo"],
   },
   {
     name: "Pacmax Train Sound",
-    category: "OTHER SOUNDS",
+    category: "OTHER_SOUNDS",
     tutorials: ["https://www.youtube.com/watch?v=xeV1U0myvZs"],
   },
   {
@@ -1278,7 +1276,7 @@ export const SOUNDS: BeatboxSound[] = [
   },
   {
     name: "Clop",
-    category: "CLICKS CLOPS AND POPS",
+    category: "CLICKS_CLOPS_AND_POPS",
     tutorials: [
       "https://www.youtube.com/watch?v=bBfH1La67sk",
       "https://www.youtube.com/watch?v=-1s_MQt6Mvo",
@@ -1286,7 +1284,7 @@ export const SOUNDS: BeatboxSound[] = [
   },
   {
     name: "Hollow Clop",
-    category: "CLICKS CLOPS AND POPS",
+    category: "CLICKS_CLOPS_AND_POPS",
     tutorials: [
       "https://www.youtube.com/watch?v=bBfH1La67sk",
       "https://www.youtube.com/watch?v=q3Bnc_fpEf4",
@@ -1296,7 +1294,7 @@ export const SOUNDS: BeatboxSound[] = [
   },
   {
     name: "Triple Hollow Clop",
-    category: "CLICKS CLOPS AND POPS",
+    category: "CLICKS_CLOPS_AND_POPS",
     tutorials: [
       "https://www.youtube.com/watch?v=7fUrE_O5B0A",
       "https://www.youtube.com/watch?v=XLOYLGkaOVU",
@@ -1305,7 +1303,7 @@ export const SOUNDS: BeatboxSound[] = [
   },
   {
     name: "Tennıs Pop",
-    category: "CLICKS CLOPS AND POPS",
+    category: "CLICKS_CLOPS_AND_POPS",
     tutorials: [
       "https://www.youtube.com/watch?v=v6lONTr8OtA",
       "https://www.youtube.com/watch?v=3q6npU-fPtU",
@@ -1314,7 +1312,7 @@ export const SOUNDS: BeatboxSound[] = [
   },
   {
     name: "Outward Click Roll",
-    category: "CLICKS CLOPS AND POPS",
+    category: "CLICKS_CLOPS_AND_POPS",
     tutorials: [
       "https://www.youtube.com/watch?v=gUylOCRDc60",
       "https://www.youtube.com/watch?v=PMPDw_UthWw",
@@ -1323,7 +1321,7 @@ export const SOUNDS: BeatboxSound[] = [
   },
   {
     name: "Inward Click Roll",
-    category: "CLICKS CLOPS AND POPS",
+    category: "CLICKS_CLOPS_AND_POPS",
     tutorials: [
       "https://www.youtube.com/watch?v=0wnMKIifxtg",
       "https://www.youtube.com/watch?v=UzxmUYk3WrY",
@@ -1331,32 +1329,32 @@ export const SOUNDS: BeatboxSound[] = [
   },
   {
     name: "Zombie Click Roll",
-    category: "CLICKS CLOPS AND POPS",
+    category: "CLICKS_CLOPS_AND_POPS",
     tutorials: ["https://www.youtube.com/watch?v=VuBR-SkFyT8"],
   },
   {
     name: "Alien Click Roll",
-    category: "CLICKS CLOPS AND POPS",
+    category: "CLICKS_CLOPS_AND_POPS",
     tutorials: ["https://www.youtube.com/watch?v=DW0wCtq0t44"],
   },
   {
     name: "Zekka / H-Has Click Roll",
-    category: "CLICKS CLOPS AND POPS",
+    category: "CLICKS_CLOPS_AND_POPS",
     tutorials: ["https://www.youtube.com/watch?v=cXiNjPu1aiU"],
   },
   {
     name: "Hollow Pop",
-    category: "CLICKS CLOPS AND POPS",
+    category: "CLICKS_CLOPS_AND_POPS",
     tutorials: ["https://www.youtube.com/watch?v=U4aXyk6nUPo"],
   },
   {
     name: "Loud Clop ( Block Click ) ",
-    category: "CLICKS CLOPS AND POPS",
+    category: "CLICKS_CLOPS_AND_POPS",
     tutorials: ["https://www.youtube.com/watch?v=tRO8sUDIREA"],
   },
   {
     name: "Bongo",
-    category: "CLICKS CLOPS AND POPS",
+    category: "CLICKS_CLOPS_AND_POPS",
     tutorials: [
       "https://www.youtube.com/watch?v=WzNI5GjCANY",
       "https://www.youtube.com/watch?v=GWeqYolcwfo",
@@ -1365,7 +1363,7 @@ export const SOUNDS: BeatboxSound[] = [
   },
   {
     name: "Super Click ( Loud Click )",
-    category: "CLICKS CLOPS AND POPS",
+    category: "CLICKS_CLOPS_AND_POPS",
     tutorials: [
       "https://www.youtube.com/watch?v=iaktMHfT2wY",
       "https://www.youtube.com/watch?v=EjO_qmhWyko",
@@ -1373,7 +1371,7 @@ export const SOUNDS: BeatboxSound[] = [
   },
   {
     name: "Double Click ( Colaps Click )",
-    category: "CLICKS CLOPS AND POPS",
+    category: "CLICKS_CLOPS_AND_POPS",
     tutorials: [
       "https://www.youtube.com/watch?v=XEXTFxI9MCQ",
       "https://www.youtube.com/watch?v=3DJUNybCn0Q",
@@ -1383,7 +1381,7 @@ export const SOUNDS: BeatboxSound[] = [
   },
   {
     name: "Click ( Tongue Click )",
-    category: "CLICKS CLOPS AND POPS",
+    category: "CLICKS_CLOPS_AND_POPS",
     tutorials: [
       "https://www.youtube.com/watch?v=W50-NSZUnJQ",
       "https://www.youtube.com/watch?v=AdVx8xdBxRM",
@@ -1391,7 +1389,7 @@ export const SOUNDS: BeatboxSound[] = [
   },
   {
     name: "Fast Click ",
-    category: "CLICKS CLOPS AND POPS",
+    category: "CLICKS_CLOPS_AND_POPS",
     tutorials: ["https://www.youtube.com/watch?v=NyGR12x4kMA"],
   },
   {
@@ -1590,7 +1588,7 @@ export const SOUNDS: BeatboxSound[] = [
   },
   {
     name: "Double Voice",
-    category: "OTHER SOUNDS",
+    category: "OTHER_SOUNDS",
     tutorials: [
       "https://www.youtube.com/watch?v=d2eUMM0gZpw",
       "https://www.youtube.com/watch?v=rTcgZR_v29g",
@@ -1600,12 +1598,12 @@ export const SOUNDS: BeatboxSound[] = [
   },
   {
     name: "Inward Double Voice",
-    category: "OTHER SOUNDS",
+    category: "OTHER_SOUNDS",
     tutorials: ["https://www.youtube.com/watch?v=Yr6OGXYg0yI"],
   },
   {
     name: "Polyphonic Voice ( Two-H special sound )",
-    category: "OTHER SOUNDS",
+    category: "OTHER_SOUNDS",
     tutorials: [
       "https://www.youtube.com/watch?v=w67Evf7hinM",
       "https://www.youtube.com/watch?v=_HziA_wdgWc",
@@ -1615,7 +1613,7 @@ export const SOUNDS: BeatboxSound[] = [
   },
   {
     name: "Robot Voice",
-    category: "OTHER SOUNDS",
+    category: "OTHER_SOUNDS",
     tutorials: [
       "https://www.youtube.com/watch?v=6-gOsumudeQ",
       "https://www.youtube.com/watch?v=exZO6r0NjSo",
@@ -1623,7 +1621,7 @@ export const SOUNDS: BeatboxSound[] = [
   },
   {
     name: "Zipper",
-    category: "OTHER SOUNDS",
+    category: "OTHER_SOUNDS",
     tutorials: [
       "https://www.youtube.com/watch?v=b1-6SyiViYs",
       "https://www.youtube.com/watch?v=90Uw02w2RvI",
@@ -1633,17 +1631,17 @@ export const SOUNDS: BeatboxSound[] = [
   },
   {
     name: "D-Low Zipper",
-    category: "OTHER SOUNDS",
+    category: "OTHER_SOUNDS",
     tutorials: ["https://www.youtube.com/watch?v=hPlHOHHjaBc"],
   },
   {
     name: "Helium Zipper",
-    category: "OTHER SOUNDS",
+    category: "OTHER_SOUNDS",
     tutorials: ["https://www.youtube.com/watch?v=J4KQmZIPDEA"],
   },
   {
     name: "Meow Squeak ( Cat Sound )",
-    category: "OTHER SOUNDS",
+    category: "OTHER_SOUNDS",
     tutorials: [
       "https://www.youtube.com/watch?v=zLyl0hTapWQ",
       "https://www.youtube.com/watch?v=aM4Zsf3ouqc",
@@ -1653,12 +1651,12 @@ export const SOUNDS: BeatboxSound[] = [
   },
   {
     name: "Meow Squeak Roll",
-    category: "OTHER SOUNDS",
+    category: "OTHER_SOUNDS",
     tutorials: ["https://www.youtube.com/watch?v=QvI-9eBx2Go"],
   },
   {
     name: "Hutch ( K.I.M ) Squeak",
-    category: "OTHER SOUNDS",
+    category: "OTHER_SOUNDS",
     tutorials: [
       "https://www.youtube.com/watch?v=RkNrI5RtEhE",
       "https://www.youtube.com/watch?v=3bY1lSGih7E",
@@ -1667,12 +1665,12 @@ export const SOUNDS: BeatboxSound[] = [
   },
   {
     name: "D-Low Squeak ( D-Low Click )",
-    category: "OTHER SOUNDS",
+    category: "OTHER_SOUNDS",
     tutorials: ["https://www.youtube.com/watch?v=04Gs21FES7w"],
   },
   {
     name: "Siren ",
-    category: "OTHER SOUNDS",
+    category: "OTHER_SOUNDS",
     tutorials: [
       "https://www.youtube.com/watch?v=1zE3wwC9-0w",
       "https://www.youtube.com/watch?v=AyEv_plL9M8",
@@ -1682,7 +1680,7 @@ export const SOUNDS: BeatboxSound[] = [
   },
   {
     name: "Siren Roll",
-    category: "OTHER SOUNDS",
+    category: "OTHER_SOUNDS",
     tutorials: ["https://www.youtube.com/watch?v=TWxrqfJN1_I"],
   },
 ];

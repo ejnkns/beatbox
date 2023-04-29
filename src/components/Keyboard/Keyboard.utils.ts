@@ -29,8 +29,6 @@ const isWhite = (note: Note) => !note.includes("#");
 export const getKeyToNoteMap = (keys: Note[]) => {
   if (!keys[0]) return {};
 
-  console.log(FourRowsNotesLength);
-
   const isTwoRows =
     keys.length <= TwoRowsWhiteKeys.length + TwoRowsPossibleBlackKeys.length;
 

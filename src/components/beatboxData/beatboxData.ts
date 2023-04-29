@@ -40,21 +40,3 @@ type SoundProperties = {
   };
   fricative: boolean;
 };
-
-export type BeatboxSound = {
-  name: string;
-  tutorials: string[];
-  category: CategoryType;
-};
-
-type CategoryType =
-  | "BASS"
-  | "SNARE"
-  | "KICK"
-  | "WHISTLES"
-  | "INSTRUMENTS"
-  | "SCRATCH"
-  | "OTHER SOUNDS"
-  | "HI HATS AND CYMBALS"
-  | "WHISTLES"
-  | "CLICKS CLOPS AND POPS";
