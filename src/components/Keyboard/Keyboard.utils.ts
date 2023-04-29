@@ -1,5 +1,4 @@
 import { useWindowSize } from "react-use";
-import { GetKeysInput, Note } from "../../types";
 import {
   TwoRowsPossibleBlackKeys,
   TwoRowsWhiteKeys,
@@ -9,6 +8,7 @@ import {
 } from "./Keyboard.constants";
 import { useMemo } from "react";
 import { getKeys } from "~/utils/pitches";
+import { GetKeysInput, Note } from "~/utils/types";
 
 export const useKeyboardWindowSize = () => {
   const { width } = useWindowSize();
