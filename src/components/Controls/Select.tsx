@@ -17,7 +17,7 @@ export const Select = <T extends string>({
   onChange,
   label,
 }: {
-  id: string;
+  id?: string;
   options: SelectOptions<T>[];
   label?: string;
   defaultValue?: T;
