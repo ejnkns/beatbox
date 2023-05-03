@@ -15,6 +15,9 @@ export const DisplayBeatboxData = ({
         {beatboxSounds.map((beatboxSound, i) => (
           <div key={`${beatboxSound.name}-${i}`} className="flex gap-2">
             <Link
+              className={`w-full hover:bg-blue-100 ${
+                i % 2 === 0 ? "bg-slate-50 text-gray-800" : "text-gray-600"
+              }`}
               href={{
                 pathname: `/sound/${beatboxSound.name}`,
                 query: { id: beatboxSound.id },

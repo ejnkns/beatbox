@@ -8,6 +8,7 @@ import { AddSound } from "~/components/AddSound/AddSound";
 import { Modal } from "~/components/Modal";
 import { BeatboxSound } from "@prisma/client";
 import { Input } from "~/components/Controls/Input";
+import { Hidable } from "~/components/Hidable";
 
 const Home: NextPage = () => {
   const [addSoundOpen, setAddSoundOpen] = useState(false);
@@ -64,8 +65,8 @@ const Home: NextPage = () => {
           <AddSound />
         </Modal>
         <Input
-          searchInput={searchInput}
-          setSearchInput={setSearchInput}
+          inputText={searchInput}
+          setInputText={setSearchInput}
           isLoading={isLoading}
           placeholder="Search for a sound"
         />

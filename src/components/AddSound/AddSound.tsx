@@ -3,7 +3,6 @@ import { useState } from "react";
 import { api } from "~/utils/api";
 import { Formik } from "formik";
 import { Select } from "../Controls/Select";
-import { Modal } from "../Modal";
 import Link from "next/link";
 
 export const AddSound = () => {
@@ -39,7 +38,7 @@ export const AddSound = () => {
     <div className="w- flex flex-col gap-4">
       <form onSubmit={onSubmit} className="flex flex-col gap-2">
         <span className="text-xl font-bold">Add Sound:</span>
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col items-start gap-2">
           <label htmlFor="name">Name:</label>
           <input
             placeholder="My special sound"
@@ -50,26 +49,27 @@ export const AddSound = () => {
             onChange={(e) => setName(e.target.value)}
           />
         </div>
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col items-start gap-2">
           <label htmlFor="category">Category:</label>
-          <Select
-            id="category"
-            defaultValue={category}
-            onChange={(e) => setCategory(e)}
-            options={Object.values(CategoryType).map((category) => ({
-              id: category,
-              name: category,
-            }))}
-          />
+          <div className="w-full">
+            <Select
+              id="category"
+              defaultValue={category}
+              onChange={(e) => setCategory(e)}
+              options={Object.values(CategoryType).map((category) => ({
+                id: category,
+                name: category,
+              }))}
+            />
+          </div>
         </div>
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col items-start gap-2">
           <label htmlFor="tutorial">Tutorial:</label>
           <input
             placeholder="https://www.youtube.com/watch?v=..."
             className="block w-full rounded-md border-0 py-1.5 pl-7 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 "
             id="tutorial"
             type="text"
-            defaultValue={""}
             value={url}
             onChange={(e) => {
               setUrl(e.target.value);
@@ -80,8 +80,14 @@ export const AddSound = () => {
           <div id="tutorials" className="flex flex-col gap-2">
             {urls.map((url, i) => (
               <div key={`${url}-${i}`} className="flex gap-2">
-                <span>{url}</span>
-                <button type="button" onClick={() => removeTutorial(i)}>
+                <span className=" w-3/4 max-w-full overflow-hidden overflow-ellipsis whitespace-nowrap rounded-md bg-gray-100 px-2 py-1 text-sm text-gray-600 ">
+                  {url}
+                </span>
+                <button
+                  className="w-1/4 rounded-md bg-red-500 px-2 py-1 text-sm text-white hover:bg-red-600"
+                  type="button"
+                  onClick={() => removeTutorial(i)}
+                >
                   Remove
                 </button>
               </div>

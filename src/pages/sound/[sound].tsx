@@ -1,7 +1,7 @@
-import { BeatboxSound } from "@prisma/client";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Input } from "~/components/Controls/Input";
+import { Sticky } from "~/components/Sticky";
 import { Tutorial } from "~/components/Tutorial";
 import { api } from "~/utils/api";
 
@@ -68,9 +68,19 @@ export default function SoundPage() {
 
   return (
     <>
-      <h1 className=" mb-4 text-center text-4xl font-bold text-gray-800 ">
-        {name}
-      </h1>
+      <Sticky>
+        <div className="flex w-full items-center justify-between bg-gray-100 px-4 py-2">
+          <button
+            className="rounded-md border border-gray-300 p-2"
+            onClick={() => router.back()}
+          >
+            Back
+          </button>
+          <h1 className=" mb-4 text-center text-4xl font-bold text-gray-800 ">
+            {name}
+          </h1>
+        </div>
+      </Sticky>
       <div className="flex w-full flex-col items-center justify-center gap-2">
         {beatboxSoundIsLoading ? (
           <div>Loading...</div>
@@ -83,8 +93,8 @@ export default function SoundPage() {
         )}
         <>
           <Input
-            searchInput={tutorialUrl}
-            setSearchInput={setTutorialUrl}
+            inputText={tutorialUrl}
+            setInputText={setTutorialUrl}
             isLoading={isLoading}
             placeholder="https://www.youtube.com/watch?v=..."
           />

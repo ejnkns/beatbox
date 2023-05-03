@@ -1,11 +1,11 @@
 export const Input = ({
-  searchInput,
-  setSearchInput,
+  inputText,
+  setInputText,
   isLoading,
   placeholder,
 }: {
-  searchInput: string;
-  setSearchInput: (input: string) => void;
+  inputText: string;
+  setInputText: (input: string) => void;
   isLoading?: boolean;
   placeholder?: string;
 }) => (
@@ -13,8 +13,8 @@ export const Input = ({
     <input
       className="h-8 w-full border-2 border-black"
       type="text"
-      value={searchInput}
-      onChange={(e) => setSearchInput(e.target.value)}
+      value={inputText}
+      onChange={(e) => setInputText(e.target.value)}
       placeholder={placeholder}
     />
     <div className="pointer-events-none relative bottom-8 right-2 flex justify-end">
