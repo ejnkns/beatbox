@@ -3,12 +3,14 @@ import { useState } from "react";
 import { api } from "~/utils/api";
 import { Formik } from "formik";
 import { Select } from "../Controls/Select";
+import { Modal } from "../Modal";
+import Link from "next/link";
 
 export const AddSound = () => {
   const [name, setName] = useState("");
   const [category, setCategory] = useState<CategoryType>("BASS");
   const [url, setUrl] = useState("");
-  const [urls, setUrls] = useState<string[]>([url]);
+  const [urls, setUrls] = useState<string[]>([]);
   const mutation = api.beatboxDb.addBeatboxSound.useMutation();
 
   const addTutorial = () => {
@@ -93,7 +95,19 @@ export const AddSound = () => {
       </form>
       {mutation.isLoading && <span>Loading...</span>}
       {mutation.isError && <span>Error: {mutation.error.message}</span>}
-      {mutation.isSuccess && <span>Success!</span>}
+      {mutation.isSuccess && mutation.data.id && (
+        <>
+          <span>Success!</span>
+          <Link
+            href={{
+              pathname: `/sound/${name}`,
+              query: { id: mutation.data.id },
+            }}
+          >
+            View Sound
+          </Link>
+        </>
+      )}
     </div>
   );
 };

@@ -58,7 +58,20 @@ export const beatboxDb = createTRPCRouter({
     });
   }),
 
-  addTutorialToBeatboxSound: protectedProcedure
+  addTutorial: publicProcedure
+    .input(
+      z.object({ name: z.string().trim().min(1), url: z.string().trim().url() })
+    )
+    .mutation(({ input, ctx }) => {
+      return ctx.prisma.tutorial.create({
+        data: {
+          name: input.name,
+          url: input.url,
+        },
+      });
+    }),
+
+  addTutorialToBeatboxSound: publicProcedure
     .input(z.object({ tutorialId: z.number(), beatboxSoundId: z.number() }))
     .mutation(({ input, ctx }) => {
       return ctx.prisma.beatboxSound.update({

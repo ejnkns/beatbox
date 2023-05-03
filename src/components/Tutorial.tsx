@@ -1,16 +1,15 @@
 import { Tutorial as TutorialType } from "@prisma/client";
-import { youTubeGetID } from "~/utils/helpers";
+import dynamic from "next/dynamic";
+const ReactPlayer = dynamic(() => import("react-player/lazy"), { ssr: false });
 
-export const Tutorial = ({ tutorial }: { tutorial: TutorialType }) => (
-  <div className="flex gap-2">
-    {tutorial.url && (
-      <iframe
-        src={"https://www.youtube.com/embed/" + youTubeGetID(tutorial.url)}
-        title={tutorial.name}
-        frameBorder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowFullScreen
-      ></iframe>
-    )}
-  </div>
-);
+export const Tutorial = ({ tutorial }: { tutorial: TutorialType }) => {
+  return (
+    <div className="flex gap-2">
+      {tutorial.url && (
+        <>
+          <ReactPlayer url={tutorial.url} title={tutorial.name} />
+        </>
+      )}
+    </div>
+  );
+};

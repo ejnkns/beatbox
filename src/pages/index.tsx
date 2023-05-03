@@ -65,10 +65,6 @@ const Home: NextPage = () => {
     if (!enabled) setBeatboxSounds(allBeatboxSounds);
   }, [searchResults, allBeatboxSounds]);
 
-  console.log({ beatboxSounds });
-  console.log({ enabled });
-  console.log({ searchResults });
-
   return (
     <>
       <Head>
