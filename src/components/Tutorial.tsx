@@ -7,7 +7,15 @@ export const Tutorial = ({ tutorial }: { tutorial: TutorialType }) => {
     <div className="flex gap-2">
       {tutorial.url && (
         <>
-          <ReactPlayer url={tutorial.url} title={tutorial.name} />
+          <ReactPlayer
+            url={tutorial.url}
+            title={tutorial.name}
+            fallback={
+              <div className="flex h-full w-full items-center justify-center">
+                <div className="text-center">Loading...</div>
+              </div>
+            }
+          />
         </>
       )}
     </div>

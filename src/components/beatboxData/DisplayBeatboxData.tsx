@@ -20,7 +20,6 @@ export const DisplayBeatboxData = ({
               }`}
               href={{
                 pathname: `/sound/${beatboxSound.name}`,
-                query: { id: beatboxSound.id },
               }}
             >
               <span className="text-sm">{beatboxSound.name}</span>

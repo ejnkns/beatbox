@@ -38,6 +38,20 @@ export const beatboxDb = createTRPCRouter({
       });
     }),
 
+  getBeatboxSoundByName: publicProcedure
+    .input(z.object({ name: z.string() }))
+    .query(({ input, ctx }) => {
+      return ctx.prisma.beatboxSound.findFirst({
+        where: { name: input.name },
+        select: {
+          id: true,
+          name: true,
+          category: true,
+          tutorials: true,
+        },
+      });
+    }),
+
   getTutorials: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.tutorial.findMany();
   }),

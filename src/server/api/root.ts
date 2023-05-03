@@ -1,5 +1,5 @@
 import { createTRPCRouter } from "~/server/api/trpc";
-import { beatboxDb } from "~/server/api/routers/example";
+import { beatboxDb } from "~/server/api/routers/beatboxDb";
 
 /**
  * This is the primary router for your server.

@@ -8,14 +8,14 @@ import { api } from "~/utils/api";
 export default function SoundPage() {
   const router = useRouter();
   const name = router.query.sound as string;
-  const id = router.query.id ? parseInt(router.query.id as string) : NaN;
+
   const {
     data: beatboxSound,
     isLoading: beatboxSoundIsLoading,
     refetch,
-  } = api.beatboxDb.getBeatboxSound.useQuery(
+  } = api.beatboxDb.getBeatboxSoundByName.useQuery(
     {
-      id,
+      name,
     },
     {
       enabled: router.isReady,
