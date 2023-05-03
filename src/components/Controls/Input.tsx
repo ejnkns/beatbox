@@ -2,10 +2,12 @@ export const Input = ({
   searchInput,
   setSearchInput,
   isLoading,
+  placeholder,
 }: {
   searchInput: string;
   setSearchInput: (input: string) => void;
   isLoading?: boolean;
+  placeholder?: string;
 }) => (
   <div className="w-full">
     <input
@@ -13,6 +15,7 @@ export const Input = ({
       type="text"
       value={searchInput}
       onChange={(e) => setSearchInput(e.target.value)}
+      placeholder={placeholder}
     />
     <div className="pointer-events-none relative bottom-8 right-2 flex justify-end">
       {isLoading && (

@@ -86,6 +86,7 @@ export default function SoundPage() {
             searchInput={tutorialUrl}
             setSearchInput={setTutorialUrl}
             isLoading={isLoading}
+            placeholder="https://www.youtube.com/watch?v=..."
           />
           <button
             className="w-full rounded-md border border-gray-300 p-2"

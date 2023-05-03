@@ -5,25 +5,11 @@ import { KeyboardManager } from "~/components/Keyboard/KeyboardManager";
 import { api } from "~/utils/api";
 import { useEffect, useState } from "react";
 import { AddSound } from "~/components/AddSound/AddSound";
-import { Hideable } from "~/components/Hideable";
 import { Modal } from "~/components/Modal";
 import { BeatboxSound } from "@prisma/client";
 import { Input } from "~/components/Controls/Input";
 
 const Home: NextPage = () => {
-  // const {
-  //   data: beatboxSounds,
-  //   isLoading: beatboxSoundsIsLoading,
-  //   isError: beatboxSoundsIsError,
-  // } = api.example.getBeatboxSounds.useQuery();
-
-  // const {
-  //   data: tutorials,
-  //   isLoading: tutorialsIsLoading,
-  //   isError: tutorialsIsError,
-  // } = api.example.getTutorials.useQuery();
-
-  // const mutation = api.example.addTutorialToBeatboxSound.useMutation();
   const [addSoundOpen, setAddSoundOpen] = useState(false);
 
   const handleAddSoundOpen = () => {
@@ -81,6 +67,7 @@ const Home: NextPage = () => {
           searchInput={searchInput}
           setSearchInput={setSearchInput}
           isLoading={isLoading}
+          placeholder="Search for a sound"
         />
         <DisplayBeatboxData beatboxSounds={beatboxSounds} />
       </main>
