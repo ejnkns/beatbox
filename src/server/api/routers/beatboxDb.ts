@@ -125,25 +125,23 @@ export const beatboxDb = createTRPCRouter({
     }),
 
   searchBeatboxSounds: publicProcedure
-    .input(z.object({ search: z.string().trim().min(1) }))
+    .input(
+      z.object({
+        search: z.string().trim().min(1).optional(),
+        categoryFilter: z.nativeEnum(CategoryType).optional(),
+      })
+    )
     .query(({ input, ctx }) => {
       return ctx.prisma.beatboxSound.findMany({
         where: {
           OR: [
             {
+              category: input.categoryFilter,
+            },
+            {
               name: {
                 contains: input.search,
                 mode: "insensitive",
-              },
-            },
-            {
-              tutorials: {
-                some: {
-                  name: {
-                    contains: input.search,
-                    mode: "insensitive",
-                  },
-                },
               },
             },
             {
