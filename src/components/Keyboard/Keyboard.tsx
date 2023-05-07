@@ -59,6 +59,7 @@ export const Keyboard = ({
 
         return (
           <div
+            key={`${id}-${note}`}
             id={note}
             className={getClassNames(note)}
             style={{
