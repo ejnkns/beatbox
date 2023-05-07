@@ -3,10 +3,12 @@ import { PropsWithChildren } from "react";
 export const Sticky = ({
   children,
   position = "top",
-}: PropsWithChildren<{ position?: "top" | "bottom" }>) => {
+  fixed = false,
+}: PropsWithChildren<{ position?: "top" | "bottom"; fixed?: boolean }>) => {
   return (
     <div
-      className={`sticky top-0 z-50 flex w-full 
+      className={`z-50 flex w-full 
+        ${fixed ? "fixed" : "sticky"}
         ${position === "top" && "top-0"}
         ${position === "bottom" && "top-0"}
       `}

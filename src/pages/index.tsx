@@ -1,17 +1,43 @@
 import { type NextPage } from "next";
-import Head from "next/head";
 import { DisplayBeatboxData } from "~/components/beatboxData/DisplayBeatboxData";
 import { api } from "~/utils/api";
-import { useEffect, useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { AddSound } from "~/components/AddSound/AddSound";
 import { Modal } from "~/components/Modal";
-import { BeatboxSound, CategoryType } from "@prisma/client";
+import { CategoryType } from "@prisma/client";
 import { Input } from "~/components/Controls/Input";
 import { Select } from "~/components/Controls/Select";
+import { Header } from "~/components/Header/Header";
+import { Button } from "~/components/Controls/Button";
+import { Layout } from "~/components/Layout/Layout";
+import { getServerAuthSession } from "~/server/auth";
+import { beatboxDb } from "~/server/api/routers/beatboxDb";
+import { useRouter } from "next/router";
+
+const categoryOptions = [
+  { id: "ALL", name: "ALL" },
+  ...Object.values(CategoryType).map(
+    (category) =>
+      ({
+        id: category,
+        name: category,
+      } as const)
+  ),
+] satisfies Array<{
+  name: CategoryType | "ALL";
+  id: string;
+}>;
 
 const Home: NextPage = () => {
+  const router = useRouter();
   const [addSoundOpen, setAddSoundOpen] = useState(false);
   const [category, setCategory] = useState<CategoryType | "ALL">("ALL");
+  const [searchInput, setSearchInput] = useState("");
+  // const enabled = searchInput.trim() !== "" || category !== "ALL";
+
+  const handleSearchInput = (value: string) => {
+    setSearchInput(value);
+  };
 
   const handleSetCategory = (category: CategoryType | "ALL") => {
     setCategory(category);
@@ -25,11 +51,6 @@ const Home: NextPage = () => {
     setAddSoundOpen(false);
   };
 
-  const [searchInput, setSearchInput] = useState("");
-  const enabled = searchInput.trim() !== "" || category !== "ALL";
-
-  const [beatboxSounds, setBeatboxSounds] = useState<BeatboxSound[]>([]);
-
   const {
     data: searchResults,
     isLoading: isSearching,
@@ -37,72 +58,66 @@ const Home: NextPage = () => {
     refetch,
   } = api.beatboxDb.searchBeatboxSounds.useQuery(
     {
-      search: searchInput === "" ? undefined : searchInput,
+      search: searchInput.trim() === "" ? undefined : searchInput.trim(),
       categoryFilter: category === "ALL" ? undefined : category,
     },
     {
-      enabled,
+      enabled: router.isReady,
     }
   );
 
   useEffect(() => {
-    if (!enabled) refetch();
-  }, [enabled, category]);
+    if (router.isReady) refetch();
+  }, [refetch, router.isReady]);
 
-  const {
-    data: allBeatboxSounds = [],
-    isLoading: beatboxSoundsIsLoading,
-    isError: beatboxSoundsIsError,
-  } = api.beatboxDb.getBeatboxSounds.useQuery();
+  // const [beatboxSounds, setBeatboxSounds] =
+  //   useState<BeatboxSound[]>(allBeatboxSounds);
+  // const isLoading = enabled && isSearching;
 
-  const isLoading = (enabled && isSearching) || beatboxSoundsIsLoading;
+  const beatboxSounds = useMemo(() => {
+    if (searchResults !== undefined) return searchResults;
+    // return allBeatboxSounds ?? [];
+  }, [searchResults]);
 
-  useEffect(() => {
-    if (searchResults !== undefined) setBeatboxSounds(searchResults);
-    if (!enabled) setBeatboxSounds(allBeatboxSounds);
-  }, [searchResults, allBeatboxSounds]);
-
-  const categoryOptions = useMemo(() => {
-    const categories = Object.values(CategoryType).map(
-      (category) =>
-        ({
-          id: category,
-          name: category,
-        } as const)
-    );
-    return [{ id: "ALL", name: "ALL" }, ...categories] satisfies Array<{
-      name: CategoryType | "ALL";
-      id: string;
-    }>;
-  }, []);
+  // useEffect(() => {
+  //   if (searchResults !== undefined) setBeatboxSounds(searchResults);
+  //   if (!enabled) setBeatboxSounds(allBeatboxSounds);
+  // }, [searchResults, enabled, allBeatboxSounds, setBeatboxSounds]);
 
   return (
-    <>
-      <Head>
-        <title>Keyboard</title>
-        <meta name="description" content="Simple keyboard app" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <main className="flex min-h-screen flex-col gap-2 p-4 sm:p-2">
-        <button onClick={handleAddSoundOpen}>Add Sound</button>
-        <Modal isOpen={addSoundOpen} onClose={handleAddSoundClose}>
-          <AddSound />
-        </Modal>
+    <Layout>
+      <div className="flex flex-col items-center justify-center p-8">
+        <h1 className="text-6xl font-bold">Beatbox Sounds</h1>
+        <p className="mt-3 text-2xl">Search for any sound, or add one</p>
+      </div>
+      <div className="flex items-center justify-center gap-2 sm:flex-row">
         <Input
           inputText={searchInput}
-          setInputText={setSearchInput}
-          isLoading={isLoading}
+          setInputText={handleSearchInput}
+          // isLoading={isLoading}
           placeholder="Search for a sound"
+          type="search"
         />
-        <Select
-          id="category"
-          defaultValue={category}
-          onChange={handleSetCategory}
-          options={categoryOptions}
-        />
-        <DisplayBeatboxData beatboxSounds={beatboxSounds} />
-      </main>
-    </>
+        <Button className="w-[25%] min-w-[100px]" onClick={handleAddSoundOpen}>
+          Add Sound
+        </Button>
+        <Modal isOpen={addSoundOpen} onClose={handleAddSoundClose}>
+          <AddSound
+            initialValues={{
+              name: searchInput,
+              category: category === "ALL" ? undefined : category,
+            }}
+          />
+        </Modal>
+      </div>
+      <Select
+        id="category"
+        defaultValue={category}
+        onChange={handleSetCategory}
+        options={categoryOptions}
+      />
+      <DisplayBeatboxData beatboxSounds={beatboxSounds ?? []} />
+    </Layout>
   );
 };
 

@@ -1,8 +1,10 @@
 import { RefObject, useEffect, useRef, useState } from "react";
 
 export const useMouseAndTouchDown = <T extends HTMLElement>(
-  ref: RefObject<T> = useRef<T>(null)
+  ref?: RefObject<T>
 ) => {
+  const refUseRef = useRef<T>(null);
+  const refToUse = ref ?? refUseRef;
   const [isMouseDown, setIsMouseDown] = useState(false);
 
   const handleMouseDown = (e: MouseEvent | TouchEvent) => {
@@ -16,26 +18,27 @@ export const useMouseAndTouchDown = <T extends HTMLElement>(
   };
 
   useEffect(() => {
-    if (ref.current) {
-      ref.current.addEventListener("mousedown", handleMouseDown);
-      ref.current.addEventListener("touchstart", handleMouseDown);
-      ref.current.addEventListener("mouseup", handleMouseUp);
-      ref.current.addEventListener("touchend", handleMouseUp);
-      ref.current.addEventListener("touchcancel", handleMouseUp);
-      ref.current.addEventListener("mouseleave", handleMouseUp);
+    const current = refToUse.current;
+    if (current) {
+      current.addEventListener("mousedown", handleMouseDown);
+      current.addEventListener("touchstart", handleMouseDown);
+      current.addEventListener("mouseup", handleMouseUp);
+      current.addEventListener("touchend", handleMouseUp);
+      current.addEventListener("touchcancel", handleMouseUp);
+      current.addEventListener("mouseleave", handleMouseUp);
     }
 
     return () => {
-      if (ref.current) {
-        ref.current.removeEventListener("mousedown", handleMouseDown);
-        ref.current.removeEventListener("touchstart", handleMouseDown);
-        ref.current.removeEventListener("mouseup", handleMouseUp);
-        ref.current.removeEventListener("touchend", handleMouseUp);
-        ref.current.removeEventListener("touchcancel", handleMouseUp);
-        ref.current.addEventListener("mouseleave", handleMouseUp);
+      if (current) {
+        current.removeEventListener("mousedown", handleMouseDown);
+        current.removeEventListener("touchstart", handleMouseDown);
+        current.removeEventListener("mouseup", handleMouseUp);
+        current.removeEventListener("touchend", handleMouseUp);
+        current.removeEventListener("touchcancel", handleMouseUp);
+        current.addEventListener("mouseleave", handleMouseUp);
       }
     };
-  }, []);
+  }, [refToUse]);
 
-  return { isMouseDown, ref };
+  return { isMouseDown, ref: refToUse };
 };

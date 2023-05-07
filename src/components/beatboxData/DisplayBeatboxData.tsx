@@ -9,24 +9,20 @@ export const DisplayBeatboxData = ({
   beatboxSounds: BeatboxSound[];
 }) => {
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex flex-col gap-2">
-        <span className="text-xl font-bold">Beatbox Sounds</span>
-        {beatboxSounds.map((beatboxSound, i) => (
-          <div key={`${beatboxSound.name}-${i}`} className="flex gap-2">
-            <Link
-              className={`w-full hover:bg-blue-100 ${
-                i % 2 === 0 ? "bg-slate-50 text-gray-800" : "text-gray-600"
-              }`}
-              href={{
-                pathname: `/sound/${beatboxSound.name}`,
-              }}
-            >
-              <span className="text-sm">{beatboxSound.name}</span>
-            </Link>
-          </div>
-        ))}
-      </div>
+    <div className="flex flex-col overflow-x-hidden">
+      {beatboxSounds.map((beatboxSound, i) => (
+        <Link
+          key={`${beatboxSound.name}-${i}`}
+          className={`w-full origin-left bg-opacity-10 bg-blend-saturation transition-all hover:scale-110 ${
+            i % 2 === 0 ? "text-gray-800" : "bg-slate-300 text-gray-900"
+          }`}
+          href={{
+            pathname: `/sound/${beatboxSound.name}`,
+          }}
+        >
+          <span className="ml-1 text-sm">{beatboxSound.name}</span>
+        </Link>
+      ))}
     </div>
   );
 };

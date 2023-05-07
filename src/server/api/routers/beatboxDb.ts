@@ -127,30 +127,44 @@ export const beatboxDb = createTRPCRouter({
   searchBeatboxSounds: publicProcedure
     .input(
       z.object({
-        search: z.string().trim().min(1).optional(),
+        search: z.string().trim().optional(),
         categoryFilter: z.nativeEnum(CategoryType).optional(),
       })
     )
     .query(({ input, ctx }) => {
-      return ctx.prisma.beatboxSound.findMany({
-        where: {
-          OR: [
-            {
-              category: input.categoryFilter,
-            },
-            {
-              name: {
-                contains: input.search,
-                mode: "insensitive",
-              },
-            },
-            {
-              category: {
-                in: isCategory(input.search) ? [input.search] : [],
-              },
-            },
-          ],
-        },
+      console.log({
+        input,
+        condition:
+          input.search !== undefined && input.categoryFilter !== undefined,
       });
+      return input.search !== undefined || input.categoryFilter !== undefined
+        ? ctx.prisma.beatboxSound.findMany({
+            where: {
+              OR: [
+                {
+                  category: input.categoryFilter,
+                },
+                {
+                  name: {
+                    contains: input.search,
+                    mode: "insensitive",
+                  },
+                },
+                {
+                  category: {
+                    in: isCategory(input.search) ? [input.search] : [],
+                  },
+                },
+              ],
+            },
+          })
+        : ctx.prisma.beatboxSound.findMany({
+            select: {
+              id: true,
+              name: true,
+              category: true,
+              tutorials: true,
+            },
+          });
     }),
 });

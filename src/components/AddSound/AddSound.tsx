@@ -5,11 +5,30 @@ import { Formik } from "formik";
 import { Select } from "../Controls/Select";
 import Link from "next/link";
 
-export const AddSound = () => {
-  const [name, setName] = useState("");
-  const [category, setCategory] = useState<CategoryType>("BASS");
+export const AddSound = ({
+  initialValues,
+}: {
+  initialValues?: Partial<{
+    name: string;
+    category: CategoryType;
+    tutorials: string[];
+  }>;
+}) => {
+  const {
+    name: initialName,
+    category: initialCategory,
+    tutorials,
+  } = initialValues ?? {
+    name: "",
+    category: "BASS",
+    tutorials: [],
+  };
+  const [name, setName] = useState(initialName ?? "");
+  const [category, setCategory] = useState<CategoryType>(
+    initialCategory ?? "BASS"
+  );
   const [url, setUrl] = useState("");
-  const [urls, setUrls] = useState<string[]>([]);
+  const [urls, setUrls] = useState<string[]>(tutorials ?? []);
   const mutation = api.beatboxDb.addBeatboxSound.useMutation();
 
   const addTutorial = () => {
