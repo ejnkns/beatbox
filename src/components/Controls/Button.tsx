@@ -15,9 +15,9 @@ export const Button = ({
       className={`${
         disabled
           ? "cursor-default bg-gray-300"
-          : "bg-indigo-400 bg-opacity-50 transition-all hover:bg-opacity-80"
-      } inline-flex h-8 items-center justify-center border-2 border-black px-4
-       py-2 text-xs font-semibold text-gray-900
+          : "bg-indigo-200 bg-opacity-50 transition-all hover:bg-opacity-80"
+      } inline-flex h-8 min-w-max items-center justify-center border-2 border-black
+       px-4 py-2 text-xs font-semibold text-gray-900
        ${className ?? ""}`}
       onClick={onClick}
       disabled={disabled}

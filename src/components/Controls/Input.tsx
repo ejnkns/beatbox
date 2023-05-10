@@ -5,27 +5,28 @@ export const Input = ({
   setInputText,
   isLoading,
   placeholder,
-  type
+  type,
 }: {
   inputText: string;
   setInputText: (input: string) => void;
   isLoading?: boolean;
   placeholder?: string;
-  type?: HTMLInputTypeAttribute
+  type?: HTMLInputTypeAttribute;
 }) => (
   <div className="w-full">
     <input
       className="h-8 w-full border-2 border-black
       bg-white/10
       pl-1
-      focus:outline-black focus:outline-[0] focus:bg-white/20
-      [&::-webkit-search-cancel-button]:appearance-none
-      [&::-webkit-search-cancel-button]:cursor-pointer
+      italic placeholder-gray-900 transition-all
+      focus:bg-white/20
+      focus:outline-[0]
+      focus:outline-black
+      [&::-webkit-search-cancel-button]:relative
       [&::-webkit-search-cancel-button]:h-6
       [&::-webkit-search-cancel-button]:w-8
-      [&::-webkit-search-cancel-button]:relative
-      transition-all
-      placeholder-gray-500
+      [&::-webkit-search-cancel-button]:cursor-pointer
+      [&::-webkit-search-cancel-button]:appearance-none
       "
       type={type ?? "text"}
       value={inputText}
@@ -38,7 +39,7 @@ export const Input = ({
           className="absolute inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
           role="status"
         >
-          <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"/>
+          <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]" />
         </div>
       )}
       {/* {inputText.length > 0 && (

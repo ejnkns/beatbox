@@ -1,7 +1,5 @@
 import { BeatboxSound } from "@prisma/client";
-import { api } from "../../utils/api";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 
 export const DisplayBeatboxData = ({
   beatboxSounds,
@@ -13,14 +11,17 @@ export const DisplayBeatboxData = ({
       {beatboxSounds.map((beatboxSound, i) => (
         <Link
           key={`${beatboxSound.name}-${i}`}
-          className={`w-full origin-left bg-opacity-10 bg-blend-saturation transition-all hover:scale-110 ${
-            i % 2 === 0 ? "text-gray-800" : "bg-slate-300 text-gray-900"
-          }`}
+          className={`flex w-full origin-left transform items-center justify-between border-b border-black bg-opacity-10 p-2 bg-blend-saturation transition-all duration-300 ease-in-out hover:scale-110
+
+          ${i % 2 === 0 ? "text-gray-300" : "bg-slate-300 text-gray-300"}`}
           href={{
             pathname: `/sound/${beatboxSound.name}`,
           }}
         >
-          <span className="ml-1 text-sm">{beatboxSound.name}</span>
+          <div className="flex w-full justify-between">
+            <div className="ml-1 text-sm">{beatboxSound.name}</div>
+            <div className="mr-1 text-xs">{beatboxSound.category}</div>
+          </div>
         </Link>
       ))}
     </div>

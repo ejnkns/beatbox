@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { Button } from "~/components/Controls/Button";
 import { Input } from "~/components/Controls/Input";
 import { Layout } from "~/components/Layout/Layout";
 import { Tutorial } from "~/components/Tutorial";
@@ -85,32 +86,32 @@ export default function SoundPage() {
   return (
     <Layout>
       <div className="flex w-full flex-col items-center justify-center gap-2">
-        <h1 className=" mb-4 text-center text-4xl font-bold text-gray-800 ">
+        <h1 className="mb-4 text-center text-4xl font-bold text-black">
           {name}
         </h1>
-        {beatboxSoundIsLoading ? (
-          <div>Loading...</div>
-        ) : beatboxSound?.tutorials.length ? (
-          beatboxSound.tutorials.map((tutorial, i) => (
-            <Tutorial key={`${tutorial}-${i}`} tutorial={tutorial} />
-          ))
-        ) : (
-          <div>{`No tutorials :(`}</div>
-        )}
-        <>
+        <div className="m-8 flex w-full max-w-2xl flex-col gap-8 border-2 border-black px-8 pb-8">
+          <h2 className="mt-2 text-center text-2xl font-bold text-black">
+            Tutorials
+          </h2>
+          {beatboxSoundIsLoading ? (
+            <div>{`Loading...`}</div>
+          ) : beatboxSound?.tutorials.length ? (
+            beatboxSound.tutorials.map((tutorial, i) => (
+              <Tutorial key={`${tutorial}-${i}`} tutorial={tutorial} />
+            ))
+          ) : (
+            <div>{`No tutorials :(`}</div>
+          )}
+        </div>
+        <div className="flex w-full items-center justify-center gap-2 sm:flex-row">
           <Input
             inputText={tutorialUrl}
             setInputText={setTutorialUrl}
             isLoading={isLoading}
             placeholder="https://www.youtube.com/watch?v=..."
           />
-          <button
-            className="w-full rounded-md border border-gray-300 p-2"
-            onClick={handleAddTutorial}
-          >
-            Add tutorial
-          </button>
-        </>
+          <Button onClick={handleAddTutorial}>Add tutorial</Button>
+        </div>
       </div>
     </Layout>
   );

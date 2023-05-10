@@ -87,15 +87,15 @@ const Home: NextPage = () => {
   return (
     <Layout>
       <div className="flex flex-col items-center justify-center p-8">
-        <h1 className="text-6xl font-bold">Beatbox Sounds</h1>
-        <p className="mt-3 text-2xl">Search for any sound, or add one</p>
+        {/* <h1 className="text-6xl font-bold">Beatbox Sounds</h1> */}
+        <h2 className="text-3xl">Search for any sound, or add one</h2>
       </div>
       <div className="flex items-center justify-center gap-2 sm:flex-row">
         <Input
           inputText={searchInput}
           setInputText={handleSearchInput}
           // isLoading={isLoading}
-          placeholder="Search for a sound"
+          placeholder="Search for a sound..."
           type="search"
         />
         <Button className="w-[25%] min-w-[100px]" onClick={handleAddSoundOpen}>

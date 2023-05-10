@@ -60,7 +60,7 @@ export const Select = <T extends string>({
               </span>
               <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
                 <ChevronUpDownIcon
-                  className="h-5 w-5 text-gray-400"
+                  className="h-5 w-5 text-black"
                   aria-hidden="true"
                 />
               </span>
@@ -73,13 +73,13 @@ export const Select = <T extends string>({
               leaveFrom="opacity-100"
               leaveTo="opacity-0"
             >
-              <Listbox.Options className="absolute z-10 mt-1 max-h-56 w-full overflow-auto border-2 border-black bg-slate-300 bg-opacity-90 py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+              <Listbox.Options className="absolute z-10 mt-1 max-h-56 w-full overflow-auto border-2 border-black bg-indigo-200 bg-opacity-20 py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 backdrop-blur-md backdrop-filter focus:outline-none sm:text-sm">
                 {options.map((option) => (
                   <Listbox.Option
                     key={option.id}
                     className={({ active }) =>
                       classNames(
-                        active ? "bg-indigo-400 text-white" : "text-gray-900",
+                        active ? "bg-indigo-400 text-white" : "text-gray-100",
                         "relative cursor-default select-none py-2 pl-3 pr-9"
                       )
                     }
