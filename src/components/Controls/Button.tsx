@@ -14,9 +14,9 @@ export const Button = ({
     <button
       className={`${
         disabled
-          ? "cursor-default bg-gray-300"
+          ? "cursor-default"
           : "bg-indigo-200 bg-opacity-50 transition-all hover:bg-opacity-80"
-      } inline-flex h-8 min-w-max items-center justify-center border-2 border-black
+      } inline-flex h-8  min-w-max items-center justify-center border-2 border-black bg-indigo-200 bg-opacity-50
        px-4 py-2 text-xs font-semibold text-gray-900
        ${className ?? ""}`}
       onClick={onClick}

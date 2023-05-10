@@ -76,19 +76,17 @@ export default function SoundPage() {
 
   const isLoading = addTutorialToBeatboxSoundIsLoading || addTutorialIsLoading;
 
-  if (beatboxSound?.tutorials.length && beatboxSound.tutorials[0])
-    fetch(
-      `https://noembed.com/embed?dataType=json&url=${beatboxSound.tutorials[0].url}`
-    )
-      .then((res) => res.json())
-      .then((data) => console.log("fetch", data.title));
-
   return (
     <Layout>
       <div className="flex w-full flex-col items-center justify-center gap-2">
         <h1 className="mb-4 text-center text-4xl font-bold text-black">
           {name}
         </h1>
+        <Button disabled onClick={() => {}}>
+          <h2 className="text-center text-2xl font-bold text-black">
+            {beatboxSound?.category}
+          </h2>
+        </Button>
         <div className="m-8 flex w-full max-w-2xl flex-col gap-8 border-2 border-black px-8 pb-8">
           <h2 className="mt-2 text-center text-2xl font-bold text-black">
             Tutorials

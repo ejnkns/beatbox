@@ -20,7 +20,9 @@ export const DisplayBeatboxData = ({
         >
           <div className="flex w-full justify-between">
             <div className="ml-1 text-sm">{beatboxSound.name}</div>
-            <div className="mr-1 text-xs">{beatboxSound.category}</div>
+            {/* <div className="mr-1 text-xs text-indigo-200">
+              {beatboxSound.category}
+            </div> */}
           </div>
         </Link>
       ))}

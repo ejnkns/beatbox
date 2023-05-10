@@ -132,11 +132,6 @@ export const beatboxDb = createTRPCRouter({
       })
     )
     .query(({ input, ctx }) => {
-      console.log({
-        input,
-        condition:
-          input.search !== undefined && input.categoryFilter !== undefined,
-      });
       return input.search !== undefined || input.categoryFilter !== undefined
         ? ctx.prisma.beatboxSound.findMany({
             where: {
