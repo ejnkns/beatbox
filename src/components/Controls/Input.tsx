@@ -33,24 +33,20 @@ export const Input = ({
       onChange={(e) => setInputText(e.target.value)}
       placeholder={placeholder}
     />
-    <div className="pointer-events-none relative bottom-8 right-2 flex justify-end">
+    <div className="pointer-events-none relative bottom-7 right-2 flex justify-end">
       {isLoading && (
         <div
-          className="absolute inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
+          className="absolute inline-block h-6 w-6 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] text-indigo-200 opacity-50 motion-reduce:animate-[spin_1.5s_linear_infinite]"
           role="status"
         >
           <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]" />
         </div>
       )}
-      {/* {inputText.length > 0 && (
-        <button
-          className="h-4 w-4 m-2 rounded-full bg-gray-400"
-          onClick={() => setInputText("")}
-        >
+      {inputText.length > 0 && (
+        <div className="absolute right-1 top-1">
           <span className="sr-only">Clear</span>
           <svg
-            className="h-4 w-4 text-white"
-            fill="currentColor"
+            className="h-4 w-4 fill-indigo-200 opacity-50"
             viewBox="0 0 20 20"
             aria-hidden="true"
           >
@@ -60,8 +56,8 @@ export const Input = ({
               d="M10 18a8 8 0 100-16 8 8 0 000 16zM5.172 5.172a1 1 0 011.415 0L10 8.585l3.414-3.414a1 1 0 111.415 1.415L11.414 10l3.415 3.414a1 1 0 01-1.415 1.415L10 11.414l-3.414 3.415a1 1 0 01-1.415-1.415L8.586 10 5.172 6.586a1 1 0 010-1.414z"
             />
           </svg>
-        </button>
-       )} */}
+        </div>
+      )}
     </div>
   </div>
 );

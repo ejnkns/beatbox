@@ -94,7 +94,7 @@ const Home: NextPage = () => {
         <Input
           inputText={searchInput}
           setInputText={handleSearchInput}
-          // isLoading={isLoading}
+          isLoading={isSearching}
           placeholder="Search for a sound..."
           type="search"
         />
