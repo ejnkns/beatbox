@@ -115,22 +115,22 @@ export const api = createTRPCNext<AppRouter>({
    *
    * @see https://trpc.io/docs/nextjs#ssr-boolean-default-false
    */
-  ssr: true,
-  responseMeta(opts) {
-    const { clientErrors } = opts;
-    const firstClientError = clientErrors?.[0];
-    if (firstClientError) {
-      // propagate http first error from API calls
-      return {
-        status: firstClientError.data?.httpStatus ?? 500,
-      };
-    }
-    // cache full page for 1 day + revalidate once every second
-    const ONE_DAY_IN_SECONDS = 60 * 60 * 24;
-    return {
-      "Cache-Control": `s-maxage=1, stale-while-revalidate=${ONE_DAY_IN_SECONDS}`,
-    };
-  },
+  // ssr: true,
+  // responseMeta(opts) {
+  //   const { clientErrors } = opts;
+  //   const firstClientError = clientErrors?.[0];
+  //   if (firstClientError) {
+  //     // propagate http first error from API calls
+  //     return {
+  //       status: firstClientError.data?.httpStatus ?? 500,
+  //     };
+  //   }
+  //   // cache full page for 1 day + revalidate once every second
+  //   const ONE_DAY_IN_SECONDS = 60 * 60 * 24;
+  //   return {
+  //     "Cache-Control": `s-maxage=1, stale-while-revalidate=${ONE_DAY_IN_SECONDS}`,
+  //   };
+  // },
 });
 
 /**
