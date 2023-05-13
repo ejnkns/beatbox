@@ -13,7 +13,9 @@ export const Header = () => {
             </Link>
           </div>
           <div className="flex items-center space-x-4">
-            <LoginButton />
+            <Link href={{ pathname: "/Login" }} className="text-xl">
+              Login
+            </Link>
           </div>
         </nav>
       </Sticky>
