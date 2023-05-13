@@ -63,8 +63,8 @@ export const Tutorial = ({ tutorial }: { tutorial: TutorialWithVotesType }) => {
     <div className="flex flex-col gap-2 border-2 border-black bg-indigo-200 bg-opacity-50 backdrop-blur-lg">
       <div className=" flex flex-col gap-2 border-2 border-black bg-indigo-200 bg-opacity-50 backdrop-blur-lg ">
         <h3 className="mt-2 p-2 text-xl font-bold">{channel}</h3>
-        <Button className="m-2">Upvote</Button>
-        <Button className="m-2">Downvote</Button>
+        {/* <Button className="m-2">Upvote</Button>
+        <Button className="m-2">Downvote</Button> */}
       </div>
       {tutorial.url && (
         <div className="flex">
