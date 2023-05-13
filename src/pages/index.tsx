@@ -14,6 +14,7 @@ import { getServerAuthSession } from "~/server/auth";
 import { beatboxDb } from "~/server/api/routers/beatboxDb";
 import { useRouter } from "next/router";
 import { AddSoundButton } from "~/components/AddSound/AddSoundButton";
+import { signIn, signOut, useSession } from "next-auth/react";
 
 const categoryOptions = [
   { id: "ALL", name: "ALL" },
@@ -33,7 +34,7 @@ const Home: NextPage = () => {
   const router = useRouter();
   const [category, setCategory] = useState<CategoryType | "ALL">("ALL");
   const [searchInput, setSearchInput] = useState("");
-  // const enabled = searchInput.trim() !== "" || category !== "ALL";
+  const [beatboxSoundsResults, setBeatboxSoundsResults] = useState<any>([]);
 
   const handleSearchInput = (value: string) => {
     setSearchInput(value);
@@ -62,23 +63,14 @@ const Home: NextPage = () => {
     if (router.isReady) refetch();
   }, [refetch, router.isReady]);
 
-  // const [beatboxSounds, setBeatboxSounds] =
-  //   useState<BeatboxSound[]>(allBeatboxSounds);
-  // const isLoading = enabled && isSearching;
-
-  const beatboxSounds = useMemo(() => {
-    if (searchResults !== undefined) return searchResults;
-    // return allBeatboxSounds ?? [];
+  useEffect(() => {
+    if (searchResults !== undefined) setBeatboxSoundsResults(searchResults);
   }, [searchResults]);
-
-  // useEffect(() => {
-  //   if (searchResults !== undefined) setBeatboxSounds(searchResults);
-  //   if (!enabled) setBeatboxSounds(allBeatboxSounds);
-  // }, [searchResults, enabled, allBeatboxSounds, setBeatboxSounds]);
 
   return (
     <Layout>
       <div className="flex flex-col items-center justify-center p-8">
+        <LoginButton />
         <h1 className="text-6xl font-bold">Beatbox Sounds</h1>
         <h2 className="text-3xl">Search for any sound, or add one</h2>
       </div>
@@ -98,8 +90,29 @@ const Home: NextPage = () => {
         onChange={handleSetCategory}
         options={categoryOptions}
       />
-      <DisplayBeatboxData beatboxSounds={beatboxSounds ?? []} />
+      <DisplayBeatboxData beatboxSounds={beatboxSoundsResults ?? []} />
     </Layout>
+  );
+};
+
+export const LoginButton = () => {
+  const { data: sessionData } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (sessionData) {
+      router.push("/");
+    }
+  }, [sessionData, router]);
+
+  return (
+    <button
+      type="button"
+      className="text-xl"
+      onClick={sessionData ? () => void signOut() : () => void signIn()}
+    >
+      {sessionData ? "Sign out" : "Sign in"}
+    </button>
   );
 };
 
