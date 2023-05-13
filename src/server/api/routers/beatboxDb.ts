@@ -40,6 +40,9 @@ export const beatboxDb = createTRPCRouter({
           id: true,
           name: true,
           category: true,
+          createdAt: true,
+          updatedAt: true,
+          userId: true,
           tutorials: {
             select: {
               id: true,
@@ -185,6 +188,9 @@ export const beatboxDb = createTRPCRouter({
               name: true,
               category: true,
               tutorials: true,
+              createdAt: true,
+              updatedAt: true,
+              userId: true,
             },
             where: {
               OR: [
@@ -211,6 +217,9 @@ export const beatboxDb = createTRPCRouter({
               name: true,
               category: true,
               tutorials: true,
+              createdAt: true,
+              updatedAt: true,
+              userId: true,
             },
           });
     }),
