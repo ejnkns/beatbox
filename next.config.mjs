@@ -3,6 +3,7 @@
  * This is especially useful for Docker builds.
  */
 !process.env.SKIP_ENV_VALIDATION && (await import("./src/env.mjs"));
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 /** @type {import("next").NextConfig} */
 const config = {

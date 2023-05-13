@@ -43,7 +43,7 @@ export const Select = <T extends string>({
             </Listbox.Label>
           )}
           <div className="relative mt-2">
-            <Listbox.Button className="relative flex h-8 w-full cursor-default items-center border-2 border-black bg-indigo-200 bg-opacity-50 pr-10 text-left text-gray-900 focus:outline-none sm:text-sm sm:leading-6">
+            <Listbox.Button className="relative flex h-8 w-full cursor-default items-center border-2 border-black bg-indigo-200 bg-opacity-50 pr-10 text-left text-gray-900 transition-all hover:bg-opacity-70 focus:outline-none sm:text-sm sm:leading-6">
               <span className="flex items-center">
                 {selected?.icon && (
                   <Image

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Sticky } from "../Sticky";
+import { LoginButton } from "./LoginButton";
 
 export const Header = () => {
   return (
@@ -7,14 +8,12 @@ export const Header = () => {
       <Sticky fixed>
         <nav className="flex w-full items-center justify-between bg-indigo-200 bg-opacity-20 px-6 py-2 backdrop-blur-sm backdrop-filter">
           <div className="flex items-center space-x-4">
-            <Link href="/" className="text-2xl font-bold">
+            <Link href="/" className="absolute text-2xl font-bold">
               Beatbox Sounds
             </Link>
           </div>
           <div className="flex items-center space-x-4">
-            <Link href={{ pathname: "/login" }} className="text-xl">
-              Login
-            </Link>
+            <LoginButton />
           </div>
         </nav>
       </Sticky>

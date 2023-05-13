@@ -5,6 +5,16 @@ import { Formik } from "formik";
 import { Select } from "../Controls/Select";
 import Link from "next/link";
 
+type AddSoundValues = {
+  name: string;
+  category: CategoryType;
+  tutorials: string[];
+};
+
+export type AddSoundProps = {
+  initialValues?: Partial<AddSoundValues>;
+};
+
 export const AddSound = ({
   initialValues,
 }: {
