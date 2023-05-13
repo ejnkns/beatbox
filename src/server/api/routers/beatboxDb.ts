@@ -1,4 +1,4 @@
-import { CategoryType } from "@prisma/client";
+import { CategoryType, VoteType } from "@prisma/client";
 import { z } from "zod";
 
 import {
@@ -19,7 +19,14 @@ export const beatboxDb = createTRPCRouter({
         id: true,
         name: true,
         category: true,
-        tutorials: true,
+        tutorials: {
+          select: {
+            id: true,
+            name: true,
+            url: true,
+            TutorialVotes: { select: { voteType: true, userId: true } },
+          },
+        },
       },
     });
   }),
@@ -33,7 +40,14 @@ export const beatboxDb = createTRPCRouter({
           id: true,
           name: true,
           category: true,
-          tutorials: true,
+          tutorials: {
+            select: {
+              id: true,
+              name: true,
+              url: true,
+              TutorialVotes: { select: { voteType: true, userId: true } },
+            },
+          },
         },
       });
     }),
@@ -47,7 +61,25 @@ export const beatboxDb = createTRPCRouter({
           id: true,
           name: true,
           category: true,
-          tutorials: true,
+          createdAt: true,
+          updatedAt: true,
+          tutorials: {
+            select: {
+              createdAt: true,
+              updatedAt: true,
+              id: true,
+              name: true,
+              url: true,
+              TutorialVotes: {
+                select: {
+                  userId: true,
+                  createdAt: true,
+                  updatedAt: true,
+                  voteType: true,
+                },
+              },
+            },
+          },
         },
       });
     }),
@@ -55,6 +87,20 @@ export const beatboxDb = createTRPCRouter({
   getTutorials: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.tutorial.findMany();
   }),
+
+  getTutorial: publicProcedure
+    .input(z.object({ id: z.number() }))
+    .query(({ input, ctx }) => {
+      return ctx.prisma.tutorial.findUnique({
+        where: { id: input.id },
+        select: {
+          id: true,
+          name: true,
+          url: true,
+          TutorialVotes: { select: { voteType: true, userId: true } },
+        },
+      });
+    }),
 
   getBeatboxSoundsByCategory: publicProcedure
     .input(z.object({ category: z.nativeEnum(CategoryType) }))
@@ -72,7 +118,7 @@ export const beatboxDb = createTRPCRouter({
     });
   }),
 
-  addTutorial: publicProcedure
+  addTutorial: protectedProcedure
     .input(
       z.object({ name: z.string().trim().min(1), url: z.string().trim().url() })
     )
@@ -85,7 +131,7 @@ export const beatboxDb = createTRPCRouter({
       });
     }),
 
-  addTutorialToBeatboxSound: publicProcedure
+  addTutorialToBeatboxSound: protectedProcedure
     .input(z.object({ tutorialId: z.number(), beatboxSoundId: z.number() }))
     .mutation(({ input, ctx }) => {
       return ctx.prisma.beatboxSound.update({
@@ -100,7 +146,7 @@ export const beatboxDb = createTRPCRouter({
       });
     }),
 
-  addBeatboxSound: publicProcedure
+  addBeatboxSound: protectedProcedure
     .input(
       z.object({
         name: z.string().trim().min(1),
@@ -134,6 +180,12 @@ export const beatboxDb = createTRPCRouter({
     .query(({ input, ctx }) => {
       return input.search !== undefined || input.categoryFilter !== undefined
         ? ctx.prisma.beatboxSound.findMany({
+            select: {
+              id: true,
+              name: true,
+              category: true,
+              tutorials: true,
+            },
             where: {
               OR: [
                 {
@@ -161,5 +213,25 @@ export const beatboxDb = createTRPCRouter({
               tutorials: true,
             },
           });
+    }),
+
+  upvoteTutorial: protectedProcedure
+    .input(z.object({ tutorialId: z.number() }))
+    .mutation(({ input, ctx }) => {
+      return ctx.prisma.tutorialVote.update({
+        where: { id: input.tutorialId },
+        data: {
+          userId: ctx.session.user.id,
+          voteType: VoteType.UP,
+        },
+      });
+    }),
+
+  getTutorialVotes: publicProcedure
+    .input(z.object({ tutorialId: z.number() }))
+    .query(({ input, ctx }) => {
+      return ctx.prisma.tutorialVote.findMany({
+        where: { tutorialId: input.tutorialId },
+      });
     }),
 });

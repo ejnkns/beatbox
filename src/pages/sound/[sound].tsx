@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Button } from "~/components/Controls/Button";
 import { Input } from "~/components/Controls/Input";
 import { Layout } from "~/components/Layout/Layout";
-import { Tutorial } from "~/components/Tutorial";
+import { TutorialList } from "~/components/Tutorial/TutorialList";
 import { api } from "~/utils/api";
 
 export default function SoundPage() {
@@ -87,20 +87,10 @@ export default function SoundPage() {
             {beatboxSound?.category}
           </h2>
         </Button>
-        <div className="m-8 flex w-full max-w-2xl flex-col gap-8 border-2 border-black px-8 pb-8">
-          <h2 className="mt-2 text-center text-2xl font-bold text-black">
-            Tutorials
-          </h2>
-          {beatboxSoundIsLoading ? (
-            <div>{`Loading...`}</div>
-          ) : beatboxSound?.tutorials.length ? (
-            beatboxSound.tutorials.map((tutorial, i) => (
-              <Tutorial key={`${tutorial}-${i}`} tutorial={tutorial} />
-            ))
-          ) : (
-            <div>{`No tutorials :(`}</div>
-          )}
-        </div>
+        <TutorialList
+          tutorials={beatboxSound?.tutorials ?? []}
+          isLoading={beatboxSoundIsLoading}
+        />
         <div className="flex w-full items-center justify-center gap-2 sm:flex-row">
           <Input
             inputText={tutorialUrl}

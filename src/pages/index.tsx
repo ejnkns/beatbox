@@ -13,6 +13,7 @@ import { Layout } from "~/components/Layout/Layout";
 import { getServerAuthSession } from "~/server/auth";
 import { beatboxDb } from "~/server/api/routers/beatboxDb";
 import { useRouter } from "next/router";
+import { AddSoundButton } from "~/components/AddSound/AddSoundButton";
 
 const categoryOptions = [
   { id: "ALL", name: "ALL" },
@@ -30,7 +31,6 @@ const categoryOptions = [
 
 const Home: NextPage = () => {
   const router = useRouter();
-  const [addSoundOpen, setAddSoundOpen] = useState(false);
   const [category, setCategory] = useState<CategoryType | "ALL">("ALL");
   const [searchInput, setSearchInput] = useState("");
   // const enabled = searchInput.trim() !== "" || category !== "ALL";
@@ -41,14 +41,6 @@ const Home: NextPage = () => {
 
   const handleSetCategory = (category: CategoryType | "ALL") => {
     setCategory(category);
-  };
-
-  const handleAddSoundOpen = () => {
-    setAddSoundOpen((prev) => !prev);
-  };
-
-  const handleAddSoundClose = () => {
-    setAddSoundOpen(false);
   };
 
   const {
@@ -87,7 +79,7 @@ const Home: NextPage = () => {
   return (
     <Layout>
       <div className="flex flex-col items-center justify-center p-8">
-        {/* <h1 className="text-6xl font-bold">Beatbox Sounds</h1> */}
+        <h1 className="text-6xl font-bold">Beatbox Sounds</h1>
         <h2 className="text-3xl">Search for any sound, or add one</h2>
       </div>
       <div className="flex items-center justify-center gap-2 sm:flex-row">
@@ -98,17 +90,7 @@ const Home: NextPage = () => {
           placeholder="Search for a sound..."
           type="search"
         />
-        <Button className="w-[25%] min-w-[100px]" onClick={handleAddSoundOpen}>
-          Add Sound
-        </Button>
-        <Modal isOpen={addSoundOpen} onClose={handleAddSoundClose}>
-          <AddSound
-            initialValues={{
-              name: searchInput,
-              category: category === "ALL" ? undefined : category,
-            }}
-          />
-        </Modal>
+        <AddSoundButton />
       </div>
       <Select
         id="category"
