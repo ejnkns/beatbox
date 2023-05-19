@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 
-export const Profile = () => {
+export default function ProfilePage() {
   const router = useRouter();
   const name = router.query.profile as string;
 
@@ -10,4 +10,4 @@ export const Profile = () => {
       <p>{name}</p>
     </div>
   );
-};
+}
