@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { Sticky } from "../Sticky";
-import { LoginButton } from "./LoginButton";
+import { useSession } from "next-auth/react";
 
 export const Header = () => {
+  const { data: sessionData } = useSession();
   return (
     <header className="flex w-full flex-col items-center text-center">
       <Sticky fixed>
@@ -12,11 +13,16 @@ export const Header = () => {
               Beatbox Sounds
             </Link>
           </div>
-          {/* <div className="flex items-center space-x-4">
-            <Link href={{ pathname: "/Login" }} className="text-xl">
-              Login
-            </Link>
-          </div> */}
+          {sessionData?.user && (
+            <div className="flex items-center space-x-4">
+              <Link
+                href={{ pathname: `/profile/${sessionData.user.name}` }}
+                className="text-xl"
+              >
+                profile
+              </Link>
+            </div>
+          )}
         </nav>
       </Sticky>
     </header>

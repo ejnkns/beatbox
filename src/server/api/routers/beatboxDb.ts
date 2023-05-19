@@ -224,14 +224,16 @@ export const beatboxDb = createTRPCRouter({
           });
     }),
 
-  upvoteTutorial: protectedProcedure
-    .input(z.object({ tutorialId: z.number() }))
+  voteTutorial: protectedProcedure
+    .input(
+      z.object({ tutorialId: z.number(), voteType: z.nativeEnum(VoteType) })
+    )
     .mutation(({ input, ctx }) => {
       return ctx.prisma.tutorialVote.update({
         where: { id: input.tutorialId },
         data: {
           userId: ctx.session.user.id,
-          voteType: VoteType.UP,
+          voteType: input.voteType,
         },
       });
     }),
@@ -241,6 +243,14 @@ export const beatboxDb = createTRPCRouter({
     .query(({ input, ctx }) => {
       return ctx.prisma.tutorialVote.findMany({
         where: { tutorialId: input.tutorialId },
+      });
+    }),
+
+  getUserVotesOnTutorial: protectedProcedure
+    .input(z.object({ tutorialId: z.number() }))
+    .query(({ input, ctx }) => {
+      return ctx.prisma.tutorialVote.findMany({
+        where: { tutorialId: input.tutorialId, userId: ctx.session.user.id },
       });
     }),
 });

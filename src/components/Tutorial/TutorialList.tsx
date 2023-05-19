@@ -36,8 +36,6 @@ export const TutorialList = ({
 }: TutorialListProps) => {
   const [userVotes, setUserVotes] = useState(initialUserVotes);
 
-  console.log(tutorials);
-
   const handleVote = (id: string, type: VoteType) => {
     setUserVotes((currentUserVotes) => ({
       ...currentUserVotes,

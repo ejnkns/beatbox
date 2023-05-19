@@ -53,19 +53,39 @@ export const Tutorial = ({ tutorial }: { tutorial: TutorialWithVotesType }) => {
     fetch(`https://noembed.com/embed?dataType=json&url=${tutorial.url}`)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         setChannel(data.author_name);
         setTitle(data.title);
       });
   }, [tutorial.url]);
 
+  const {
+    data: tutorialVotes,
+    isLoading: tutorialVotesIsLoading,
+    refetch,
+  } = api.beatboxDb.getTutorialVotes.useQuery(
+    {
+      tutorialId: tutorial.id,
+    },
+    {
+      enabled: tutorial.id !== undefined,
+    }
+  );
+
+  const mutation = api.beatboxDb.voteTutorial.useMutation();
+
+  const upvotesCount =
+    tutorialVotes?.filter(
+      (tutorialVote) => tutorialVote.voteType === VoteType.UP
+    ).length ?? 0;
+  const downvotesCount =
+    tutorialVotes?.filter(
+      (tutorialVote) => tutorialVote.voteType === VoteType.DOWN
+    ).length ?? 0;
+  const totalVotes =
+    upvotesCount || downvotesCount ? upvotesCount - downvotesCount : undefined;
+
   return (
-    <div className="flex flex-col gap-2 border-2 border-black bg-indigo-200 bg-opacity-50 backdrop-blur-lg">
-      <div className=" flex flex-col gap-2 border-2 border-black bg-indigo-200 bg-opacity-50 backdrop-blur-lg ">
-        <h3 className="mt-2 p-2 text-xl font-bold">{channel}</h3>
-        {/* <Button className="m-2">Upvote</Button>
-        <Button className="m-2">Downvote</Button> */}
-      </div>
+    <div className="flex flex-col border-2 border-black bg-indigo-200 bg-opacity-50 backdrop-blur-lg">
       {tutorial.url && (
         <div className="flex">
           <ReactPlayer
@@ -79,6 +99,37 @@ export const Tutorial = ({ tutorial }: { tutorial: TutorialWithVotesType }) => {
           />
         </div>
       )}
+      <div className=" flex flex-row justify-between gap-2 border-t-2 border-black bg-indigo-200 bg-opacity-50 backdrop-blur-lg ">
+        <h3 className="mt-2 p-2 text-xl font-bold">{channel}</h3>
+        {/* <p className="mt-2 p-2 text-xl font-bold">{title}</p> */}
+        <div className="m-2 flex w-12 flex-col items-center justify-center ">
+          <Button
+            className="h-2 w-full !bg-blue-500"
+            onClick={() => {
+              mutation.mutate({
+                tutorialId: tutorial.id,
+                voteType: VoteType.UP,
+              });
+              refetch();
+            }}
+          />
+          <div className="flex w-full items-center justify-center border-x-2 border-black bg-indigo-200 bg-opacity-50 text-center backdrop-blur-lg">
+            <span className="text-md font-bold ">
+              {`${totalVotes === undefined ? "?" : totalVotes}`}
+            </span>
+          </div>
+          <Button
+            className="h-2 w-full bg-red-500"
+            onClick={() => {
+              mutation.mutate({
+                tutorialId: tutorial.id,
+                voteType: VoteType.DOWN,
+              });
+              refetch();
+            }}
+          />
+        </div>
+      </div>
     </div>
   );
 };

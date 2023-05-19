@@ -70,7 +70,7 @@ const Home: NextPage = () => {
   return (
     <Layout>
       <div className="flex flex-col items-center justify-center p-8">
-        <AuthShowcase />
+        <LoginButton />
         <h1 className="text-6xl font-bold">Beatbox Sounds</h1>
         <h2 className="text-3xl">Search for any sound, or add one</h2>
       </div>
@@ -94,37 +94,20 @@ const Home: NextPage = () => {
     </Layout>
   );
 };
-const AuthShowcase: React.FC = () => {
+const LoginButton = () => {
   const { data: sessionData } = useSession();
 
   return (
     <div>
       <p>{sessionData && <span>Logged in as {sessionData.user?.name}</span>}</p>
-      <button onClick={sessionData ? () => signOut() : () => signIn()}>
+      <button
+        type="button"
+        className="text-xl"
+        onClick={sessionData ? () => void signOut() : () => void signIn()}
+      >
         {sessionData ? "Sign out" : "Sign in"}
       </button>
     </div>
-  );
-};
-
-export const LoginButton = () => {
-  const { data: sessionData } = useSession();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (sessionData) {
-      router.push("/");
-    }
-  }, [sessionData, router]);
-
-  return (
-    <button
-      type="button"
-      className="text-xl"
-      onClick={sessionData ? () => void signOut() : () => void signIn()}
-    >
-      {sessionData ? "Sign out" : "Sign in"}
-    </button>
   );
 };
 
