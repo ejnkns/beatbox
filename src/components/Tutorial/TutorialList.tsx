@@ -36,12 +36,26 @@ export const TutorialList = ({
 }: TutorialListProps) => {
   const [userVotes, setUserVotes] = useState(initialUserVotes);
 
+  console.log({ userVotes });
+
   const handleVote = (id: string, type: VoteType) => {
     setUserVotes((currentUserVotes) => ({
       ...currentUserVotes,
       [id]: type,
     }));
   };
+
+  const sortedTutorials = tutorials?.sort((a, b) => {
+    const aVotes = a.TutorialVotes.reduce(
+      (acc, curr) => acc + (curr.voteType === "UP" ? 1 : -1),
+      0
+    );
+    const bVotes = b.TutorialVotes.reduce(
+      (acc, curr) => acc + (curr.voteType === "UP" ? 1 : -1),
+      0
+    );
+    return bVotes - aVotes;
+  });
 
   return (
     <div className="m-8 flex w-full max-w-2xl flex-col gap-8 border-2 border-black px-8 pb-8">
@@ -50,8 +64,8 @@ export const TutorialList = ({
       </h2>
       {isLoading || !tutorials ? (
         <div>{`Loading...`}</div>
-      ) : tutorials.length ? (
-        tutorials.map((tutorial, i) => (
+      ) : sortedTutorials?.length ? (
+        sortedTutorials.map((tutorial, i) => (
           <Tutorial key={`${tutorial}-${i}`} tutorial={tutorial} />
         ))
       ) : (

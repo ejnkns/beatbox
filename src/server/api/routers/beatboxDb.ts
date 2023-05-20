@@ -196,8 +196,6 @@ export const beatboxDb = createTRPCRouter({
               OR: [
                 {
                   category: input.categoryFilter,
-                },
-                {
                   name: {
                     contains: input.search,
                     mode: "insensitive",
@@ -253,4 +251,11 @@ export const beatboxDb = createTRPCRouter({
         where: { tutorialId: input.tutorialId, userId: ctx.session.user.id },
       });
     }),
+
+  getUserUploadedSounds: publicProcedure.query(({ ctx }) => {
+    if (ctx?.session?.user)
+      return ctx.prisma.beatboxSound.findMany({
+        where: { userId: ctx.session.user.id },
+      });
+  }),
 });

@@ -39,30 +39,78 @@ const getBaseUrl = () => {
 //    **/
 //   ssr: false,
 // });
+export const api = createTRPCNext<AppRouter>({
+  config: (opts) => {
+    if (typeof window !== "undefined") {
+      return {
+        transformer: superjson,
+        links: [
+          httpBatchLink({
+            url: "/api/trpc",
+          }),
+        ],
+      };
+    }
+    const url = process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}/api/trpc`
+      : "http://localhost:3000/api/trpc";
+    return {
+      transformer: superjson,
+      links: [httpBatchLink({ url })],
+    };
+  },
+  ssr: true,
+  responseMeta(opts) {
+    const { clientErrors } = opts;
+    const firstClientError = clientErrors?.[0];
+    if (firstClientError) {
+      // propagate http first error from API calls
+      return {
+        status: firstClientError.data?.httpStatus ?? 500,
+      };
+    }
+    // cache request for 1 day + revalidate once every second
+    const ONE_DAY_IN_SECONDS = 60 * 60 * 24;
+    return {
+      headers: {
+        "cache-control": `s-maxage=1, stale-while-revalidate=${ONE_DAY_IN_SECONDS}`,
+      },
+    };
+  },
+});
+
 // export const api = createTRPCNext<AppRouter>({
-//   config: (opts) => {
-//     if (typeof window !== "undefined") {
-//       return {
-//         transformer: superjson,
-//         links: [
-//           httpBatchLink({
-//             url: "/api/trpc",
-//           }),
-//         ],
-//       };
-//     }
-//     const url = process.env.VERCEL_URL
-//       ? `https://${process.env.VERCEL_URL}/api/trpc`
-//       : "http://localhost:3000/api/trpc";
+//   config() {
 //     return {
+//       /**
+//        * Transformer used for data de-serialization from the server.
+//        *
+//        * @see https://trpc.io/docs/data-transformers
+//        */
 //       transformer: superjson,
-//       links: {
-//         httpBatchLink({
-//           url: lurl,
+
+//       /**
+//        * Links used to determine request flow from client to server.
+//        *
+//        * @see https://trpc.io/docs/links
+//        */
+//       links: [
+//         loggerLink({
+//           enabled: (opts) =>
+//             process.env.NODE_ENV === "development" ||
+//             (opts.direction === "down" && opts.result instanceof Error),
 //         }),
-//       },
+//         httpBatchLink({
+//           url: `${getBaseUrl()}/api/trpc`,
+//         }),
+//       ],
 //     };
 //   },
+//   /**
+//    * Whether tRPC should await queries when server rendering pages.
+//    *
+//    * @see https://trpc.io/docs/nextjs#ssr-boolean-default-false
+//    */
 //   ssr: true,
 //   responseMeta(opts) {
 //     const { clientErrors } = opts;
@@ -73,65 +121,13 @@ const getBaseUrl = () => {
 //         status: firstClientError.data?.httpStatus ?? 500,
 //       };
 //     }
-//     // cache request for 1 day + revalidate once every second
+//     // cache full page for 1 day + revalidate once every second
 //     const ONE_DAY_IN_SECONDS = 60 * 60 * 24;
 //     return {
-//       headers: {
-//         "cache-control": `s-maxage=1, stale-while-revalidate=${ONE_DAY_IN_SECONDS}`,
-//       },
+//       "Cache-Control": `s-maxage=1, stale-while-revalidate=${ONE_DAY_IN_SECONDS}`,
 //     };
 //   },
 // });
-
-export const api = createTRPCNext<AppRouter>({
-  config() {
-    return {
-      /**
-       * Transformer used for data de-serialization from the server.
-       *
-       * @see https://trpc.io/docs/data-transformers
-       */
-      transformer: superjson,
-
-      /**
-       * Links used to determine request flow from client to server.
-       *
-       * @see https://trpc.io/docs/links
-       */
-      links: [
-        loggerLink({
-          enabled: (opts) =>
-            process.env.NODE_ENV === "development" ||
-            (opts.direction === "down" && opts.result instanceof Error),
-        }),
-        httpBatchLink({
-          url: `${getBaseUrl()}/api/trpc`,
-        }),
-      ],
-    };
-  },
-  /**
-   * Whether tRPC should await queries when server rendering pages.
-   *
-   * @see https://trpc.io/docs/nextjs#ssr-boolean-default-false
-   */
-  // ssr: true,
-  // responseMeta(opts) {
-  //   const { clientErrors } = opts;
-  //   const firstClientError = clientErrors?.[0];
-  //   if (firstClientError) {
-  //     // propagate http first error from API calls
-  //     return {
-  //       status: firstClientError.data?.httpStatus ?? 500,
-  //     };
-  //   }
-  //   // cache full page for 1 day + revalidate once every second
-  //   const ONE_DAY_IN_SECONDS = 60 * 60 * 24;
-  //   return {
-  //     "Cache-Control": `s-maxage=1, stale-while-revalidate=${ONE_DAY_IN_SECONDS}`,
-  //   };
-  // },
-});
 
 /**
  * Inference helper for inputs.

@@ -36,14 +36,6 @@ const Home: NextPage = () => {
   const [searchInput, setSearchInput] = useState("");
   const [beatboxSoundsResults, setBeatboxSoundsResults] = useState<any>([]);
 
-  const handleSearchInput = (value: string) => {
-    setSearchInput(value);
-  };
-
-  const handleSetCategory = (category: CategoryType | "ALL") => {
-    setCategory(category);
-  };
-
   const {
     data: searchResults,
     isLoading: isSearching,
@@ -66,6 +58,14 @@ const Home: NextPage = () => {
   useEffect(() => {
     if (searchResults !== undefined) setBeatboxSoundsResults(searchResults);
   }, [searchResults]);
+
+  const handleSearchInput = (value: string) => {
+    setSearchInput(value);
+  };
+
+  const handleSetCategory = (category: CategoryType | "ALL") => {
+    setCategory(category);
+  };
 
   return (
     <Layout>
@@ -94,6 +94,7 @@ const Home: NextPage = () => {
     </Layout>
   );
 };
+
 const LoginButton = () => {
   const { data: sessionData } = useSession();
 
