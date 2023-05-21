@@ -28,14 +28,32 @@ export default function ProfilePage() {
       <h1>Profile</h1>
       <p>{name}</p>
       {uploads && (
-        <ul className="border-2 border-black">
-          {uploads.UploadedSounds?.map((sound) => (
-            <li className="border-2 border-black" key={sound.id}>
-              <span>{sound.name}</span>
-              <Link href={`/sound/${sound.name}`}>View</Link>
-            </li>
-          ))}
-        </ul>
+        <>
+          <ul className="border-2 border-black">
+            {uploads.UploadedSounds?.map((sound) => (
+              <li className="border-2 border-black" key={sound.id}>
+                <span>{sound.name}</span>
+                <Link href={`/sound/${sound.name}`}>View</Link>
+              </li>
+            ))}
+          </ul>
+          <ul className="border-2 border-black">
+            {uploads.UploadedTutorials?.map((tutorial) => (
+              <li className="border-2 border-black" key={tutorial.id}>
+                <span>{tutorial.name}</span>
+                <Link href={`/sound/${tutorial.name}`}>View</Link>
+              </li>
+            ))}
+          </ul>
+          <ul className="border-2 border-black">
+            {uploads.TutorialVotes?.map((votes) => (
+              <li className="border-2 border-black" key={votes.id}>
+                <span>{votes.voteType}</span>
+                <Link href={`/sound/${votes.tutorialId}`}>View</Link>
+              </li>
+            ))}
+          </ul>
+        </>
       )}
     </Layout>
   );

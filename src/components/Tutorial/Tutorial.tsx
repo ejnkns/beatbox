@@ -12,6 +12,8 @@ import superjson from "superjson";
 import { api } from "~/utils/api";
 import { TutorialListProps, TutorialWithVotesType } from "./TutorialList";
 import { Button } from "../Controls/Button";
+import { VoteButtons } from "../VoteButtons/VoteButtons";
+import { useSession } from "next-auth/react";
 const ReactPlayer = dynamic(() => import("react-player/lazy"));
 
 // export async function getServerSideProps(
@@ -49,6 +51,8 @@ export const Tutorial = ({ tutorial }: { tutorial: TutorialWithVotesType }) => {
   const [title, setTitle] = useState("");
   const [channel, setChannel] = useState("");
 
+  const { data: sessionData } = useSession();
+
   useEffect(() => {
     fetch(`https://noembed.com/embed?dataType=json&url=${tutorial.url}`)
       .then((res) => res.json())
@@ -58,20 +62,7 @@ export const Tutorial = ({ tutorial }: { tutorial: TutorialWithVotesType }) => {
       });
   }, [tutorial.url]);
 
-  const {
-    data: tutorialVotes,
-    isLoading: tutorialVotesIsLoading,
-    refetch,
-  } = api.beatboxDb.getTutorialVotes.useQuery(
-    {
-      tutorialId: tutorial.id,
-    },
-    {
-      enabled: tutorial.id !== undefined,
-    }
-  );
-
-  const mutation = api.beatboxDb.voteTutorial.useMutation();
+  const tutorialVotes = tutorial.TutorialVotes;
 
   const upvotesCount =
     tutorialVotes?.filter(
@@ -83,6 +74,18 @@ export const Tutorial = ({ tutorial }: { tutorial: TutorialWithVotesType }) => {
     ).length ?? 0;
   const totalVotes =
     upvotesCount || downvotesCount ? upvotesCount - downvotesCount : undefined;
+
+  const mutation = api.beatboxDb.addTutorialVote.useMutation();
+  const handleVote = (voteType: VoteType) => {
+    mutation.mutate({
+      tutorialId: tutorial.id,
+      voteType,
+    });
+  };
+
+  const userVote = tutorialVotes?.find(
+    (tutorialVote) => tutorialVote.userId === sessionData?.user.id
+  )?.voteType;
 
   return (
     <div className="flex flex-col border-2 border-black bg-indigo-200 bg-opacity-50 backdrop-blur-lg">
@@ -102,33 +105,11 @@ export const Tutorial = ({ tutorial }: { tutorial: TutorialWithVotesType }) => {
       <div className=" flex flex-row justify-between gap-2 border-t-2 border-black bg-indigo-200 bg-opacity-50 backdrop-blur-lg ">
         <h3 className="mt-2 p-2 text-xl font-bold">{channel}</h3>
         {/* <p className="mt-2 p-2 text-xl font-bold">{title}</p> */}
-        <div className="m-2 flex w-12 flex-col items-center justify-center ">
-          <Button
-            className="h-2 w-full !bg-blue-500"
-            onClick={() => {
-              mutation.mutate({
-                tutorialId: tutorial.id,
-                voteType: VoteType.UP,
-              });
-              refetch();
-            }}
-          />
-          <div className="flex w-full items-center justify-center border-x-2 border-black bg-indigo-200 bg-opacity-50 text-center backdrop-blur-lg">
-            <span className="text-md font-bold ">
-              {`${totalVotes === undefined ? "?" : totalVotes}`}
-            </span>
-          </div>
-          <Button
-            className="h-2 w-full bg-red-500"
-            onClick={() => {
-              mutation.mutate({
-                tutorialId: tutorial.id,
-                voteType: VoteType.DOWN,
-              });
-              refetch();
-            }}
-          />
-        </div>
+        <VoteButtons
+          onVote={handleVote}
+          totalVotes={totalVotes}
+          userVote={userVote}
+        />
       </div>
     </div>
   );

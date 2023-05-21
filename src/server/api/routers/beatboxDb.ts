@@ -130,6 +130,7 @@ export const beatboxDb = createTRPCRouter({
         data: {
           name: input.name,
           url: input.url,
+          userId: ctx.session.user.id,
         },
       });
     }),
@@ -167,6 +168,7 @@ export const beatboxDb = createTRPCRouter({
             create: input.tutorials.map((tutorial) => ({
               name: input.name,
               url: tutorial,
+              userId: ctx.session.user.id,
             })),
           },
         },
@@ -222,7 +224,7 @@ export const beatboxDb = createTRPCRouter({
           });
     }),
 
-  voteTutorial: protectedProcedure
+  addTutorialVote: protectedProcedure
     .input(
       z.object({ tutorialId: z.number(), voteType: z.nativeEnum(VoteType) })
     )
@@ -252,15 +254,14 @@ export const beatboxDb = createTRPCRouter({
       });
     }),
 
-  getUserUploads: publicProcedure.query(({ ctx }) => {
-    if (ctx?.session?.user)
-      return ctx.prisma.user.findUnique({
-        where: { id: ctx.session.user.id },
-        select: {
-          UploadedSounds: true,
-          UploadedTutorials: true,
-          TutorialVotes: true,
-        },
-      });
+  getUserUploads: protectedProcedure.query(({ ctx }) => {
+    return ctx.prisma.user.findUnique({
+      where: { id: ctx.session.user.id },
+      select: {
+        UploadedSounds: true,
+        UploadedTutorials: true,
+        TutorialVotes: true,
+      },
+    });
   }),
 });
