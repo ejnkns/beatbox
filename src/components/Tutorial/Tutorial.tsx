@@ -66,17 +66,26 @@ export const Tutorial = ({ tutorial }: { tutorial: TutorialWithVotesType }) => {
   const totalVotes =
     upvotesCount || downvotesCount ? upvotesCount - downvotesCount : undefined;
 
-  const mutation = api.beatboxDb.addTutorialVote.useMutation();
+  const addVote = api.beatboxDb.addTutorialVote.useMutation();
+  const updateVote = api.beatboxDb.updateTutorialVote.useMutation();
+  const userVote = tutorialVotes?.find(
+    (tutorialVote) => tutorialVote.userId === sessionData?.user.id
+  );
+  const userVoteType = userVote?.voteType;
+
   const handleVote = (voteType: VoteType) => {
-    mutation.mutate({
+    if (userVoteType) {
+      updateVote.mutate({
+        voteId: userVote.id,
+        voteType,
+      });
+      return;
+    }
+    addVote.mutate({
       tutorialId: tutorial.id,
       voteType,
     });
   };
-
-  const userVote = tutorialVotes?.find(
-    (tutorialVote) => tutorialVote.userId === sessionData?.user.id
-  )?.voteType;
 
   return (
     <div className="flex flex-col border-2 border-black bg-indigo-200 bg-opacity-50 backdrop-blur-lg">
@@ -99,7 +108,7 @@ export const Tutorial = ({ tutorial }: { tutorial: TutorialWithVotesType }) => {
         <VoteButtons
           onVote={handleVote}
           totalVotes={totalVotes}
-          userVote={userVote}
+          userVote={userVoteType}
         />
       </div>
     </div>

@@ -24,7 +24,9 @@ export const beatboxDb = createTRPCRouter({
             id: true,
             name: true,
             url: true,
-            TutorialVotes: { select: { voteType: true, userId: true } },
+            TutorialVotes: {
+              select: { voteType: true, userId: true, id: true },
+            },
           },
         },
       },
@@ -79,6 +81,7 @@ export const beatboxDb = createTRPCRouter({
                   createdAt: true,
                   updatedAt: true,
                   voteType: true,
+                  id: true,
                 },
               },
             },
@@ -224,18 +227,26 @@ export const beatboxDb = createTRPCRouter({
           });
     }),
 
+  updateTutorialVote: protectedProcedure
+    .input(z.object({ voteId: z.number(), voteType: z.nativeEnum(VoteType) }))
+    .mutation(({ input, ctx }) => {
+      return ctx.prisma.tutorialVote.update({
+        where: {
+          id: input.voteId,
+        },
+        data: {
+          voteType: input.voteType,
+        },
+      });
+    }),
+
   addTutorialVote: protectedProcedure
     .input(
       z.object({ tutorialId: z.number(), voteType: z.nativeEnum(VoteType) })
     )
     .mutation(({ input, ctx }) => {
-      return ctx.prisma.tutorialVote.upsert({
-        where: { id: input.tutorialId },
-        update: {
-          userId: ctx.session.user.id,
-          voteType: input.voteType,
-        },
-        create: {
+      return ctx.prisma.tutorialVote.create({
+        data: {
           userId: ctx.session.user.id,
           voteType: input.voteType,
           tutorialId: input.tutorialId,

@@ -2,12 +2,13 @@ import { Tutorial } from "./Tutorial";
 import { VoteType } from "@prisma/client";
 
 export type TutorialWithVotesType = {
+  name: string;
   url: string;
   id: number;
   createdAt: Date;
   updatedAt: Date;
-  name: string;
   TutorialVotes: {
+    id: number;
     createdAt: Date;
     updatedAt: Date;
     userId: string;
