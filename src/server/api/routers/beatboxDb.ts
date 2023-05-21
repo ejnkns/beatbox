@@ -252,10 +252,15 @@ export const beatboxDb = createTRPCRouter({
       });
     }),
 
-  getUserUploadedSounds: publicProcedure.query(({ ctx }) => {
+  getUserUploads: publicProcedure.query(({ ctx }) => {
     if (ctx?.session?.user)
-      return ctx.prisma.beatboxSound.findMany({
-        where: { userId: ctx.session.user.id },
+      return ctx.prisma.user.findUnique({
+        where: { id: ctx.session.user.id },
+        select: {
+          UploadedSounds: true,
+          UploadedTutorials: true,
+          TutorialVotes: true,
+        },
       });
   }),
 });

@@ -1,6 +1,8 @@
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { Layout } from "~/components/Layout/Layout";
+import { api } from "~/utils/api";
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -9,11 +11,32 @@ export default function ProfilePage() {
   const { data: sessionData } = useSession();
 
   const thing = sessionData?.user.name;
+  console.log({ sessionData });
+
+  const {
+    data: uploads,
+    isLoading: uploadsIsLoading,
+    refetch,
+  } = api.beatboxDb.getUserUploads.useQuery(undefined, {
+    enabled: router.isReady,
+  });
+
+  console.log({ uploads });
 
   return (
     <Layout>
       <h1>Profile</h1>
       <p>{name}</p>
+      {uploads && (
+        <ul className="border-2 border-black">
+          {uploads.UploadedSounds?.map((sound) => (
+            <li className="border-2 border-black" key={sound.id}>
+              <span>{sound.name}</span>
+              <Link href={`/sound/${sound.name}`}>View</Link>
+            </li>
+          ))}
+        </ul>
+      )}
     </Layout>
   );
 }
