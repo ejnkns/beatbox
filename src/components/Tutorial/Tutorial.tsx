@@ -1,17 +1,8 @@
-import {
-  Tutorial as TutorialType,
-  TutorialVote,
-  VoteType,
-} from "@prisma/client";
-import { createServerSideHelpers } from "@trpc/react-query/server";
-import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
+import { VoteType } from "@prisma/client";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
-import { beatboxDb } from "~/server/api/routers/beatboxDb";
-import superjson from "superjson";
 import { api } from "~/utils/api";
-import { TutorialListProps, TutorialWithVotesType } from "./TutorialList";
-import { Button } from "../Controls/Button";
+import { TutorialWithVotesType } from "./TutorialList";
 import { VoteButtons } from "../VoteButtons/VoteButtons";
 import { useSession } from "next-auth/react";
 const ReactPlayer = dynamic(() => import("react-player/lazy"));

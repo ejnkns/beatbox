@@ -1,6 +1,6 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "~/components/Controls/Button";
 import { Input } from "~/components/Controls/Input";
 import { Layout } from "~/components/Layout/Layout";
@@ -78,19 +78,6 @@ export default function SoundPage() {
 
   const isLoading = addTutorialToBeatboxSoundIsLoading || addTutorialIsLoading;
 
-  const initialUserVotes = useMemo(() => {
-    if (!beatboxSound?.tutorials) return {};
-    beatboxSound.tutorials.reduce((acc, tutorial) => {
-      const userVote = tutorial.TutorialVotes.find(
-        (vote) => vote.userId === sessionData?.user?.id
-      );
-      if (userVote) {
-        acc[tutorial.id] = userVote.voteType;
-      }
-      return acc;
-    }, {} as Record<string, string>);
-  }, [beatboxSound?.tutorials, sessionData?.user?.id]);
-
   return (
     <Layout>
       <div className="flex w-full flex-col items-center justify-center gap-2">
@@ -105,7 +92,6 @@ export default function SoundPage() {
         <TutorialList
           tutorials={beatboxSound?.tutorials ?? []}
           isLoading={beatboxSoundIsLoading}
-          initialUserVotes={initialUserVotes}
         />
         <div className="flex w-full items-center justify-center gap-2 sm:flex-row">
           <Input

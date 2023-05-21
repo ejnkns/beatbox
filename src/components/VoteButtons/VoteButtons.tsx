@@ -1,6 +1,5 @@
-import { api } from "~/utils/api";
 import { Button } from "../Controls/Button";
-import { TutorialVote, VoteType } from "@prisma/client";
+import { VoteType } from "@prisma/client";
 import { useState } from "react";
 
 export const VoteButtons = ({

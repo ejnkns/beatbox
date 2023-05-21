@@ -229,9 +229,13 @@ export const beatboxDb = createTRPCRouter({
       z.object({ tutorialId: z.number(), voteType: z.nativeEnum(VoteType) })
     )
     .mutation(({ input, ctx }) => {
-      return ctx.prisma.tutorialVote.update({
+      return ctx.prisma.tutorialVote.upsert({
         where: { id: input.tutorialId },
-        data: {
+        update: {
+          userId: ctx.session.user.id,
+          voteType: input.voteType,
+        },
+        create: {
           userId: ctx.session.user.id,
           voteType: input.voteType,
           tutorialId: input.tutorialId,
