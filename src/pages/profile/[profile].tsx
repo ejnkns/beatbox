@@ -30,6 +30,7 @@ export default function ProfilePage() {
       {uploads && (
         <>
           <ul className="border-2 border-black">
+            <h2>Uploaded Sounds</h2>
             {uploads.UploadedSounds?.map((sound) => (
               <li className="border-2 border-black" key={sound.id}>
                 <span>{sound.name}</span>
@@ -38,6 +39,7 @@ export default function ProfilePage() {
             ))}
           </ul>
           <ul className="border-2 border-black">
+            <h2>Uploaded Tutorials</h2>
             {uploads.UploadedTutorials?.map((tutorial) => (
               <li className="border-2 border-black" key={tutorial.id}>
                 <span>{tutorial.name}</span>
@@ -46,6 +48,7 @@ export default function ProfilePage() {
             ))}
           </ul>
           <ul className="border-2 border-black">
+            <h2>Tutorial Votes</h2>
             {uploads.TutorialVotes?.map((votes) => (
               <li className="border-2 border-black" key={votes.id}>
                 <span>{votes.voteType}</span>

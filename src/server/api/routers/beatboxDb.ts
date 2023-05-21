@@ -234,6 +234,7 @@ export const beatboxDb = createTRPCRouter({
         data: {
           userId: ctx.session.user.id,
           voteType: input.voteType,
+          tutorialId: input.tutorialId,
         },
       });
     }),
