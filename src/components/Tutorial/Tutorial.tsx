@@ -6,8 +6,9 @@ import { TutorialWithVotesType } from "./TutorialList";
 import { VoteButtons } from "../VoteButtons/VoteButtons";
 import { useSession } from "next-auth/react";
 import {
+  addTutorialVote,
   deleteTutorialVote,
-  updateTutorialVotes,
+  updateTutorialVote,
 } from "~/server/api/routers/beatboxDb.utils";
 const ReactPlayer = dynamic(() => import("react-player/lazy"));
 
@@ -69,6 +70,7 @@ export const Tutorial = ({ tutorial }: { tutorial: TutorialWithVotesType }) => {
     (tutorialVote) => tutorialVote.voteType === VoteType.DOWN
   ).length;
   const totalVotes = upvotesCount - downvotesCount;
+  console.log({ totalVotes });
 
   const userVote = tutorialVotes?.find(
     (tutorialVote) => tutorialVote.userId === userId
@@ -94,13 +96,11 @@ export const Tutorial = ({ tutorial }: { tutorial: TutorialWithVotesType }) => {
           return {
             ...old,
             tutorials: old.tutorials.map((tutorial) => {
-              console.log("updating");
               if (tutorial.id === newVoteMutation.tutorialId) {
-                if (
-                  newVoteMutation.operation === "update" ||
-                  newVoteMutation.operation === "add"
-                ) {
-                  return updateTutorialVotes(tutorial, newVoteMutation);
+                if (newVoteMutation.operation === "update") {
+                  return updateTutorialVote(tutorial, newVoteMutation);
+                } else if (newVoteMutation.operation === "add") {
+                  return addTutorialVote(tutorial, newVoteMutation, userId);
                 } else if (newVoteMutation.operation === "delete") {
                   return deleteTutorialVote(tutorial, newVoteMutation);
                 }
@@ -179,7 +179,7 @@ export const Tutorial = ({ tutorial }: { tutorial: TutorialWithVotesType }) => {
         <h3 className="mt-2 p-2 text-xl font-bold">{channel}</h3>
         {/* <p className="mt-2 p-2 text-xl font-bold">{title}</p> */}
         <VoteButtons
-          key={`${userVoteType}-${tutorial.id}`}
+          key={`${userVoteType}-${tutorial.id}-${totalVotes}`}
           onVote={handleVote}
           totalVotes={totalVotes}
           userVote={userVoteType}
