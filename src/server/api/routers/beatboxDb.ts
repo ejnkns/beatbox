@@ -227,31 +227,46 @@ export const beatboxDb = createTRPCRouter({
           });
     }),
 
-  updateTutorialVote: protectedProcedure
-    .input(z.object({ voteId: z.number(), voteType: z.nativeEnum(VoteType) }))
-    .mutation(({ input, ctx }) => {
-      return ctx.prisma.tutorialVote.update({
-        where: {
-          id: input.voteId,
-        },
-        data: {
-          voteType: input.voteType,
-        },
-      });
-    }),
-
-  addTutorialVote: protectedProcedure
+  mutateTutorialVote: protectedProcedure
     .input(
-      z.object({ tutorialId: z.number(), voteType: z.nativeEnum(VoteType) })
+      z.object({
+        voteId: z.number().optional(),
+        tutorialId: z.number(),
+        voteType: z.nativeEnum(VoteType),
+        operation: z.nativeEnum({
+          upsert: "update",
+          add: "add",
+          delete: "delete",
+        }),
+      })
     )
     .mutation(({ input, ctx }) => {
-      return ctx.prisma.tutorialVote.create({
-        data: {
-          userId: ctx.session.user.id,
-          voteType: input.voteType,
-          tutorialId: input.tutorialId,
-        },
-      });
+      if (input.operation === "update") {
+        return ctx.prisma.tutorialVote.update({
+          where: {
+            id: input.voteId,
+          },
+          data: {
+            voteType: input.voteType,
+          },
+        });
+      }
+      if (input.operation === "delete") {
+        return ctx.prisma.tutorialVote.delete({
+          where: {
+            id: input.voteId,
+          },
+        });
+      }
+      if (input.operation === "add") {
+        return ctx.prisma.tutorialVote.create({
+          data: {
+            userId: ctx.session.user.id,
+            voteType: input.voteType,
+            tutorialId: input.tutorialId,
+          },
+        });
+      }
     }),
 
   getTutorialVotes: publicProcedure

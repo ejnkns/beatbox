@@ -5,6 +5,10 @@ import { api } from "~/utils/api";
 import { TutorialWithVotesType } from "./TutorialList";
 import { VoteButtons } from "../VoteButtons/VoteButtons";
 import { useSession } from "next-auth/react";
+import {
+  deleteTutorialVote,
+  updateTutorialVotes,
+} from "~/server/api/routers/beatboxDb.utils";
 const ReactPlayer = dynamic(() => import("react-player/lazy"));
 
 // export async function getServerSideProps(
@@ -43,6 +47,9 @@ export const Tutorial = ({ tutorial }: { tutorial: TutorialWithVotesType }) => {
   const [channel, setChannel] = useState("");
 
   const { data: sessionData } = useSession();
+  // TODO: figure out a better way to do this
+  const userId =
+    process.env.NODE_ENV === "development" ? "1" : sessionData?.user.id;
 
   useEffect(() => {
     fetch(`https://noembed.com/embed?dataType=json&url=${tutorial.url}`)
@@ -55,37 +62,103 @@ export const Tutorial = ({ tutorial }: { tutorial: TutorialWithVotesType }) => {
 
   const tutorialVotes = tutorial.TutorialVotes;
 
-  const upvotesCount =
-    tutorialVotes?.filter(
-      (tutorialVote) => tutorialVote.voteType === VoteType.UP
-    ).length ?? 0;
-  const downvotesCount =
-    tutorialVotes?.filter(
-      (tutorialVote) => tutorialVote.voteType === VoteType.DOWN
-    ).length ?? 0;
-  const totalVotes =
-    upvotesCount || downvotesCount ? upvotesCount - downvotesCount : undefined;
+  const upvotesCount = tutorialVotes?.filter(
+    (tutorialVote) => tutorialVote.voteType === VoteType.UP
+  ).length;
+  const downvotesCount = tutorialVotes?.filter(
+    (tutorialVote) => tutorialVote.voteType === VoteType.DOWN
+  ).length;
+  const totalVotes = upvotesCount - downvotesCount;
 
-  const addVote = api.beatboxDb.addTutorialVote.useMutation();
-  const updateVote = api.beatboxDb.updateTutorialVote.useMutation();
   const userVote = tutorialVotes?.find(
-    (tutorialVote) => tutorialVote.userId === sessionData?.user.id
+    (tutorialVote) => tutorialVote.userId === userId
   );
+
   const userVoteType = userVote?.voteType;
+
+  const utils = api.useContext();
+
+  const mutateVote = api.beatboxDb.mutateTutorialVote.useMutation({
+    async onMutate(newVoteMutation) {
+      // Cancel outgoing fetches (so they don't overwrite our optimistic update)
+      await utils.beatboxDb.getBeatboxSoundByName.cancel();
+
+      // Get the data from the queryCache
+      const prevData = utils.beatboxDb.getBeatboxSoundByName.getData();
+
+      // Optimistically update the data with our new post
+      utils.beatboxDb.getBeatboxSoundByName.setData(
+        { name: tutorial.name },
+        (old) => {
+          if (!old) return old;
+          return {
+            ...old,
+            tutorials: old.tutorials.map((tutorial) => {
+              console.log("updating");
+              if (tutorial.id === newVoteMutation.tutorialId) {
+                if (
+                  newVoteMutation.operation === "update" ||
+                  newVoteMutation.operation === "add"
+                ) {
+                  return updateTutorialVotes(tutorial, newVoteMutation);
+                } else if (newVoteMutation.operation === "delete") {
+                  return deleteTutorialVote(tutorial, newVoteMutation);
+                }
+              }
+              return tutorial;
+            }),
+          };
+        }
+      );
+
+      // Return the previous data so we can revert if something goes wrong
+      return { prevData };
+    },
+    onError(err, newVoteMutation, ctx) {
+      // If the mutation fails, use the context-value from onMutate
+      if (ctx) {
+        utils.beatboxDb.getBeatboxSoundByName.setData(
+          { name: tutorial.name },
+          ctx.prevData
+        );
+      }
+    },
+    onSettled() {
+      // Sync with server once mutation has settled
+      utils.beatboxDb.getBeatboxSoundByName.invalidate();
+    },
+  });
 
   const handleVote = (voteType: VoteType) => {
     if (userVoteType) {
-      updateVote.mutate({
+      if (userVoteType !== voteType) {
+        mutateVote.mutate({
+          tutorialId: tutorial.id,
+          voteId: userVote.id,
+          voteType,
+          operation: "update",
+        });
+        return;
+      }
+      mutateVote.mutate({
+        tutorialId: tutorial.id,
         voteId: userVote.id,
         voteType,
+        operation: "delete",
       });
       return;
     }
-    addVote.mutate({
+    mutateVote.mutate({
       tutorialId: tutorial.id,
       voteType,
+      operation: "add",
     });
+    return;
   };
+
+  // const beatboxSoundQuery = api.beatboxDb.getBeatboxSoundByName.useQuery({
+  //   name: tutorial.name,
+  // });
 
   return (
     <div className="flex flex-col border-2 border-black bg-indigo-200 bg-opacity-50 backdrop-blur-lg">
@@ -106,6 +179,7 @@ export const Tutorial = ({ tutorial }: { tutorial: TutorialWithVotesType }) => {
         <h3 className="mt-2 p-2 text-xl font-bold">{channel}</h3>
         {/* <p className="mt-2 p-2 text-xl font-bold">{title}</p> */}
         <VoteButtons
+          key={`${userVoteType}-${tutorial.id}`}
           onVote={handleVote}
           totalVotes={totalVotes}
           userVote={userVoteType}

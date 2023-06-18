@@ -1,6 +1,7 @@
 import { Button } from "../Controls/Button";
 import { VoteType } from "@prisma/client";
 import { useState } from "react";
+import { twMerge } from "tailwind-merge";
 
 export const VoteButtons = ({
   onVote,
@@ -16,8 +17,9 @@ export const VoteButtons = ({
   return (
     <div className="m-2 flex w-12 flex-col items-center justify-center ">
       <Button
-        className="h-2 w-full !bg-blue-500"
-        selected={selected === VoteType.UP}
+        className={`w-full !bg-blue-500 opacity-50 ${
+          selected === VoteType.UP ? "h-8 opacity-100" : ""
+        }`}
         onClick={() => {
           setSelected(VoteType.UP);
           onVote(VoteType.UP);
@@ -29,10 +31,11 @@ export const VoteButtons = ({
         </span>
       </div>
       <Button
-        selected={selected === VoteType.DOWN}
-        className="h-2 w-full bg-red-500"
+        className={`w-full !bg-red-500 opacity-50 ${
+          selected === VoteType.DOWN ? "h-8 !opacity-100" : ""
+        }`}
         onClick={() => {
-          setSelected(VoteType.UP);
+          setSelected(VoteType.DOWN);
           onVote(VoteType.DOWN);
         }}
       />

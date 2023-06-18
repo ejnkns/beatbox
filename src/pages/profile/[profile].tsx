@@ -11,7 +11,6 @@ export default function ProfilePage() {
   const { data: sessionData } = useSession();
 
   const thing = sessionData?.user.name;
-  console.log({ sessionData });
 
   const {
     data: uploads,
@@ -20,8 +19,6 @@ export default function ProfilePage() {
   } = api.beatboxDb.getUserUploads.useQuery(undefined, {
     enabled: router.isReady,
   });
-
-  console.log({ uploads });
 
   return (
     <Layout>
