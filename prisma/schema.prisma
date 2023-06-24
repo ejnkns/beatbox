@@ -95,8 +95,8 @@ enum CategoryType {
 
 model Tutorial {
   id            Int            @id @default(autoincrement())
-  name          String         
-  url           String         
+  name          String
+  url           String
   beatboxSounds BeatboxSound[]
   TutorialVotes TutorialVote[]
   createdAt     DateTime       @default(now())
@@ -123,6 +123,8 @@ model TutorialVote {
   voteType   VoteType
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
+
+  @@unique([userId, tutorialId], name: "userId_tutorialId_unique")
 }
 
 enum VoteType {

@@ -241,16 +241,6 @@ export const beatboxDb = createTRPCRouter({
       })
     )
     .mutation(({ input, ctx }) => {
-      if (input.operation === "update") {
-        return ctx.prisma.tutorialVote.update({
-          where: {
-            id: input.voteId,
-          },
-          data: {
-            voteType: input.voteType,
-          },
-        });
-      }
       if (input.operation === "delete") {
         return ctx.prisma.tutorialVote.delete({
           where: {
@@ -258,12 +248,21 @@ export const beatboxDb = createTRPCRouter({
           },
         });
       }
-      if (input.operation === "add") {
-        return ctx.prisma.tutorialVote.create({
-          data: {
-            userId: ctx.session.user.id,
+      if (input.operation === "update" || input.operation === "add") {
+        return ctx.prisma.tutorialVote.upsert({
+          where: {
+            userId_tutorialId_unique: {
+              userId: ctx.session.user.id,
+              tutorialId: input.tutorialId,
+            },
+          },
+          update: {
+            voteType: input.voteType,
+          },
+          create: {
             voteType: input.voteType,
             tutorialId: input.tutorialId,
+            userId: ctx.session.user.id,
           },
         });
       }

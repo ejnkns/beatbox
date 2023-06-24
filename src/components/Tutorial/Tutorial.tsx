@@ -1,10 +1,11 @@
 import { VoteType } from "@prisma/client";
 import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { api } from "~/utils/api";
 import { TutorialWithVotesType } from "./TutorialList";
 import { VoteButtons } from "../VoteButtons/VoteButtons";
 import { useSession } from "next-auth/react";
+import debounce from "lodash.debounce";
 import {
   addTutorialVote,
   deleteTutorialVote,
@@ -72,11 +73,19 @@ export const Tutorial = ({ tutorial }: { tutorial: TutorialWithVotesType }) => {
   const totalVotes = upvotesCount - downvotesCount;
   console.log({ totalVotes });
 
-  const userVote = tutorialVotes?.find(
-    (tutorialVote) => tutorialVote.userId === userId
-  );
-
-  const userVoteType = userVote?.voteType;
+  const [userVote, setUserVote] = useState<{
+    id: number;
+    createdAt: Date;
+    updatedAt: Date;
+    userId: string;
+    voteType: VoteType;
+  }>();
+  useEffect(() => {
+    setUserVote(
+      tutorialVotes?.find((tutorialVote) => tutorialVote.userId === userId)
+    );
+    // const userVoteType = userVote?.voteType;
+  }, [tutorialVotes, userId]);
 
   const utils = api.useContext();
 
@@ -130,8 +139,8 @@ export const Tutorial = ({ tutorial }: { tutorial: TutorialWithVotesType }) => {
   });
 
   const handleVote = (voteType: VoteType) => {
-    if (userVoteType) {
-      if (userVoteType !== voteType) {
+    if (userVote?.voteType) {
+      if (userVote.voteType !== voteType) {
         mutateVote.mutate({
           tutorialId: tutorial.id,
           voteId: userVote.id,
@@ -156,6 +165,8 @@ export const Tutorial = ({ tutorial }: { tutorial: TutorialWithVotesType }) => {
     return;
   };
 
+  const debounceHandleVote = debounce(handleVote, 500);
+
   // const beatboxSoundQuery = api.beatboxDb.getBeatboxSoundByName.useQuery({
   //   name: tutorial.name,
   // });
@@ -179,10 +190,10 @@ export const Tutorial = ({ tutorial }: { tutorial: TutorialWithVotesType }) => {
         <h3 className="mt-2 p-2 text-xl font-bold">{channel}</h3>
         {/* <p className="mt-2 p-2 text-xl font-bold">{title}</p> */}
         <VoteButtons
-          key={`${userVoteType}-${tutorial.id}-${totalVotes}`}
-          onVote={handleVote}
+          key={`${userVote?.voteType}-${tutorial.id}-${totalVotes}`}
+          onVote={debounceHandleVote}
           totalVotes={totalVotes}
-          userVote={userVoteType}
+          userVote={userVote?.voteType}
         />
       </div>
     </div>

@@ -10,8 +10,6 @@ export default function ProfilePage() {
 
   const { data: sessionData } = useSession();
 
-  const thing = sessionData?.user.name;
-
   const {
     data: uploads,
     isLoading: uploadsIsLoading,
