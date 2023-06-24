@@ -1,11 +1,10 @@
 import { VoteType } from "@prisma/client";
 import dynamic from "next/dynamic";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { api } from "~/utils/api";
 import { TutorialWithVotesType } from "./TutorialList";
 import { VoteButtons } from "../VoteButtons/VoteButtons";
 import { useSession } from "next-auth/react";
-import debounce from "lodash.debounce";
 import {
   addTutorialVote,
   deleteTutorialVote,
@@ -165,8 +164,6 @@ export const Tutorial = ({ tutorial }: { tutorial: TutorialWithVotesType }) => {
     return;
   };
 
-  const debounceHandleVote = debounce(handleVote, 500);
-
   // const beatboxSoundQuery = api.beatboxDb.getBeatboxSoundByName.useQuery({
   //   name: tutorial.name,
   // });
@@ -191,7 +188,7 @@ export const Tutorial = ({ tutorial }: { tutorial: TutorialWithVotesType }) => {
         {/* <p className="mt-2 p-2 text-xl font-bold">{title}</p> */}
         <VoteButtons
           key={`${userVote?.voteType}-${tutorial.id}-${totalVotes}`}
-          onVote={debounceHandleVote}
+          onVote={handleVote}
           totalVotes={totalVotes}
           userVote={userVote?.voteType}
         />
