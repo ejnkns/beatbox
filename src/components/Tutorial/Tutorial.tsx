@@ -103,18 +103,18 @@ export const Tutorial = ({ tutorial }: { tutorial: TutorialWithVotesType }) => {
           if (!old) return old;
           return {
             ...old,
-            tutorials: old.tutorials.map((tutorial) => {
-              if (tutorial.id === newVoteMutation.tutorialId) {
-                if (newVoteMutation.operation === "update") {
-                  return updateTutorialVote(tutorial, newVoteMutation);
-                } else if (newVoteMutation.operation === "add") {
-                  return addTutorialVote(tutorial, newVoteMutation, userId);
-                } else if (newVoteMutation.operation === "delete") {
-                  return deleteTutorialVote(tutorial, newVoteMutation);
-                }
-              }
-              return tutorial;
-            }),
+            // tutorials: old.tutorials.map((tutorial) => {
+            //   if (tutorial.id === newVoteMutation.tutorialId) {
+            //     if (newVoteMutation.operation === "update") {
+            //       return updateTutorialVote(tutorial, newVoteMutation);
+            //     } else if (newVoteMutation.operation === "add") {
+            //       return addTutorialVote(tutorial, newVoteMutation, userId);
+            //     } else if (newVoteMutation.operation === "delete") {
+            //       return deleteTutorialVote(tutorial, newVoteMutation);
+            //     }
+            //   }
+            // return tutorial;
+            // }),
           };
         }
       );
