@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "../Controls/Button";
 import { VoteType } from "@prisma/client";
 import { useState } from "react";

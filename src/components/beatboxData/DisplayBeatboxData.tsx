@@ -6,14 +6,19 @@ export const DisplayBeatboxData = ({
 }: {
   beatboxSounds: BeatboxSound[];
 }) => {
+  //ssl.gstatic.com/docs/doclist/images/empty_state_details.png
+  // https: //ssl.gstatic.com/docs/doclist/images/empty_state_details.png
+  // https: //ssl.gstatic.com/docs/doclist/images/empty_state_details.png
+  // https: //ssl.gstatic.com/docs/doclist/images/empty_state_details.png
+  // https: //ssl.gstatic.com/docs/doclist/images/empty_state_details.png
   return (
     <div className="flex flex-col overflow-x-hidden">
       {beatboxSounds.map((beatboxSound, i) => (
         <Link
           key={`${beatboxSound.name}-${i}`}
-          className={`flex w-full origin-left transform items-center justify-between border-b border-black bg-opacity-10 p-2 bg-blend-saturation transition-all duration-300 ease-in-out hover:scale-110
-
-          ${i % 2 === 0 ? "text-gray-300" : "bg-slate-300 text-gray-300"}`}
+          className={`${i % 2 === 0 ? "text-white" : "bg-slate-300 text-white"}
+          flex w-full origin-left transform items-center justify-between border-b border-black bg-opacity-10 p-2 bg-blend-saturation transition-all duration-300 ease-in-out hover:scale-110 hover:bg-opacity-20 hover:text-blue-200
+          `}
           href={{
             pathname: `/sound/${beatboxSound.name}`,
           }}

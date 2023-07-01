@@ -1,4 +1,4 @@
-import { VoteType } from "@prisma/client";
+import { TutorialVote, VoteType } from "@prisma/client";
 import { TutorialWithVotesType } from "~/components/Tutorial/TutorialList";
 
 type TutorialVoteMutationVariables = {
@@ -9,48 +9,33 @@ type TutorialVoteMutationVariables = {
 };
 
 export const updateTutorialVote = (
-  tutorial: TutorialWithVotesType,
+  tutorialVote: TutorialVote,
   newVoteMutation: TutorialVoteMutationVariables
-) => {
+): TutorialVote => {
   return {
-    ...tutorial,
-    TutorialVotes: tutorial.TutorialVotes.map((vote) =>
-      vote.id === newVoteMutation.voteId
-        ? { ...vote, voteType: newVoteMutation.voteType }
-        : vote
-    ),
+    ...tutorialVote,
+    voteType: newVoteMutation.voteType,
   };
 };
 
 export const addTutorialVote = (
-  tutorial: TutorialWithVotesType,
+  tutorialVote: TutorialVote,
   newVoteMutation: TutorialVoteMutationVariables,
   userId?: string
-) => {
-  if (!userId) return tutorial;
+): TutorialVote => {
+  if (!userId) return tutorialVote;
   return {
-    ...tutorial,
-    TutorialVotes: [
-      ...tutorial.TutorialVotes,
-      {
-        id: newVoteMutation.voteId || 0,
-        voteType: newVoteMutation.voteType,
-        userId,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-    ],
+    ...tutorialVote,
+    voteType: newVoteMutation.voteType,
+    userId,
   };
 };
 
 export const deleteTutorialVote = (
-  tutorial: TutorialWithVotesType,
+  tutorialVote: TutorialVote,
   newVoteMutation: TutorialVoteMutationVariables
-) => {
+): TutorialVote => {
   return {
-    ...tutorial,
-    TutorialVotes: tutorial.TutorialVotes.filter(
-      (vote) => vote.id !== newVoteMutation.voteId
-    ),
+    ...tutorialVote,
   };
 };

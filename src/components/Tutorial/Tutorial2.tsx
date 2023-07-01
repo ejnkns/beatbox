@@ -12,39 +12,11 @@ import {
 } from "~/server/api/routers/beatboxDb.utils";
 const ReactPlayer = dynamic(() => import("react-player/lazy"));
 
-// export async function getServerSideProps(
-//   context: GetServerSidePropsContext<{ id: string }>
-// ) {
-//   const helpers = createServerSideHelpers({
-//     router: beatboxDb,
-//     ctx: {},
-//     transformer: superjson, // optional - adds superjson serialization
-//   });
-//   const id = Number(context.params?.id);
-//   // // check if post exists - `prefetch` doesn't change its behavior
-//   // // based on the result of the query (including throws), so if we
-//   // // want to change the logic here in gSSP, we need to use `fetch`.
-//   // const postExists = await helpers.getTutorial.fetch({ id });
-//   if (id) {
-//     // prefetch `post.byId`
-//     await helpers.getTutorial.prefetch({ id });
-//   } else {
-//     // if post doesn't exist, return 404
-//     return {
-//       props: { id },
-//       notFound: true,
-//     };
-//   }
-//   return {
-//     props: {
-//       trpcState: helpers.dehydrate(),
-//       id,
-//     },
-//   };
-// }
-
-export const Tutorial = ({ tutorial }: { tutorial: TutorialWithVotesType }) => {
-  const [title, setTitle] = useState("");
+export const Tutorial2 = ({
+  tutorial,
+}: {
+  tutorial: TutorialWithVotesType;
+}) => {
   const [channel, setChannel] = useState("");
 
   const { data: sessionData } = useSession();
@@ -57,20 +29,8 @@ export const Tutorial = ({ tutorial }: { tutorial: TutorialWithVotesType }) => {
       .then((res) => res.json())
       .then((data) => {
         setChannel(data.author_name);
-        setTitle(data.title);
       });
   }, [tutorial.url]);
-
-  const tutorialVotes = tutorial.TutorialVotes;
-
-  const upvotesCount = tutorialVotes?.filter(
-    (tutorialVote) => tutorialVote.voteType === VoteType.UP
-  ).length;
-  const downvotesCount = tutorialVotes?.filter(
-    (tutorialVote) => tutorialVote.voteType === VoteType.DOWN
-  ).length;
-  const totalVotes = upvotesCount - downvotesCount;
-  console.log({ totalVotes });
 
   const [userVote, setUserVote] = useState<{
     id: number;
@@ -79,10 +39,16 @@ export const Tutorial = ({ tutorial }: { tutorial: TutorialWithVotesType }) => {
     userId: string;
     voteType: VoteType;
   }>();
+  const { data: tutorialVotes } = api.beatboxDb.getTutorialVotes.useQuery({
+    tutorialId: tutorial.id,
+  });
+
   useEffect(() => {
-    setUserVote(
-      tutorialVotes?.find((tutorialVote) => tutorialVote.userId === userId)
-    );
+    if (Array.isArray(tutorialVotes)) {
+      setUserVote(
+        tutorialVotes?.find((tutorialVote) => tutorialVote.userId === userId)
+      );
+    }
     // const userVoteType = userVote?.voteType;
   }, [tutorialVotes, userId]);
 
@@ -91,29 +57,29 @@ export const Tutorial = ({ tutorial }: { tutorial: TutorialWithVotesType }) => {
   const mutateVote = api.beatboxDb.mutateTutorialVote.useMutation({
     async onMutate(newVoteMutation) {
       // Cancel outgoing fetches (so they don't overwrite our optimistic update)
-      await utils.beatboxDb.getBeatboxSoundByName.cancel();
+      await utils.beatboxDb.getTutorialVotes.cancel();
 
       // Get the data from the queryCache
-      const prevData = utils.beatboxDb.getBeatboxSoundByName.getData();
+      const prevData = utils.beatboxDb.getTutorialVotes.getData();
 
       // Optimistically update the data with our new post
-      utils.beatboxDb.getBeatboxSoundByName.setData(
-        { name: tutorial.name },
+      utils.beatboxDb.getTutorialVotes.setData(
+        { tutorialId: tutorial.id },
         (old) => {
           if (!old) return old;
           return {
             ...old,
-            tutorials: old.tutorials.map((tutorial) => {
-              if (tutorial.id === newVoteMutation.tutorialId) {
+            tutorials: old.map((tutorialVote) => {
+              if (tutorialVote.id === newVoteMutation.tutorialId) {
                 if (newVoteMutation.operation === "update") {
-                  return updateTutorialVote(tutorial, newVoteMutation);
+                  return updateTutorialVote(tutorialVote, newVoteMutation);
                 } else if (newVoteMutation.operation === "add") {
-                  return addTutorialVote(tutorial, newVoteMutation, userId);
+                  return addTutorialVote(tutorialVote, newVoteMutation, userId);
                 } else if (newVoteMutation.operation === "delete") {
-                  return deleteTutorialVote(tutorial, newVoteMutation);
+                  return {};
                 }
               }
-              return tutorial;
+              return tutorialVote;
             }),
           };
         }
@@ -125,8 +91,8 @@ export const Tutorial = ({ tutorial }: { tutorial: TutorialWithVotesType }) => {
     onError(err, newVoteMutation, ctx) {
       // If the mutation fails, use the context-value from onMutate
       if (ctx) {
-        utils.beatboxDb.getBeatboxSoundByName.setData(
-          { name: tutorial.name },
+        utils.beatboxDb.getTutorialVotes.setData(
+          { tutorialId: tutorial.id },
           ctx.prevData
         );
       }
@@ -136,6 +102,19 @@ export const Tutorial = ({ tutorial }: { tutorial: TutorialWithVotesType }) => {
       utils.beatboxDb.getBeatboxSoundByName.invalidate();
     },
   });
+
+  if (!Array.isArray(tutorialVotes)) {
+    return null;
+  }
+
+  const upvotesCount = tutorialVotes?.filter(
+    (tutorialVote) => tutorialVote.voteType === VoteType.UP
+  ).length;
+  const downvotesCount = tutorialVotes?.filter(
+    (tutorialVote) => tutorialVote.voteType === VoteType.DOWN
+  ).length;
+  const totalVotes =
+    upvotesCount && downvotesCount && upvotesCount - downvotesCount;
 
   const handleVote = (voteType: VoteType) => {
     if (userVote?.voteType) {
