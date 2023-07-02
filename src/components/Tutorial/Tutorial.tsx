@@ -142,8 +142,17 @@ export const Tutorial = ({ tutorial }: { tutorial: TutorialWithVotesType }) => {
   const handleVote = (voteType?: VoteType) => {
     // handle delete called before add finished or errored
     if (!voteType) {
-      mutateVote.reset();
       console.log("no voteType", { voteType, resetVoteRef, userVote });
+      if (userVote?.voteType) {
+        mutateVote.mutate({
+          tutorialId: tutorial.id,
+          voteId: userVote.id,
+          voteType: userVote.voteType,
+          operation: "delete",
+        });
+        return;
+      }
+      mutateVote.reset();
       resetVoteRef.current = !resetVoteRef.current;
       return;
     }
@@ -158,13 +167,6 @@ export const Tutorial = ({ tutorial }: { tutorial: TutorialWithVotesType }) => {
         });
         return;
       }
-      mutateVote.mutate({
-        tutorialId: tutorial.id,
-        voteId: userVote.id,
-        voteType: userVote.voteType,
-        operation: "delete",
-      });
-      return;
     }
     mutateVote.mutate({
       tutorialId: tutorial.id,
