@@ -1,6 +1,6 @@
 import { VoteType } from "@prisma/client";
 import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { api } from "~/utils/api";
 import { TutorialWithVotesType } from "./TutorialList";
 import { VoteButtons } from "../VoteButtons/VoteButtonsClient";
@@ -46,6 +46,7 @@ const ReactPlayer = dynamic(() => import("react-player/lazy"));
 export const Tutorial = ({ tutorial }: { tutorial: TutorialWithVotesType }) => {
   const [title, setTitle] = useState("");
   const [channel, setChannel] = useState("");
+  const resetVoteRef = useRef(false);
 
   const { data: sessionData } = useSession();
   // TODO: figure out a better way to do this
@@ -103,18 +104,18 @@ export const Tutorial = ({ tutorial }: { tutorial: TutorialWithVotesType }) => {
           if (!old) return old;
           return {
             ...old,
-            // tutorials: old.tutorials.map((tutorial) => {
-            //   if (tutorial.id === newVoteMutation.tutorialId) {
-            //     if (newVoteMutation.operation === "update") {
-            //       return updateTutorialVote(tutorial, newVoteMutation);
-            //     } else if (newVoteMutation.operation === "add") {
-            //       return addTutorialVote(tutorial, newVoteMutation, userId);
-            //     } else if (newVoteMutation.operation === "delete") {
-            //       return deleteTutorialVote(tutorial, newVoteMutation);
-            //     }
-            //   }
-            // return tutorial;
-            // }),
+            tutorials: old.tutorials.map((tutorial) => {
+              if (tutorial.id === newVoteMutation.tutorialId) {
+                if (newVoteMutation.operation === "update") {
+                  return updateTutorialVote(tutorial, newVoteMutation);
+                } else if (newVoteMutation.operation === "add") {
+                  return addTutorialVote(tutorial, newVoteMutation, userId);
+                } else if (newVoteMutation.operation === "delete") {
+                  return deleteTutorialVote(tutorial, newVoteMutation);
+                }
+              }
+              return tutorial;
+            }),
           };
         }
       );
@@ -123,6 +124,7 @@ export const Tutorial = ({ tutorial }: { tutorial: TutorialWithVotesType }) => {
       return { prevData };
     },
     onError(err, newVoteMutation, ctx) {
+      resetVoteRef.current = !resetVoteRef.current;
       // If the mutation fails, use the context-value from onMutate
       if (ctx) {
         utils.beatboxDb.getBeatboxSoundByName.setData(
@@ -137,7 +139,15 @@ export const Tutorial = ({ tutorial }: { tutorial: TutorialWithVotesType }) => {
     },
   });
 
-  const handleVote = (voteType: VoteType) => {
+  const handleVote = (voteType?: VoteType) => {
+    // handle delete called before add finished or errored
+    if (!voteType) {
+      mutateVote.reset();
+      console.log("no voteType", { voteType, resetVoteRef, userVote });
+      resetVoteRef.current = !resetVoteRef.current;
+      return;
+    }
+
     if (userVote?.voteType) {
       if (userVote.voteType !== voteType) {
         mutateVote.mutate({
@@ -151,7 +161,7 @@ export const Tutorial = ({ tutorial }: { tutorial: TutorialWithVotesType }) => {
       mutateVote.mutate({
         tutorialId: tutorial.id,
         voteId: userVote.id,
-        voteType,
+        voteType: userVote.voteType,
         operation: "delete",
       });
       return;
@@ -163,10 +173,6 @@ export const Tutorial = ({ tutorial }: { tutorial: TutorialWithVotesType }) => {
     });
     return;
   };
-
-  // const beatboxSoundQuery = api.beatboxDb.getBeatboxSoundByName.useQuery({
-  //   name: tutorial.name,
-  // });
 
   return (
     <div className="flex flex-col border-2 border-black bg-indigo-200 bg-opacity-50 backdrop-blur-lg">
@@ -187,6 +193,7 @@ export const Tutorial = ({ tutorial }: { tutorial: TutorialWithVotesType }) => {
         <h3 className="mt-2 p-2 text-xl font-bold">{channel}</h3>
         {/* <p className="mt-2 p-2 text-xl font-bold">{title}</p> */}
         <VoteButtons
+          reset={resetVoteRef.current}
           // key={`${userVote?.voteType}-${tutorial.id}-${totalVotes}`}
           onVote={handleVote}
           totalVotes={totalVotes}

@@ -44,7 +44,7 @@ export const TutorialList = ({ tutorials, isLoading }: TutorialListProps) => {
         <div>{`Loading...`}</div>
       ) : sortedTutorials?.length ? (
         sortedTutorials.map((tutorial, i) => (
-          <Tutorial2 key={`${tutorial}-${i}`} tutorial={tutorial} />
+          <Tutorial key={`${tutorial.id}`} tutorial={tutorial} />
         ))
       ) : (
         <div>{`No tutorials :(`}</div>

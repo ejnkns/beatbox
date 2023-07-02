@@ -72,9 +72,9 @@ export const Tutorial2 = ({
             tutorials: old.map((tutorialVote) => {
               if (tutorialVote.id === newVoteMutation.tutorialId) {
                 if (newVoteMutation.operation === "update") {
-                  return updateTutorialVote(tutorialVote, newVoteMutation);
+                  // return updateTutorialVote(tutorialVote, newVoteMutation);
                 } else if (newVoteMutation.operation === "add") {
-                  return addTutorialVote(tutorialVote, newVoteMutation, userId);
+                  // return addTutorialVote(tutorialVote, newVoteMutation, userId);
                 } else if (newVoteMutation.operation === "delete") {
                   return {};
                 }
@@ -116,7 +116,8 @@ export const Tutorial2 = ({
   const totalVotes =
     upvotesCount && downvotesCount && upvotesCount - downvotesCount;
 
-  const handleVote = (voteType: VoteType) => {
+  const handleVote = (voteType?: VoteType) => {
+    if (!voteType) return;
     if (userVote?.voteType) {
       if (userVote.voteType !== voteType) {
         mutateVote.mutate({
