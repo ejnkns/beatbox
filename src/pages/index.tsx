@@ -4,7 +4,7 @@ import { api } from "~/utils/api";
 import { useState, useMemo, useEffect } from "react";
 import { AddSound } from "~/components/AddSound/AddSound";
 import { Modal } from "~/components/Modal";
-import { CategoryType } from "@prisma/client";
+import { CategoryType, Tutorial } from "@prisma/client";
 import { Input } from "~/components/Controls/Input";
 import { Select } from "~/components/Controls/Select";
 import { Header } from "~/components/Header/Header";
@@ -15,6 +15,16 @@ import { beatboxDb } from "~/server/api/routers/beatboxDb";
 import { useRouter } from "next/router";
 import { AddSoundButton } from "~/components/AddSound/AddSoundButton";
 import { signIn, signOut, useSession } from "next-auth/react";
+
+type SearchResult = {
+  category: CategoryType;
+  id: number;
+  name: string;
+  tutorials: Tutorial[];
+  createdAt: Date;
+  updatedAt: Date;
+  userId: string | null;
+};
 
 const categoryOptions = [
   { id: "ALL", name: "ALL" },
@@ -34,7 +44,9 @@ const Home: NextPage = () => {
   const router = useRouter();
   const [category, setCategory] = useState<CategoryType | "ALL">("ALL");
   const [searchInput, setSearchInput] = useState("");
-  const [beatboxSoundsResults, setBeatboxSoundsResults] = useState<any>([]);
+  const [beatboxSoundsResults, setBeatboxSoundsResults] = useState<
+    SearchResult[]
+  >([]);
 
   const {
     data: searchResults,
@@ -70,7 +82,6 @@ const Home: NextPage = () => {
   return (
     <Layout>
       <div className="flex flex-col items-center justify-center p-8">
-        <LoginButton />
         <h1 className="text-6xl font-bold">Beatbox Sounds</h1>
         <h2 className="text-3xl">Search for any sound, or add one</h2>
       </div>
@@ -92,23 +103,6 @@ const Home: NextPage = () => {
       />
       <DisplayBeatboxData beatboxSounds={beatboxSoundsResults ?? []} />
     </Layout>
-  );
-};
-
-const LoginButton = () => {
-  const { data: sessionData } = useSession();
-
-  return (
-    <div>
-      <p>{sessionData && <span>Logged in as {sessionData.user?.name}</span>}</p>
-      <button
-        type="button"
-        className="text-xl"
-        onClick={sessionData ? () => void signOut() : () => void signIn()}
-      >
-        {sessionData ? "Sign out" : "Sign in"}
-      </button>
-    </div>
   );
 };
 

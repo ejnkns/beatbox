@@ -8,7 +8,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 // import { toast } from "../../hooks/use-toast";
 // import { Button } from "../ui/Button";
-import { Triangle, } from "lucide-react";
+import { Triangle } from "lucide-react";
 import { cn } from "~/utils/helpers";
 import { api } from "~/utils/api";
 
@@ -28,8 +28,8 @@ const VoteButtonsClient = ({
   // const { loginToast } = useCustomToasts();
   const [votesAmt, setVotesAmt] = useState(initialVotesAmt);
   const [currentVote, setCurrentVote] = useState(initialVote);
-  console.log({currentVote, initialVote})
-  
+  console.log({ currentVote, initialVote });
+
   const prevVote = usePrevious(currentVote);
 
   // ensure sync with server

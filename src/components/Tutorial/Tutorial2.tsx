@@ -62,8 +62,7 @@ export const Tutorial2 = ({
   const downvotesCount = tutorialVotes?.filter(
     (tutorialVote) => tutorialVote.voteType === VoteType.DOWN
   ).length;
-  const totalVotes =
-     upvotesCount - downvotesCount
+  const totalVotes = upvotesCount - downvotesCount;
 
   console.log({ upvotesCount, downvotesCount, totalVotes });
 

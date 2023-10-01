@@ -14,14 +14,16 @@ export default function ProfilePage() {
     data: uploads,
     isLoading: uploadsIsLoading,
     refetch,
-  } = api.beatboxDb.getUserUploads.useQuery(undefined, {
+  } = api.beatboxDb.getUserUploads.useQuery({userId: sessionData?.user.id}, {
     enabled: router.isReady,
   });
 
+  console.log({uploads, uploadsIsLoading})
+
   return (
     <Layout>
-      <h1>Profile</h1>
-      <p>{name}</p>
+      <div className="flex justify-center">
+      <h1>{name}</h1>
       {uploads && (
         <>
           <ul className="border-2 border-black">
@@ -53,6 +55,7 @@ export default function ProfilePage() {
           </ul>
         </>
       )}
+      </div>
     </Layout>
   );
 }

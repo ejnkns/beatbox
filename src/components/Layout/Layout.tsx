@@ -5,7 +5,7 @@ import { Header } from "../Header/Header";
 
 export const Layout = ({ children }: PropsWithChildren<{}>) => {
   return (
-    <div className="flex flex-col items-center bg-[url(/background.svg)] bg-cover bg-fixed brightness-75 backdrop-blur-lg ">
+    <div className="flex flex-col items-center bg-[url(/background.svg)] bg-cover bg-fixed brightness-75 backdrop-blur-2xl">
       <Head>
         <title>Beatbox Sounds</title>
         <link rel="icon" href="/favicon.ico" />

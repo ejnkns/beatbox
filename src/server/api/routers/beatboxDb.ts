@@ -227,7 +227,7 @@ export const beatboxDb = createTRPCRouter({
           });
     }),
 
-  mutateTutorialVote: protectedProcedure 
+  mutateTutorialVote: protectedProcedure
     .input(
       z.object({
         voteId: z.number().optional(),
@@ -298,14 +298,16 @@ export const beatboxDb = createTRPCRouter({
       });
     }),
 
-  getUserUploads: protectedProcedure.query(({ ctx }) => {
-    return ctx.prisma.user.findUnique({
-      where: { id: ctx.session.user.id },
-      select: {
-        UploadedSounds: true,
-        UploadedTutorials: true,
-        TutorialVotes: true,
-      },
-    });
-  }),
+  getUserUploads: protectedProcedure
+    .input(z.object({ userId: z.string().optional() }))
+    .query(({ input, ctx }) => {
+      return ctx.prisma.user.findUnique({
+        where: { id: input.userId },
+        select: {
+          UploadedSounds: true,
+          UploadedTutorials: true,
+          TutorialVotes: true,
+        },
+      });
+    }),
 });
