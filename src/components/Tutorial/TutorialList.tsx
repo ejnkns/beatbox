@@ -1,4 +1,5 @@
-import { Tutorial } from "./Tutorial";
+"use-client";
+
 import { VoteType } from "@prisma/client";
 import { Tutorial2 } from "./Tutorial2";
 
@@ -44,7 +45,7 @@ export const TutorialList = ({ tutorials, isLoading }: TutorialListProps) => {
         <div>{`Loading...`}</div>
       ) : sortedTutorials?.length ? (
         sortedTutorials.map((tutorial, i) => (
-          <Tutorial key={`${tutorial.id}`} tutorial={tutorial} />
+          <Tutorial2 key={`${tutorial.id}`} tutorial={tutorial} />
         ))
       ) : (
         <div>{`No tutorials :(`}</div>

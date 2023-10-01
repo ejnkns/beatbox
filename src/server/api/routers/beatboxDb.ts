@@ -227,32 +227,25 @@ export const beatboxDb = createTRPCRouter({
           });
     }),
 
-  mutateTutorialVote: protectedProcedure
+  mutateTutorialVote: privateProcedure 
     .input(
       z.object({
         voteId: z.number().optional(),
         tutorialId: z.number(),
         voteType: z.nativeEnum(VoteType),
-        operation: z.nativeEnum({
-          upsert: "update",
-          add: "add",
-          delete: "delete",
-        }),
       })
     )
-    .mutation(({ input, ctx }) => {
-      if (input.operation === "delete") {
-        return ctx.prisma.tutorialVote.delete({
-          where: {
-            id: input.voteId,
-          },
-        });
-      }
-      if (input.operation === "update" || input.operation === "add") {
-        return ctx.prisma.tutorialVote.upsert({
+    .mutation(async ({ input, ctx }) => {
+      const operation = input.voteId ? "update" : "add";
+      const userId = ctx.session?.user?.id ?? "test";
+      if (!ctx.session?.user && process.env.NODE_ENV !== "development")
+        throw new Error("Not logged in");
+
+      const doUpsert = () =>
+        ctx.prisma.tutorialVote.upsert({
           where: {
             userId_tutorialId_unique: {
-              userId: ctx.session.user.id,
+              userId,
               tutorialId: input.tutorialId,
             },
           },
@@ -262,7 +255,28 @@ export const beatboxDb = createTRPCRouter({
           create: {
             voteType: input.voteType,
             tutorialId: input.tutorialId,
-            userId: ctx.session.user.id,
+            userId,
+          },
+        });
+
+      if (operation === "add") {
+        return doUpsert();
+      }
+
+      if (operation === "update") {
+        const currentVote = await ctx.prisma.tutorialVote.findUnique({
+          where: {
+            userId_tutorialId_unique: { userId, tutorialId: input.tutorialId },
+          },
+        });
+
+        if (!currentVote) {
+          return doUpsert();
+        }
+
+        return ctx.prisma.tutorialVote.delete({
+          where: {
+            id: input.voteId,
           },
         });
       }

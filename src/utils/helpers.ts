@@ -1,4 +1,10 @@
+import { ClassValue, clsx } from "clsx";
 import { CategoryType } from "@prisma/client";
+import { twMerge } from "tailwind-merge";
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
 
 export const objectKeys = <Obj extends {}>(obj: Obj): (keyof Obj)[] =>
   Object.keys(obj) as (keyof Obj)[];

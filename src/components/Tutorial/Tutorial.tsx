@@ -3,7 +3,7 @@ import dynamic from "next/dynamic";
 import { useEffect, useState, useRef } from "react";
 import { api } from "~/utils/api";
 import { TutorialWithVotesType } from "./TutorialList";
-import { VoteButtons } from "../VoteButtons/VoteButtonsClient";
+import { VoteButtons } from "../VoteButtons/VoteButtons";
 import { useSession } from "next-auth/react";
 import {
   addTutorialVote,
@@ -49,7 +49,6 @@ export const Tutorial = ({ tutorial }: { tutorial: TutorialWithVotesType }) => {
   const resetVoteRef = useRef(false);
 
   const { data: sessionData } = useSession();
-  // TODO: figure out a better way to do this
   const userId = sessionData?.user.id;
   console.log(userId);
 
@@ -141,14 +140,13 @@ export const Tutorial = ({ tutorial }: { tutorial: TutorialWithVotesType }) => {
 
   const handleVote = (voteType?: VoteType) => {
     // handle delete called before add finished or errored
+    console.log({ voteType, resetVoteRef, userVote });
     if (!voteType) {
-      console.log("no voteType", { voteType, resetVoteRef, userVote });
       if (userVote?.voteType) {
         mutateVote.mutate({
           tutorialId: tutorial.id,
           voteId: userVote.id,
           voteType: userVote.voteType,
-          operation: "delete",
         });
         return;
       }
@@ -163,7 +161,6 @@ export const Tutorial = ({ tutorial }: { tutorial: TutorialWithVotesType }) => {
           tutorialId: tutorial.id,
           voteId: userVote.id,
           voteType,
-          operation: "update",
         });
         return;
       }
@@ -171,7 +168,6 @@ export const Tutorial = ({ tutorial }: { tutorial: TutorialWithVotesType }) => {
     mutateVote.mutate({
       tutorialId: tutorial.id,
       voteType,
-      operation: "add",
     });
     return;
   };
@@ -196,7 +192,6 @@ export const Tutorial = ({ tutorial }: { tutorial: TutorialWithVotesType }) => {
         {/* <p className="mt-2 p-2 text-xl font-bold">{title}</p> */}
         <VoteButtons
           reset={resetVoteRef.current}
-          // key={`${userVote?.voteType}-${tutorial.id}-${totalVotes}`}
           onVote={handleVote}
           totalVotes={totalVotes}
           userVote={userVote?.voteType}
