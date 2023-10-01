@@ -227,7 +227,7 @@ export const beatboxDb = createTRPCRouter({
           });
     }),
 
-  mutateTutorialVote: privateProcedure 
+  mutateTutorialVote: protectedProcedure 
     .input(
       z.object({
         voteId: z.number().optional(),
